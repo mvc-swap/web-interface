@@ -79,29 +79,7 @@ export default class UserInfo extends Component {
     }
   };
 
-  initWallet = () => {
-    const _extwallet = Wallet({ type: 5 });
-
-    _extwallet.bsv &&
-      _extwallet.bsv.on('accountChanged', async (depositAddress) => {
-        depositAddress && this.accountChanged(5);
-      });
-    _extwallet.bsv &&
-      _extwallet.bsv.on('close', () => {
-        this.closeWallet();
-      });
-
-    const _voltWallet = Wallet({ type: 2 });
-
-    _voltWallet.bsv &&
-      _voltWallet.bsv.on('accountChanged', async (depositAddress) => {
-        depositAddress && this.accountChanged(2);
-      });
-    _voltWallet.bsv &&
-      _voltWallet.bsv.on('close', () => {
-        this.closeWallet();
-      });
-  };
+  initWallet = () => {};
 
   fetchPairData = async () => {
     const _self = this;

@@ -1,9 +1,9 @@
 import webWallet from 'bsv-web-wallet';
 import { formatSat, strAbbreviation } from 'common/utils';
-const { Bsv } = webWallet;
+const { Mvc } = webWallet;
 
-const bsv = new Bsv({
-  pageUrl: 'https://wallet.tswap.io',
+const bsv = new Mvc({
+  pageUrl: 'http://localhost:3000/', //'https://wallet.tswap.io',
 });
 
 const getBsvBalance = async () => {

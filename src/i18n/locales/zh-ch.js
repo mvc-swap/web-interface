@@ -296,8 +296,8 @@ const texts = {
   risks_desc: '请在使用TokenSwap之前仔细阅读并知晓风险',
   acknowlege: '已知晓',
   not_acknowlege: '不知道风险',
-  download_sensilet:
-    '请先安装Sensilet插件。如果已经安装，请刷新页面。点击确定下载插件。',
+  download_metalet:
+    '请先安装Metalet插件。如果已经安装，请刷新页面。点击确定下载插件。',
 
   //创建自定义交易对
   create_farm_pair: '发布流动性挖矿计划',

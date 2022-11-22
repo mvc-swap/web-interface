@@ -26,33 +26,6 @@ export default function ChooseWallet(props) {
       <ul>
         {!isApp && (
           <>
-            <li onClick={() => connectWebWallet(5, network)}>
-              <CustomIcon
-                type="iconicon-volt-tokenswap-circle"
-                style={{ fontSize: 30 }}
-              />
-              <div className={styles.label}>Volt {_('wallet')}</div>
-            </li>
-          </>
-        )}
-
-        <li onClick={() => connectWebWallet(2, network)}>
-          <CustomIcon type="iconicon-volt-tokenswap-circle" />
-          <div className={styles.label}>Volt Web {_('wallet')}</div>
-        </li>
-
-        {!isApp && (
-          <>
-            <li onClick={() => connectWebWallet(4, 'mainnet')}>
-              <div className={styles.sens_icon}>
-                <img src={sensiletIcon} />
-              </div>
-              <div className={styles.label}>Sensilet</div>
-            </li>
-            <li onClick={() => connectWebWallet(2, 'testnet')}>
-              <CustomIcon type="iconBSVtestnet" />
-              <div className={styles.label}>BSV Testnet</div>
-            </li>
             <li onClick={() => connectWebWallet(1)} style={{ fontSize: 15 }}>
               <div className={styles.ts_icon}>
                 <CustomIcon type="iconTS_Logo" style={{ fontSize: 20 }} />

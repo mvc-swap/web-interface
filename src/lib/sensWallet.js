@@ -58,7 +58,7 @@ export default {
 
   connectAccount: () => {
     if (checkExtension()) {
-      return window.sensilet.requestAccount({});
+      return window.metalet.requestAccount({});
     }
   },
 

@@ -303,8 +303,8 @@ const texts = {
     'Please read, review and acknowledge the Risks and Disclaimers documentation before proceeding to use TokenSwap.',
   acknowlege: 'Acknowlege',
   not_acknowlege: 'Do not acknowledge',
-  download_sensilet:
-    'Install Sensilet extention. Refresh the page if you have installed.',
+  download_metalet:
+    'Install Metalet extention. Refresh the page if you have installed.',
 
   //创建自定义交易对
   create_farm_pair: 'Create liquidity mining program',
