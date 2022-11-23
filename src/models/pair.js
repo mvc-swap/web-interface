@@ -27,7 +27,7 @@ export default {
     LP: 100000,
     iconList: '',
     tokenPrices: {},
-    currentToken1: 'MVC',
+    currentToken1: 'BSV',
     currentToken2: '',
   },
 
@@ -97,7 +97,7 @@ export default {
       const currentPairArr = currentPair.split('-');
       let [currentToken1, currentToken2] = currentPairArr;
       if (currentPairArr.length === 1) {
-        currentToken1 = 'mvc';
+        currentToken1 = 'bsv';
         currentToken2 = currentPairArr[0];
       }
       // const pairData = yield select((state) => state.pair);
@@ -260,7 +260,7 @@ export default {
     },
 
     *changeCurrentToken({ payload }, { call, put, select }) {
-      const { token1ID = 'MVC', token2ID } = payload;
+      const { token1ID = 'BSV', token2ID } = payload;
 
       const pairData = yield select((state) => state.pair);
       const { allPairs } = pairData;

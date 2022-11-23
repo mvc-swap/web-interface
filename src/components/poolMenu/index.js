@@ -15,11 +15,11 @@ const menuData = [
     text: _('remove_liq_short'),
     key: 'remove_liq',
   },
-  {
-    path: 'create',
-    text: _('create_new_pair'),
-    key: 'create_pair',
-  },
+  //{
+  //  path: 'create',
+  //  text: _('create_new_pair'),
+  //  key: 'create_pair',
+  //},
 ];
 
 export default function PoolMenu(props) {

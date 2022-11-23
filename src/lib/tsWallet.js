@@ -3,7 +3,7 @@ import { formatSat, strAbbreviation } from 'common/utils';
 const { Mvc } = webWallet;
 
 const bsv = new Mvc({
-  pageUrl: 'http://localhost:3000/', //'https://wallet.tswap.io',
+  pageUrl: 'https://mvc-wallet.tswap.io/',
 });
 
 const getBsvBalance = async () => {
@@ -68,7 +68,7 @@ export default {
     let data = [];
     datas.forEach((item) => {
       let { type, address, amount } = item;
-      if (type === 'mvc') {
+      if (type === 'bsv') {
         data.push({
           receivers: [
             {

@@ -34,13 +34,13 @@ export default class TokenPairList extends React.Component {
         className={styles.item}
         key={tokenID}
         // onClick={() => this.changeCurrentTokenPair(tokenID)}
-        onClick={() => changePair(tokenID || 'mvc')}
+        onClick={() => changePair(tokenID || 'bsv')}
       >
         <div className={styles.icon_name}>
           <div className={styles.icon}>
             <TokenIcon
               name={symbol}
-              genesisID={tokenID || 'mvc'}
+              genesisID={tokenID || 'bsv'}
               size={40}
               style={{ zIndex: 1 }}
             />

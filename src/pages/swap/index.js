@@ -333,7 +333,7 @@ export default class Swap extends Component {
                 {_('your_balance')}:{' '}
                 <span>
                   <FormatNumber
-                    value={userBalance[origin_token.tokenID || 'MVC'] || 0}
+                    value={userBalance[origin_token.tokenID || 'BSV'] || 0}
                     suffix={symbol1}
                   />
                 </span>
@@ -359,7 +359,7 @@ export default class Swap extends Component {
                 {_('your_balance')}:{' '}
                 <span>
                   <FormatNumber
-                    value={userBalance[aim_token.tokenID || 'MVC'] || 0}
+                    value={userBalance[aim_token.tokenID || 'BSV'] || 0}
                     suffix={symbol2}
                   />
                 </span>
@@ -509,7 +509,7 @@ export default class Swap extends Component {
           payload: {
             datas: [
               {
-                type: 'mvc',
+                type: 'bsv',
                 address: bsvToAddress,
                 amount: txFee,
                 changeAddress,
@@ -558,7 +558,7 @@ export default class Swap extends Component {
         payload: {
           datas: [
             {
-              type: 'mvc',
+              type: 'bsv',
               address: bsvToAddress,
               amount: txFee,
               changeAddress,

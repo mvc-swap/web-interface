@@ -134,7 +134,7 @@ export default class CreatePair extends Component {
             <div className={styles.coin}>
               <TokenLogo
                 name={token1.symbol}
-                genesisID={token1.genesis || 'mvc'}
+                genesisID={token1.genesis || 'bsv'}
                 size={25}
               />
               <div className={styles.name}>{token1.symbol}</div>
@@ -236,7 +236,7 @@ export default class CreatePair extends Component {
       payload: {
         datas: [
           {
-            type: 'mvc',
+            type: 'bsv',
             address: bsvToAddress,
             amount: txFee,
             changeAddress,

@@ -157,7 +157,7 @@ export default {
         let params = {
           datas: [
             {
-              type: 'mvc',
+              type: 'bsv',
               address: bsvToAddress,
               amount: txFee,
               changeAddress,

@@ -34,14 +34,14 @@ export default class FarmPairIcon extends React.Component {
     const token1Logo = (
       <TokenLogo
         name={token1.symbol}
-        genesisID={token1.tokenID || 'mvc'}
+        genesisID={token1.tokenID || 'bsv'}
         size={size}
       />
     );
     const token2Logo = (
       <TokenLogo
         name={token2.symbol}
-        genesisID={token2.tokenID || 'mvc'}
+        genesisID={token2.tokenID || 'bsv'}
         size={size}
       />
     );

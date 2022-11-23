@@ -570,7 +570,7 @@ export default class Liquidity extends Component {
         BigNumber(txFee + 100000).div(Math.pow(10, token1.decimal)),
       );
       if (origin_amount.toNumber() <= 0) {
-        return message.error(_('lac_token_balance', 'MVC'));
+        return message.error(_('lac_token_balance', 'BSV'));
       }
       // origin_amount =.toString();
       lastMod = 'origin';
@@ -676,7 +676,7 @@ export default class Liquidity extends Component {
         payload: {
           datas: [
             {
-              type: 'mvc',
+              type: 'bsv',
               address: bsvToAddress,
               amount: (BigInt(_origin_amount) + BigInt(txFee)).toString(),
               changeAddress,
@@ -722,7 +722,7 @@ export default class Liquidity extends Component {
         payload: {
           datas: [
             {
-              type: 'mvc',
+              type: 'bsv',
               address: bsvToAddress,
               amount: txFee,
               changeAddress,

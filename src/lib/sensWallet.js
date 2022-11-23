@@ -85,7 +85,7 @@ export default {
       const { datas, noBroadcast } = params;
       datas.forEach((item) => {
         const { address, amount, codehash, genesis, rabinApis } = item;
-        if (item.type === 'mvc') {
+        if (item.type === 'bsv') {
           data.push({
             broadcast: !noBroadcast,
             receivers: [{ address, amount }],

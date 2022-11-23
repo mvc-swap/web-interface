@@ -8,8 +8,8 @@ import _ from 'i18n';
 
 const FormItem = Form.Item;
 const BSV = {
-  symbol: 'MVC',
-  name: 'MVC',
+  symbol: 'BSV',
+  name: 'BSV',
 };
 
 export default class GenesisTokenInput extends Component {
@@ -73,7 +73,7 @@ export default class GenesisTokenInput extends Component {
             <div className={styles.token_info}>
               <TokenLogo
                 name={token.symbol}
-                genesisID={token.symbol === 'MVC' ? 'mvc' : token.genesis}
+                genesisID={token.symbol === 'BSV' ? 'bsv' : token.genesis}
               />
               <div className={styles.token_name}>
                 <div className={styles.symbol}>{token.symbol}</div>
