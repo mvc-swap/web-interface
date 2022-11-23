@@ -89,7 +89,7 @@ export default {
       noBroadcast,
       list: [
         {
-          type: 'bsv',
+          type: 'mvc',
           note,
           receiver_address: address,
           receiver_amount: amount,
@@ -111,9 +111,9 @@ export default {
         changeAddress,
         note = '',
       } = item;
-      if (item.type === 'bsv') {
+      if (item.type === 'mvc') {
         data.push({
-          type: 'bsv',
+          type: 'mvc',
           note,
           receiver_address: address,
           receiver_amount: amount,

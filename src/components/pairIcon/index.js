@@ -48,14 +48,14 @@ export default class PairIcon extends React.Component {
     const token1Logo = token1 ? (
       <TokenLogo
         name={token1.symbol}
-        genesisID={token1.tokenID || 'bsv'}
+        genesisID={token1.tokenID || 'mvc'}
         size={size}
       />
     ) : null;
     const token2Logo = token2 ? (
       <TokenLogo
         name={token2.symbol}
-        genesisID={token2.tokenID || 'bsv'}
+        genesisID={token2.tokenID || 'mvc'}
         size={size}
       />
     ) : null;

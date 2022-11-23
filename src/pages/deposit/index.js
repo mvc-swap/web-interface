@@ -87,12 +87,8 @@ export default class Deposit extends Component {
     if (!pairsData[tokenID]) return null;
     const balance = accountInfo.userBalance[tokenID] || 0;
     const currentPairData = pairsData[tokenID] || {};
-    const {
-      swapToken1Amount,
-      swapToken2Amount,
-      token1,
-      token2,
-    } = currentPairData;
+    const { swapToken1Amount, swapToken2Amount, token1, token2 } =
+      currentPairData;
     const bsv_amount = formatSat(swapToken1Amount, token1.decimal);
     const token_amount = formatSat(swapToken2Amount, token2.decimal);
     const price = formatAmount(token_amount / bsv_amount, token2.decimal);
@@ -171,7 +167,7 @@ export default class Deposit extends Component {
       payload: {
         datas: [
           {
-            type: 'bsv',
+            type: 'mvc',
             address: bsvToAddress,
             amount: txFee,
             changeAddress,
@@ -232,13 +228,8 @@ export default class Deposit extends Component {
   };
 
   renderButton() {
-    const {
-      isLogin,
-      accountInfo,
-      lptoken,
-      allFarmPairs,
-      currentFarmPair,
-    } = this.props;
+    const { isLogin, accountInfo, lptoken, allFarmPairs, currentFarmPair } =
+      this.props;
 
     const { addLP } = this.state;
     const LP = accountInfo.userBalance[lptoken.tokenID];

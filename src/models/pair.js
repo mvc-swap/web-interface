@@ -27,7 +27,7 @@ export default {
     LP: 100000,
     iconList: '',
     tokenPrices: {},
-    currentToken1: 'BSV',
+    currentToken1: 'MVC',
     currentToken2: '',
   },
 
@@ -97,7 +97,7 @@ export default {
       const currentPairArr = currentPair.split('-');
       let [currentToken1, currentToken2] = currentPairArr;
       if (currentPairArr.length === 1) {
-        currentToken1 = 'bsv';
+        currentToken1 = 'mvc';
         currentToken2 = currentPairArr[0];
       }
       // const pairData = yield select((state) => state.pair);
@@ -260,7 +260,7 @@ export default {
     },
 
     *changeCurrentToken({ payload }, { call, put, select }) {
-      const { token1ID = 'BSV', token2ID } = payload;
+      const { token1ID = 'MVC', token2ID } = payload;
 
       const pairData = yield select((state) => state.pair);
       const { allPairs } = pairData;
@@ -371,7 +371,7 @@ export default {
     savePair(state, action) {
       let { allPairs, currentPair, mode } = action.payload;
       if (!allPairs) allPairs = state.allPairs;
-      if (!currentPair) {
+      if (!currentPair || !allPairs[currentPair]) {
         log('no currentPair');
         return { ...state, allPairs, currentPair };
       }
@@ -388,7 +388,7 @@ export default {
         ...state,
         ...action.payload,
         currentPair,
-        token1: { ...token1, symbol: symbol1, isBsv: symbol1 === 'bsv' },
+        token1: { ...token1, symbol: symbol1, isBsv: symbol1 === 'mvc' },
         token2: { ...token2, symbol: symbol2 },
         lptoken,
         rabinApis,

@@ -63,7 +63,7 @@ export default {
 
     return bsv.transfer({
       noBroadcast,
-      type: 'bsv',
+      type: 'mvc',
       data: {
         amountExact: false,
         receivers: [{ address, amount, note }],
@@ -76,9 +76,9 @@ export default {
     const { datas, noBroadcast } = params;
     datas.forEach((item) => {
       const { address, amount, codehash, genesis } = item;
-      if (item.type === 'bsv') {
+      if (item.type === 'mvc') {
         data.push({
-          type: 'bsv',
+          type: 'mvc',
           data: {
             amountExact: false,
             receivers: [{ address, amount }],

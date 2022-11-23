@@ -570,7 +570,7 @@ export default class Liquidity extends Component {
         BigNumber(txFee + 100000).div(Math.pow(10, token1.decimal)),
       );
       if (origin_amount.toNumber() <= 0) {
-        return message.error(_('lac_token_balance', 'BSV'));
+        return message.error(_('lac_token_balance', 'MVC'));
       }
       // origin_amount =.toString();
       lastMod = 'origin';
@@ -662,14 +662,8 @@ export default class Liquidity extends Component {
   handleSubmit = async (data, _origin_amount, _aim_amount) => {
     if (!_origin_amount) _origin_amount = this.state._origin_amount;
     if (!_aim_amount) _aim_amount = this.state._aim_amount;
-    const {
-      token1,
-      token2,
-      currentPair,
-      dispatch,
-      rabinApis,
-      accountInfo,
-    } = this.props;
+    const { token1, token2, currentPair, dispatch, rabinApis, accountInfo } =
+      this.props;
     const { changeAddress } = accountInfo;
     const { reqSwapData } = this.state;
     const { bsvToAddress, tokenToAddress, requestIndex, txFee } =
@@ -682,7 +676,7 @@ export default class Liquidity extends Component {
         payload: {
           datas: [
             {
-              type: 'bsv',
+              type: 'mvc',
               address: bsvToAddress,
               amount: (BigInt(_origin_amount) + BigInt(txFee)).toString(),
               changeAddress,
@@ -728,7 +722,7 @@ export default class Liquidity extends Component {
         payload: {
           datas: [
             {
-              type: 'bsv',
+              type: 'mvc',
               address: bsvToAddress,
               amount: txFee,
               changeAddress,

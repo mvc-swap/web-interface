@@ -38,7 +38,7 @@ async function payFee(props) {
     payload: {
       datas: [
         {
-          type: 'bsv',
+          type: 'mvc',
           address: bsvToAddress,
           amount: txFee,
           changeAddress,

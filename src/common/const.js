@@ -1,5 +1,5 @@
 export const DEFAULT_NET = 'maintest';
-export const DEFAULT_PAIR = 'bsv-mc';
+export const DEFAULT_PAIR = 'mvc-mtt';
 export const USDT_PAIR = 'bsv-usdt';
 export const USDT_TSC_PAIR = 'usdt-tsc';
 export const ACD_PAIR = 'bsv-acd';

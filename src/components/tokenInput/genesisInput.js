@@ -8,8 +8,8 @@ import _ from 'i18n';
 
 const FormItem = Form.Item;
 const BSV = {
-  symbol: 'BSV',
-  name: 'Bitcoin SV',
+  symbol: 'MVC',
+  name: 'MVC',
 };
 
 export default class GenesisTokenInput extends Component {
@@ -24,7 +24,7 @@ export default class GenesisTokenInput extends Component {
     const { value } = e.target;
     const { dispatch, change } = this.props;
     let token = undefined;
-    const isBsv = supportBsv && value.toUpperCase() === 'BSV';
+    const isBsv = supportBsv && value.toUpperCase() === 'MVC';
 
     if (isBsv) {
       token = BSV;
@@ -36,7 +36,7 @@ export default class GenesisTokenInput extends Component {
         },
       });
 
-      if (e.target.value.toUpperCase() === 'BSV') return;
+      if (e.target.value.toUpperCase() === 'MVC') return;
       if (res && !res.code) {
         token = res;
       }
@@ -73,7 +73,7 @@ export default class GenesisTokenInput extends Component {
             <div className={styles.token_info}>
               <TokenLogo
                 name={token.symbol}
-                genesisID={token.symbol === 'BSV' ? 'bsv' : token.genesis}
+                genesisID={token.symbol === 'MVC' ? 'mvc' : token.genesis}
               />
               <div className={styles.token_name}>
                 <div className={styles.symbol}>{token.symbol}</div>

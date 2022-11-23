@@ -22,7 +22,8 @@ export default {
 
   effects: {
     *query({ payload }, { call, put, select }) {
-      const allPairs = yield select((state) => state.pair.allPairs);
+      return [];
+      /*const allPairs = yield select((state) => state.pair.allPairs);
 
       let currentPair = getCurrentPair();
 
@@ -107,7 +108,7 @@ export default {
       }
 
       // console.log(dataTimeline)
-      return dataTimeline;
+      return dataTimeline;*/
     },
   },
 

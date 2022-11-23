@@ -267,7 +267,7 @@ export default class RemovePage extends Component {
       payload: {
         datas: [
           {
-            type: 'bsv',
+            type: 'mvc',
             address: bsvToAddress,
             amount: txFee,
             changeAddress,

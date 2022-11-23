@@ -79,10 +79,10 @@ export default class CreatePair extends Component {
             },
       );
     }
-    if (index === 1 && e.target.value.toUpperCase() === 'BSV') {
+    if (index === 1 && e.target.value.toUpperCase() === 'MVC') {
       return this.setState({
         token1: {
-          symbol: 'BSV',
+          symbol: 'MVC',
           name: 'Bitcoin SV',
         },
       });
@@ -94,7 +94,7 @@ export default class CreatePair extends Component {
           genesisHash: e.target.value,
         },
       });
-      if (e.target.value.toUpperCase() === 'BSV') return;
+      if (e.target.value.toUpperCase() === 'MVC') return;
       if (!res || res.code) {
         return this.setState(
           index === 1
@@ -172,7 +172,7 @@ export default class CreatePair extends Component {
             <div className={styles.token_info}>
               <TokenLogo
                 name={token1.symbol}
-                genesisID={token1.genesis || 'bsv'}
+                genesisID={token1.genesis || 'mvc'}
               />
               <div className={styles.token_name}>
                 <div className={styles.symbol}>{token1.symbol}</div>
@@ -233,7 +233,7 @@ export default class CreatePair extends Component {
             <div className={styles.coin}>
               <TokenLogo
                 name={token1.symbol}
-                genesisID={token1.genesis || 'bsv'}
+                genesisID={token1.genesis || 'mvc'}
                 size={25}
               />
               <div className={styles.name}>{token1.symbol}</div>
@@ -335,7 +335,7 @@ export default class CreatePair extends Component {
       payload: {
         datas: [
           {
-            type: 'bsv',
+            type: 'mvc',
             address: bsvToAddress,
             amount: txFee,
             changeAddress,

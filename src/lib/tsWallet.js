@@ -68,7 +68,7 @@ export default {
     let data = [];
     datas.forEach((item) => {
       let { type, address, amount } = item;
-      if (type === 'bsv') {
+      if (type === 'mvc') {
         data.push({
           receivers: [
             {

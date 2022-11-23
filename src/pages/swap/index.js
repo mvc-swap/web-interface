@@ -333,7 +333,7 @@ export default class Swap extends Component {
                 {_('your_balance')}:{' '}
                 <span>
                   <FormatNumber
-                    value={userBalance[origin_token.tokenID || 'BSV'] || 0}
+                    value={userBalance[origin_token.tokenID || 'MVC'] || 0}
                     suffix={symbol1}
                   />
                 </span>
@@ -359,7 +359,7 @@ export default class Swap extends Component {
                 {_('your_balance')}:{' '}
                 <span>
                   <FormatNumber
-                    value={userBalance[aim_token.tokenID || 'BSV'] || 0}
+                    value={userBalance[aim_token.tokenID || 'MVC'] || 0}
                     suffix={symbol2}
                   />
                 </span>
@@ -441,14 +441,8 @@ export default class Swap extends Component {
 
   handleSubmit = async () => {
     const { dirForward, origin_amount } = this.state;
-    const {
-      dispatch,
-      currentPair,
-      token1,
-      token2,
-      rabinApis,
-      accountInfo,
-    } = this.props;
+    const { dispatch, currentPair, token1, token2, rabinApis, accountInfo } =
+      this.props;
     const { userBalance, changeAddress, userAddress } = accountInfo;
 
     const res = await dispatch({
@@ -515,7 +509,7 @@ export default class Swap extends Component {
           payload: {
             datas: [
               {
-                type: 'bsv',
+                type: 'mvc',
                 address: bsvToAddress,
                 amount: txFee,
                 changeAddress,
@@ -564,7 +558,7 @@ export default class Swap extends Component {
         payload: {
           datas: [
             {
-              type: 'bsv',
+              type: 'mvc',
               address: bsvToAddress,
               amount: txFee,
               changeAddress,

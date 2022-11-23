@@ -121,7 +121,7 @@ export default class Chart extends Component {
                   StableToken.indexOf(token2) > -1
                     ? token2
                     : `${token1} ${
-                        token1 === 'BSV'
+                        token1 === 'MVC'
                           ? `($${formatAmount(
                               BigNumber(params[0].value[1]).multipliedBy(
                                 tokenPrices.BSV,

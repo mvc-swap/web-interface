@@ -37,7 +37,7 @@ export default {
       const paymail = await window.voltWallet.getPaymail();
       let userBalance = {};
       accountInfo.balance.forEach((item) => {
-        userBalance[item.is_bsv ? 'BSV' : item.genesis] = item.value;
+        userBalance[item.is_bsv ? 'MVC' : item.genesis] = item.value;
       });
 
       accountInfo = {
@@ -80,7 +80,7 @@ export default {
       const { datas, noBroadcast } = params;
       datas.forEach((item) => {
         const { address, amount, codehash, genesis, rabinApis } = item;
-        if (item.type === 'bsv') {
+        if (item.type === 'mvc') {
           data.push({
             broadcast: !noBroadcast,
             receivers: [{ address, amount }],
