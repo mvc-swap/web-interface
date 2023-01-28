@@ -4,10 +4,7 @@ const { TS_ENV } = process.env;
 
 export default {
   publicPath: './',
-  outputPath:
-    TS_ENV === 'beta'
-      ? '../beta.tswap.io/dist'
-      : '../sensibleswap.github.io/dist',
+  outputPath: TS_ENV === 'beta' ? 'beta-build' : 'build',
   history: {
     type: 'hash',
   },
