@@ -50,5 +50,10 @@
     "vconsole": "^3.9.1",
     "yorkie": "^2.0.0"
   },
-  "homepage": "https://github.com/sensibleswap/sensibleswap.github.io"
+  "engines": {
+    "npm": "please-use-yarn",
+    "node": ">=14",
+    "yarn": ">=1.22"
+  },
+  "homepage": "https://github.com/mvc-swap/mvc-swap.github.io"
 }

@@ -24,7 +24,7 @@ export default class GenesisTokenInput extends Component {
     const { value } = e.target;
     const { dispatch, change } = this.props;
     let token = undefined;
-    const isBsv = supportBsv && value.toUpperCase() === 'MVC';
+    const isBsv = supportBsv && value.toUpperCase() === 'SPACE';
 
     if (isBsv) {
       token = BSV;
@@ -36,7 +36,7 @@ export default class GenesisTokenInput extends Component {
         },
       });
 
-      if (e.target.value.toUpperCase() === 'MVC') return;
+      if (e.target.value.toUpperCase() === 'SPACE') return;
       if (res && !res.code) {
         token = res;
       }

@@ -74,7 +74,7 @@ export default class Popup extends Component {
           <div className={styles.hd}>
             <div className={styles.hd_title}>{_('your_balance')}</div>
             <div className={styles.balance}>
-              <FormatNumber value={userBalance.BSV} /> MVC
+              <FormatNumber value={userBalance.BSV} /> SPACE
             </div>
           </div>
           <div className={styles.line} onClick={() => this.toggleQrCode(true)}>
