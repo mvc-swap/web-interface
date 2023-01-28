@@ -5,7 +5,7 @@ name: Mvcswap CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
     
 permissions:
   contents: write
