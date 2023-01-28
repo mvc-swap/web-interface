@@ -42,5 +42,5 @@ jobs:
       with:
           folder: build # The folder the action should deploy.
           token: ${{ secrets.MVCSWAP_DEPLOY_KEY }}
-          branch: gh-pages # git branch deployed
+          branch: gh-page # git branch deployed
           repository-name: mvc-swap/mvc-swap.github.io
