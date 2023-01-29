@@ -53,9 +53,7 @@ export default class Lang extends Component {
       },
     });
     Cookie.remove('lang');
-    Cookie.set('lang', key, {
-      domain: cookieDomain,
-    });
+    Cookie.set('lang', key);
     // window.localStorage.setItem(LOCAL_NAME.LANG, key);
     window.location.reload();
   }
