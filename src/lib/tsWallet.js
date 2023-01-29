@@ -3,7 +3,7 @@ import { formatSat, strAbbreviation } from 'common/utils';
 const { Mvc } = webWallet;
 
 const bsv = new Mvc({
-  pageUrl: 'https://mvc-wallet.tswap.io/',
+  pageUrl: 'https://wallet.mvcswap.com/',
 });
 
 const getBsvBalance = async () => {

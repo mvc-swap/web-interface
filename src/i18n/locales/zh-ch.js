@@ -93,7 +93,7 @@ const texts = {
   market_cap: '市值',
 
   select_wallet_title: '选择钱包',
-  permission_request: 'TokenSwap 授权请求',
+  permission_request: 'MvcSwap 授权请求',
   permis_tips_1: '用您的Volt账号登录',
   permis_tips_2: '使用您的Volt数据(头像, Paymail)',
   permis_tips_3: '获取您的账户余额',
@@ -142,12 +142,12 @@ const texts = {
   download_app_2: '或以下渠道下载',
 
   launch_app: '交易',
-  tokenswap: 'TokenSwap',
-  tokenswap_desc: '基于比特币协议的链上去中心化交易所',
+  tokenswap: 'MvcSwap',
+  tokenswap_desc: '基于UTXO协议的链上去中心化交易所',
   documentation: '文档',
   comparisons: '比较',
-  comp_ts: 'TokenSwap和其他类型交易所的异同对比',
-  comp_ts_h5: '比较TokenSwap',
+  comp_ts: 'MvcSwap和其他类型交易所的异同对比',
+  comp_ts_h5: '比较MvcSwap',
   feature: '关键功能',
   cex: '中心化交易所',
   other_dex: '其他 DEX',
@@ -226,7 +226,7 @@ const texts = {
   notice0712:
     'tswap已上线新的usdt/bsv交易对，请旧的usdt/bsv的lp用户从挖矿中提币，并在流动池中移除流动性，然后在新的BSV/USDT交易对中提供流动性，将新交易对的LP tokrn锁定在farm合约中以获取流动性挖矿奖励',
   notice2709:
-    '⚠️ TokenSwap 受到 Volt Asset Bridge 关闭的影响。我们敦促用户从 USDT 和 NOVO 对中移除他们的流动性，并通过 Volt Asset Bridge 赎回它们',
+    '⚠️ MvcSwap 受到 Volt Asset Bridge 关闭的影响。我们敦促用户从 USDT 和 NOVO 对中移除他们的流动性，并通过 Volt Asset Bridge 赎回它们',
 
   cant_remove: '您没有可移除的流动性资产',
   insufficient_balance: '您的流动性资产不足',
@@ -274,7 +274,7 @@ const texts = {
     '支付10,000TSC作为创建swap合约的技术服务费，一旦合约创建成功，不予退还',
   newpair_desc3: '上架token的 Genesis ID',
   newpair_desc4: '要添加到流动池的资产',
-  newpair_note1: '注意: TokenSwap 有权在任何时候下架任何交易对',
+  newpair_note1: '注意: MvcSwap 有权在任何时候下架任何交易对',
   newpair_note2: '了解可能导致交易对或资产下架的情况',
   add_details: '添加详情',
   pay_fee: '支付费用',
@@ -293,7 +293,7 @@ const texts = {
   unverified_zone: '试验区',
 
   risks_dis: '风险提示和声明',
-  risks_desc: '请在使用TokenSwap之前仔细阅读并知晓风险',
+  risks_desc: '请在使用MvcSwap之前仔细阅读并知晓风险',
   acknowlege: '已知晓',
   not_acknowlege: '不知道风险',
   download_metalet:

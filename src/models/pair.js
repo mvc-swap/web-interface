@@ -388,7 +388,7 @@ export default {
         ...state,
         ...action.payload,
         currentPair,
-        token1: { ...token1, symbol: symbol1, isBsv: symbol1 === 'mvc' },
+        token1: { ...token1, symbol: symbol1, isBsv: symbol1 === 'space' },
         token2: { ...token2, symbol: symbol2 },
         lptoken,
         rabinApis,

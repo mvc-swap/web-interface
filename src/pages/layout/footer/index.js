@@ -11,8 +11,7 @@ const linksData = [
     icon: 'icondiscord',
   },
   {
-    url:
-      'https://github.com/sensibleswap/interface-doc/blob/master/swap_interface_en.md',
+    url: 'https://github.com/sensibleswap/interface-doc/blob/master/swap_interface_en.md',
     icon: 'icongithub',
   },
 ];
@@ -25,26 +24,7 @@ export default function Footer() {
           <div className={styles.logo}>
             <CustomIcon type="iconTS_Logo" />
           </div>
-          <div className={styles.text}>TokenSwap © 2021</div>
-          <a
-            href="https://maiimg.com/doc/?e=dnI1HYoCLxNcM6"
-            target="_blank"
-            className={styles.link}
-          >
-            What is TokenSwap
-          </a>
-        </div>
-        <div className={styles.icons}>
-          {linksData.map((item) => (
-            <a
-              key={item.icon}
-              href={item.url}
-              target="_blank"
-              className={styles.icon}
-            >
-              <CustomIcon type={item.icon} />
-            </a>
-          ))}
+          <div className={styles.text}>MvcSwap © 2023</div>
         </div>
       </div>
     </section>

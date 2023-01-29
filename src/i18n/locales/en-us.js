@@ -93,7 +93,7 @@ const texts = {
   market_cap: 'Market cap',
 
   select_wallet_title: 'Select a wallet to connect',
-  permission_request: 'TokenSwap permission request',
+  permission_request: 'MvcSwap permission request',
   permis_tips_1: 'Login with Volt',
   permis_tips_2: 'Use your Volt profile (Image, Paymail)',
   permis_tips_3: 'Get your account balance',
@@ -142,12 +142,12 @@ const texts = {
   download_app_2: 'or the following app stores',
 
   launch_app: 'Launch App',
-  tokenswap: 'TokenSwap',
-  tokenswap_desc: 'Your onchain DEX built on the original Bitcoin protocol',
+  tokenswap: 'MvcSwap',
+  tokenswap_desc: 'Your onchain DEX built on the UTXO protocol',
   documentation: 'Documentation',
   comparisons: 'Comparisons',
-  comp_ts: 'Comparing TokenSwap',
-  comp_ts_h5: 'Comparing TokenSwap',
+  comp_ts: 'Comparing MvcSwap',
+  comp_ts_h5: 'Comparing MvcSwap',
   feature: 'Feature or capability',
   cex: 'CEX',
   other_dex: 'Other DEX',
@@ -226,11 +226,11 @@ const texts = {
   // notice720:
   //   'Upgrade is complete, visit https://v1.tswap.io to withdraw your old pair liquidity deposited before July 22. You have been airdrop new MC token. Old MC token is outdated and replaced with new one.',
   // notice1117:
-  //   'On 19th November UTC 08:00, TokenSwap will perform an upgrade to TSC/USDT liquidity mining contract, we urge users to withdraw your TSC/USDT LP from current mining contract and deposit to new TSC/USDT mining contract to earn mining yield. Other features are not affected.',
+  //   'On 19th November UTC 08:00, MvcSwap will perform an upgrade to TSC/USDT liquidity mining contract, we urge users to withdraw your TSC/USDT LP from current mining contract and deposit to new TSC/USDT mining contract to earn mining yield. Other features are not affected.',
   notice0712:
     'Please withdraw liquidity from BSV/USDT(old) and add liquidity to new BSV/USDT pair, deposit new BSV/USDT pair LP token to farm contract in order to earn liquidity mining reward',
   notice2709:
-    '⚠️ TokenSwap is affected by the shutdown of the Volt Asset Bridge. We urge users to remove their liquidity from USDT & NOVO pairs and redeem them via the Volt Asset Bridge',
+    '⚠️ MvcSwap is affected by the shutdown of the Volt Asset Bridge. We urge users to remove their liquidity from USDT & NOVO pairs and redeem them via the Volt Asset Bridge',
 
   cant_remove: 'You have no liquidity to remove',
   insufficient_balance: 'Exceeded available balance',
@@ -274,13 +274,13 @@ const texts = {
 
   create_new_pair: 'Create pair',
   create_newpair: 'Create new token pair',
-  newpair_title: 'TokenSwap requirements to create a new token pair',
+  newpair_title: 'MvcSwap requirements to create a new token pair',
   newpair_desc1: 'Agree you’re not a scammer or rug puller',
   newpair_desc2: '10,000 TSC to pay for the creating/list one pair',
   newpair_desc3: 'Token Genesis ID of the new token',
   newpair_desc4: 'Tokens to add to the genesis liquidity',
   newpair_note1:
-    'Note: TokenSwap reserves the right to delist any pairs at any time',
+    'Note: MvcSwap reserves the right to delist any pairs at any time',
   newpair_note2: 'Learn more about possible reasons for delistings here',
   add_details: 'Add details',
   pay_fee: 'Pay fee',
@@ -293,14 +293,14 @@ const texts = {
   pay_listing_fee: 'Pay listing fee',
   confirm_and_pay: 'Confirm details and pay fee',
   confirm_pair_desc:
-    'A single payment of 10,000 TSC is required to create and list this token pair on TokenSwap',
+    'A single payment of 10,000 TSC is required to create and list this token pair on MvcSwap',
   edit: 'Edit',
   create_success: 'Pair successfully created',
   curated_tokens: 'Curated Tokens',
   unverified_zone: 'Unverified Zone',
   risks_dis: 'Risks and Disclaimers',
   risks_desc:
-    'Please read, review and acknowledge the Risks and Disclaimers documentation before proceeding to use TokenSwap.',
+    'Please read, review and acknowledge the Risks and Disclaimers documentation before proceeding to use MvcSwap.',
   acknowlege: 'Acknowlege',
   not_acknowlege: 'Do not acknowledge',
   download_metalet:

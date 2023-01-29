@@ -196,17 +196,6 @@ export default class Home extends Component {
               >
                 {_('launch_app')}
               </Button>
-              <Button
-                className={styles.btn}
-                shape="round"
-                onClick={() => {
-                  window.location.href = isZh
-                    ? 'https://tokenswap.gitbook.io/tokenswap/v/zhong-wen/'
-                    : 'https://tokenswap.gitbook.io/tokenswap/';
-                }}
-              >
-                {_('documentation')}
-              </Button>
             </div>
           </section>
           <section className={styles.content}>

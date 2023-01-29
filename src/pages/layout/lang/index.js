@@ -25,9 +25,9 @@ for (let item of langs) {
   }
 }
 
-// 默认中文
+// default en
 if (!langMatch) {
-  currentLang = 'zh-cn';
+  currentLang = 'en-us';
 }
 
 // 生成语言选择的下拉菜单
