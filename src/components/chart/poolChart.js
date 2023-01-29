@@ -16,17 +16,6 @@ export default function PoolChart(props) {
         symbol2={symbol2}
         abandoned={abandoned}
       />
-
-      <div className={styles.data_info}>
-        <div>
-          <span
-            className={styles.dot}
-            style={{ backgroundColor: COLOR1 }}
-          ></span>{' '}
-          TVL
-        </div>
-      </div>
-      <Chart type={type} />
     </div>
   );
 }

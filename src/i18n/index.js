@@ -14,6 +14,7 @@ if (_lang !== 'en-us' && _lang !== 'zh-cn') {
 
 // let locale = zh_cn;
 export const lang = _lang;
+//export const lang = 'en-us';
 
 const langData = {
   'en-us': en_us,

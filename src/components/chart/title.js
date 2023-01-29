@@ -34,10 +34,6 @@ export default function chartTitle(props) {
           <CustomIcon type="iconDropdown" />
         </span>
       </Dropdown>
-
-      <div className={styles.time_picker_top}>
-        <TimeRangeTabs type={type} />
-      </div>
     </div>
   );
 }

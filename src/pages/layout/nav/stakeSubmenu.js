@@ -61,7 +61,7 @@ function StakeSubmenu() {
     </div>
   );
   return (
-    <Dropdown overlay={menu}>
+    <Dropdown menu={menu}>
       <span>
         {submenu.find((v) => v.key === currentMenu).label}
         <DownOutlined />

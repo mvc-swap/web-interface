@@ -16,18 +16,6 @@ export default function SwapChart(props) {
         symbol2={symbol2}
         abandoned={abandoned}
       />
-
-      <div className={styles.data_info}>
-        <div>
-          <span className={styles.dot} style={{ backgroundColor: COLOR1 }} />{' '}
-          {_('price')}
-        </div>
-        <div>
-          <span className={styles.dot} style={{ backgroundColor: COLOR2 }} />{' '}
-          {_('volume')}
-        </div>
-      </div>
-      <Chart type={type} />
     </div>
   );
 }
