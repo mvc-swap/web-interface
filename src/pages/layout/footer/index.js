@@ -24,7 +24,7 @@ export default function Footer() {
           <div className={styles.logo}>
             <CustomIcon type="iconTS_Logo" />
           </div>
-          <div className={styles.text}>MvcSwap © 2023</div>
+          <div className={styles.text}>MVCSwap © 2023</div>
         </div>
       </div>
     </section>
