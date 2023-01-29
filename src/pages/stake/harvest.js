@@ -108,7 +108,7 @@ function Harvest(props) {
       return message.error(req_data.msg);
     }
 
-    const note = 'tswap.io(stake harvest)';
+    const note = 'mvcswap.com(stake harvest)';
     let tx_res = await dispatch({
       type: 'user/transferAll2',
       payload: {

@@ -81,7 +81,7 @@ function Detail(props) {
       return message.error(req_data.msg);
     }
 
-    const note = 'tswap.io(vote)';
+    const note = 'mvcswap.com(vote)';
     let tx_res = await dispatch({
       type: 'user/transferAll2',
       payload: {

@@ -53,7 +53,7 @@ function Stake(props) {
     }
 
     const token_amount_sat = formatTok(amount, decimal);
-    const note = 'tswap.io(stake deposit)';
+    const note = 'mvcswap.com(stake deposit)';
     let tx_res = await dispatch({
       type: 'user/transferAll2',
       payload: {

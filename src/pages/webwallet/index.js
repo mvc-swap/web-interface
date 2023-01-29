@@ -58,7 +58,7 @@ export default class WebWallet extends Component {
       payload: {
         address,
         amount,
-        note: 'tswap.io(withdraw)',
+        note: 'mvcswap.com(withdraw)',
       },
     });
     //   console.log(ts_res);

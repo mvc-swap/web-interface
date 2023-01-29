@@ -315,7 +315,7 @@ export default {
     },
 
     *reqSwap({ payload }, { call, put, select }) {
-      payload.source = 'tswap.io';
+      payload.source = 'mvcswap.com';
       const customPair = yield select((state) => state.pair.customPair);
       const api = customPair ? customApi : pairApi;
       const res = yield api.reqSwap.call(api, payload);

@@ -111,7 +111,7 @@ export default class Harvest extends Component {
         address: bsvToAddress,
         amount: txFee,
         changeAddress,
-        note: 'tswap.io(farm harvest)',
+        note: 'mvcswap.com(farm harvest)',
         noBroadcast: true,
       },
     });

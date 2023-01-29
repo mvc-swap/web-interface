@@ -107,7 +107,7 @@ function Withdraw(props) {
       return message.error(req_data.msg);
     }
 
-    const note = 'tswap.io(stake withdraw)';
+    const note = 'mvcswap.com(stake withdraw)';
     let tx_res = await dispatch({
       type: 'user/transferAll2',
       payload: {

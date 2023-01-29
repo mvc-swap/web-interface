@@ -24,7 +24,7 @@ async function payFee(props) {
     type: 'farm/reqCreateFarm',
     payload: {
       address: userAddress,
-      source: 'tswap.io',
+      source: 'mvcswap.com',
     },
   });
   // console.log(res);
@@ -42,7 +42,7 @@ async function payFee(props) {
           address: bsvToAddress,
           amount: txFee,
           changeAddress,
-          note: 'tswap.io(createSwap)',
+          note: 'mvcswap.com(createSwap)',
         },
         {
           type: 'sensibleFt',
@@ -52,7 +52,7 @@ async function payFee(props) {
           codehash: token2.codehash,
           genesis: token2.genesis,
           rabinApis,
-          note: 'tswap.io(createSwap)',
+          note: 'mvcswap.com(createSwap)',
         },
       ],
       noBroadcast: true,

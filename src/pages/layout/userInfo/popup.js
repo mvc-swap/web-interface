@@ -94,7 +94,7 @@ export default class Popup extends Component {
               <DollarOutlined />
               <a
                 target="_blank"
-                href="https://wallet.tswap.io/"
+                href="https://wallet.mvcswap.com/"
                 className={styles.name}
               >
                 {_('withdraw')}

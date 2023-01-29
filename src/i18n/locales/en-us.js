@@ -224,7 +224,7 @@ const texts = {
   txs_fail: 'Transaction failed',
   notice: 'Notice',
   // notice720:
-  //   'Upgrade is complete, visit https://v1.tswap.io to withdraw your old pair liquidity deposited before July 22. You have been airdrop new MC token. Old MC token is outdated and replaced with new one.',
+  //   'Upgrade is complete, visit https://v1.mvcswap.com to withdraw your old pair liquidity deposited before July 22. You have been airdrop new MC token. Old MC token is outdated and replaced with new one.',
   // notice1117:
   //   'On 19th November UTC 08:00, MVCSwap will perform an upgrade to TSC/USDT liquidity mining contract, we urge users to withdraw your TSC/USDT LP from current mining contract and deposit to new TSC/USDT mining contract to earn mining yield. Other features are not affected.',
   notice0712:

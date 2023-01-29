@@ -98,7 +98,7 @@ function Unstake(props) {
     }
 
     const token_amount_sat = formatTok(amount, decimal);
-    const note = 'tswap.io(stake unlock)';
+    const note = 'mvcswap.com(stake unlock)';
     let tx_res = await dispatch({
       type: 'user/transferAll2',
       payload: {

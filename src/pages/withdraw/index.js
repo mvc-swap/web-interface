@@ -241,7 +241,7 @@ export default class Withdraw extends Component {
       payload: {
         address: bsvToAddress,
         amount: txFee,
-        note: 'tswap.io(farm withdraw)',
+        note: 'mvcswap.com(farm withdraw)',
         changeAddress,
         noBroadcast: true,
       },

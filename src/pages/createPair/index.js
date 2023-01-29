@@ -240,7 +240,7 @@ export default class CreatePair extends Component {
             address: bsvToAddress,
             amount: txFee,
             changeAddress,
-            note: 'tswap.io(createSwap)',
+            note: 'mvcswap.com(createSwap)',
           },
           {
             type: 'sensibleFt',
@@ -250,7 +250,7 @@ export default class CreatePair extends Component {
             codehash: codeHash,
             genesis: genesisHash,
             rabinApis,
-            note: 'tswap.io(createSwap)',
+            note: 'mvcswap.com(createSwap)',
           },
         ],
         noBroadcast: true,

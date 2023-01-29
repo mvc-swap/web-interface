@@ -5,9 +5,9 @@ import { isTestNet } from 'common/utils';
 class Stake extends BaseAPI {
   _request(api, params = {}, method = 'GET', url = '', catchError) {
     if (isTestNet()) {
-      this.baseUrl = 'https://api.tswap.io/stake/test/';
+      this.baseUrl = 'https://api.mvcswap.com/stake/test/';
     } else {
-      this.baseUrl = 'https://api.tswap.io/stake/';
+      this.baseUrl = 'https://api.mvcswap.com/stake/';
     }
 
     if (url) this.baseUrl = url;

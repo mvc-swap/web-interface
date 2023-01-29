@@ -171,7 +171,7 @@ export default class Deposit extends Component {
             address: bsvToAddress,
             amount: txFee,
             changeAddress,
-            note: 'tswap.io(farm deposit)',
+            note: 'mvcswap.com(farm deposit)',
           },
           {
             type: 'sensibleFt',
@@ -181,7 +181,7 @@ export default class Deposit extends Component {
             codehash: lptoken.codeHash,
             genesis: lptoken.tokenID,
             rabinApis: lptoken.rabinApis,
-            note: 'tswap.io(farm deposit)',
+            note: 'mvcswap.com(farm deposit)',
           },
         ],
         noBroadcast: true,

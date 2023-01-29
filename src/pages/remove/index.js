@@ -271,7 +271,7 @@ export default class RemovePage extends Component {
             address: bsvToAddress,
             amount: txFee,
             changeAddress,
-            note: 'tswap.io(remove liquidity)',
+            note: 'mvcswap.com(remove liquidity)',
           },
           {
             type: 'sensibleFt',
@@ -281,7 +281,7 @@ export default class RemovePage extends Component {
             codehash: lptoken.codeHash,
             genesis: lptoken.tokenID,
             rabinApis,
-            note: 'tswap.io(remove liquidity)',
+            note: 'mvcswap.com(remove liquidity)',
           },
         ],
         noBroadcast: true,

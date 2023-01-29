@@ -5,9 +5,9 @@ import { isTestNet } from 'common/utils';
 class Farm extends BaseAPI {
   _request(api, params = {}, method = 'GET', url = '', catchError) {
     if (isTestNet()) {
-      this.baseUrl = 'https://api.tswap.io/farm/test/';
+      this.baseUrl = 'https://api.mvcswap.com/farm/test/';
     } else {
-      this.baseUrl = 'https://api.tswap.io/farm/';
+      this.baseUrl = 'https://api.mvcswap.com/farm/';
       // console.log(TS_ENV)
       if (TS_ENV === 'beta') {
         this.baseUrl = this.baseUrl + 'beta/';
