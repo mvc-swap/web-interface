@@ -143,7 +143,7 @@ const texts = {
 
   launch_app: '交易',
   tokenswap: 'MVCSwap',
-  tokenswap_desc: '基于UTXO协议的链上去中心化交易所',
+  tokenswap_desc: '基于MVC的链上去中心化交易所',
   documentation: '文档',
   comparisons: '比较',
   comp_ts: 'MVCSwap和其他类型交易所的异同对比',

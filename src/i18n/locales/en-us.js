@@ -143,7 +143,7 @@ const texts = {
 
   launch_app: 'Launch App',
   tokenswap: 'MVCSwap',
-  tokenswap_desc: 'Your onchain DEX built on the UTXO protocol',
+  tokenswap_desc: 'Your onchain DEX built on MVC',
   documentation: 'Documentation',
   comparisons: 'Comparisons',
   comp_ts: 'Comparing MVCSwap',

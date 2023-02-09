@@ -6,6 +6,7 @@ import styles from './index.less';
 import _ from 'i18n';
 import { Link, history } from 'umi';
 import StakeSubmenu from './stakeSubmenu';
+import spaceIcon from '../../../../public/assets/space.png';
 
 const menu = [
   {
@@ -61,7 +62,7 @@ export default class Head extends Component {
     return (
       <div className={styles.nav_container}>
         <Link to="/" className={styles.logo}>
-          <CustomIcon type="iconTS_logo" />
+          <CustomIcon url={spaceIcon} />
         </Link>
         <div className={styles.menu}>
           {menu.map((item) => {

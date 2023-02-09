@@ -9,6 +9,7 @@ import { filterTokens } from 'common/pairUtils';
 import spaceLogo from '../../public/assets/space.png';
 
 const log = debug('pair');
+//TODO:
 const iconUrl =
   'https://app.volt.id/api.json?method=sensibleft.getSensibleFtList';
 
