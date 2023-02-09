@@ -6,6 +6,7 @@ import { TSWAP_CURRENT_PAIR } from 'common/const';
 import debug from 'debug';
 import { getCurrentPair } from 'common/utils';
 import { filterTokens } from 'common/pairUtils';
+import spaceLogo from '../../public/assets/space.png';
 
 const log = debug('pair');
 const iconUrl =
@@ -43,10 +44,10 @@ export default {
           if (data.success && data.data.list) {
             icons = {
               bsv: {
-                type: 'iconlogo-bitcoin',
+                url: spaceLogo,
               },
               BSV: {
-                type: 'iconlogo-bitcoin',
+                url: spaceLogo,
               },
             };
             data.data.list.forEach((item) => {
