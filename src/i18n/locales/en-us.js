@@ -234,7 +234,7 @@ const texts = {
 
   cant_remove: 'You have no liquidity to remove',
   insufficient_balance: 'Exceeded available balance',
-  test_only: 'Recommended for test only',
+  test_only: 'Keep the private key safe',
   swap_success: 'Swap success',
   lp_balance: 'Available to withdraw',
   added: 'Added',

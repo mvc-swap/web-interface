@@ -230,7 +230,7 @@ const texts = {
 
   cant_remove: '您没有可移除的流动性资产',
   insufficient_balance: '您的流动性资产不足',
-  test_only: '建议仅供测试',
+  test_only: '请保管好私钥',
 
   farm: '流动性挖矿',
   lock_earn: '锁仓赚币',

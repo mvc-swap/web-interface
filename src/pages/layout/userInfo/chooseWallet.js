@@ -28,10 +28,13 @@ export default function ChooseWallet(props) {
           <>
             <li onClick={() => connectWebWallet(1)} style={{ fontSize: 15 }}>
               <div className={styles.ts_icon}>
-                <CustomIcon type="iconTS_Logo" style={{ fontSize: 20 }} />
+                <img
+                  src={'https://icons.mvcswap.com/resources/ms-black.png'}
+                  style={{ height: 20 }}
+                />
               </div>
               <div className={styles.label}>
-                TS {_('wallet')}
+                Web {_('wallet')}
                 <div className={styles.sub}>{_('test_only')}</div>
               </div>
             </li>
