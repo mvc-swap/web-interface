@@ -21,9 +21,6 @@ export default function Footer() {
     <section className={styles.footer}>
       <div className={styles.footer_inner}>
         <div className={styles.text_wrap}>
-          <div className={styles.logo}>
-            <CustomIcon type="iconTS_Logo" />
-          </div>
           <div className={styles.text}>MVCSwap © 2023</div>
         </div>
       </div>

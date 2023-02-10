@@ -179,9 +179,7 @@ export default class Home extends Component {
             </div>
           </nav>
           <section className={styles.main}>
-            <div className={styles.logo}>
-              <CustomIcon type="iconTS_Logo" />
-            </div>
+            <div className={styles.logo}></div>
             <div className={styles.main_title}>{_('tokenswap')}</div>
             <div className={styles.main_desc}>{_('tokenswap_desc')}</div>
             <div className={styles.btns}>

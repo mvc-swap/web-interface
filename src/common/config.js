@@ -44,7 +44,7 @@ export const icons = {
     url: spaceLogo,
   },
   test: {
-    type: 'iconTS',
+    type: spaceLogo,
   },
   tbsv: {
     url: spaceLogo,
