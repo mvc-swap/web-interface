@@ -6,12 +6,10 @@ import { TSWAP_CURRENT_PAIR } from 'common/const';
 import debug from 'debug';
 import { getCurrentPair } from 'common/utils';
 import { filterTokens } from 'common/pairUtils';
-import spaceLogo from '../../public/assets/space.png';
 
 const log = debug('pair');
 //TODO:
-const iconUrl =
-  'https://app.volt.id/api.json?method=sensibleft.getSensibleFtList';
+const iconBaseUrl = 'https://icons.mvcswap.com/resources';
 
 const { localStorage } = window;
 
@@ -35,6 +33,7 @@ export default {
 
   subscriptions: {
     async setup({ dispatch, history }) {
+      const iconUrl = `${iconBaseUrl}/icons.json`;
       fetch(iconUrl)
         .then((res) => {
           return res.json();
@@ -42,23 +41,18 @@ export default {
         .then((data) => {
           let icons;
           // console.log(data);
-          if (data.success && data.data.list) {
-            icons = {
-              bsv: {
-                url: spaceLogo,
-              },
-              BSV: {
-                url: spaceLogo,
-              },
-            };
-            data.data.list.forEach((item) => {
+          if (data.success && data.data) {
+            icons = {};
+            data.data.forEach((item) => {
               icons[item.genesis.toString()] = {
-                url: item.logo,
+                url: `${iconBaseUrl}/${item.logo}`,
               };
               icons[item.symbol] = {
-                url: item.logo,
+                url: `${iconBaseUrl}/${item.logo}`,
               };
             });
+            icons.bsv = icons.SPACE;
+            icons.BSV = icons.SPACE;
           }
           dispatch({
             type: 'save',

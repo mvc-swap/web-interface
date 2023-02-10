@@ -62,7 +62,10 @@ export default class Head extends Component {
     return (
       <div className={styles.nav_container}>
         <Link to="/" className={styles.logo}>
-          <CustomIcon url={spaceIcon} />
+          <img
+            src={'https://icons.mvcswap.com/resources/ms-black.png'}
+            style={{ height: 50 }}
+          />
         </Link>
         <div className={styles.menu}>
           {menu.map((item) => {
