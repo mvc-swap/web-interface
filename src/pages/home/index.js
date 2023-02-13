@@ -193,6 +193,15 @@ export default class Home extends Component {
               >
                 {_('launch_app')}
               </Button>
+              <Button
+                className={styles.btn}
+                shape="round"
+                onClick={() => {
+                  window.location.href = 'https://mvcswap.gitbook.io/mvcswap/';
+                }}
+              >
+                {_('documentation')}
+              </Button>
             </div>
           </section>
           <section className={styles.content}>
