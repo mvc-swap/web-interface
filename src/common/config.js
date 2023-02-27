@@ -40,13 +40,13 @@ export const FEE_FACTOR = 10000;
 export const MINAMOUNT = 1000;
 
 export const icons = {
-  bsv: {
+  mvc: {
     url: spaceLogo,
   },
   test: {
     type: spaceLogo,
   },
-  tbsv: {
+  tmvc: {
     url: spaceLogo,
   },
 };

@@ -87,11 +87,15 @@ export default class Deposit extends Component {
     if (!pairsData[tokenID]) return null;
     const balance = accountInfo.userBalance[tokenID] || 0;
     const currentPairData = pairsData[tokenID] || {};
-    const { swapToken1Amount, swapToken2Amount, token1, token2 } =
-      currentPairData;
-    const bsv_amount = formatSat(swapToken1Amount, token1.decimal);
+    const {
+      swapToken1Amount,
+      swapToken2Amount,
+      token1,
+      token2,
+    } = currentPairData;
+    const mvc_amount = formatSat(swapToken1Amount, token1.decimal);
     const token_amount = formatSat(swapToken2Amount, token2.decimal);
-    const price = formatAmount(token_amount / bsv_amount, token2.decimal);
+    const price = formatAmount(token_amount / mvc_amount, token2.decimal);
     return (
       <div className={styles.content}>
         <Rate
@@ -153,9 +157,9 @@ export default class Deposit extends Component {
       return message.error(res.msg);
     }
 
-    const { tokenToAddress, requestIndex, bsvToAddress, txFee } = res.data;
+    const { tokenToAddress, requestIndex, mvcToAddress, txFee } = res.data;
 
-    const isLackBalance = LeastFee(txFee, userBalance.BSV);
+    const isLackBalance = LeastFee(txFee, userBalance.MVC);
     if (isLackBalance.code) {
       return message.error(isLackBalance.msg);
     }
@@ -167,8 +171,8 @@ export default class Deposit extends Component {
       payload: {
         datas: [
           {
-            type: 'bsv',
-            address: bsvToAddress,
+            type: 'mvc',
+            address: mvcToAddress,
             amount: txFee,
             changeAddress,
             note: 'mvcswap.com(farm deposit)',
@@ -201,8 +205,8 @@ export default class Deposit extends Component {
     let data = {
       symbol: currentFarmPair,
       requestIndex: requestIndex,
-      bsvRawTx: tx_res[0].txHex,
-      bsvOutputIndex: 0,
+      mvcRawTx: tx_res[0].txHex,
+      mvcOutputIndex: 0,
       tokenRawTx: tx_res[1].txHex,
       tokenOutputIndex: 0,
       amountCheckRawTx: tx_res[1].routeCheckTxHex,
@@ -228,8 +232,13 @@ export default class Deposit extends Component {
   };
 
   renderButton() {
-    const { isLogin, accountInfo, lptoken, allFarmPairs, currentFarmPair } =
-      this.props;
+    const {
+      isLogin,
+      accountInfo,
+      lptoken,
+      allFarmPairs,
+      currentFarmPair,
+    } = this.props;
 
     const { addLP } = this.state;
     const LP = accountInfo.userBalance[lptoken.tokenID];

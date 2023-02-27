@@ -106,7 +106,7 @@ export const filterTokens = ({ allPairs, token1ID }) => {
 
     if (
       !token1ID || //token1空的未选择
-      token1ID.toUpperCase() === token1.symbol.toUpperCase() || // token1选择了bsv和token1为bsv的对应
+      token1ID.toUpperCase() === token1.symbol.toUpperCase() || // token1选择了mvc和token1为mvc的对应
       token1ID === token1.tokenID
     ) {
       if (!token2Arr.find((item) => item.tokenID === token2.tokenID)) {

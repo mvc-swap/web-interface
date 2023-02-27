@@ -1,18 +1,18 @@
-import webWallet from 'bsv-web-wallet';
+import webWallet from 'mvc-web-wallet';
 import { formatSat, strAbbreviation } from 'common/utils';
 const { Mvc } = webWallet;
 
-const bsv = new Mvc({
+const mvc = new Mvc({
   pageUrl: 'https://wallet.mvcswap.com/',
 });
 
-const getBsvBalance = async () => {
-  const res = await bsv.getBsvBalance();
+const getMvcBalance = async () => {
+  const res = await mvc.getMvcBalance();
   return formatSat(res.balance);
 };
 
 const getSensibleFtBalance = async () => {
-  const res = await bsv.getSensibleFtBalance();
+  const res = await mvc.getSensibleFtBalance();
   const userBalance = {};
   res.forEach((item) => {
     userBalance[item.genesis] = formatSat(item.balance, item.tokenDecimal);
@@ -22,13 +22,13 @@ const getSensibleFtBalance = async () => {
 
 export default {
   info: async () => {
-    let accountInfo = await bsv.getAccount();
-    const bsvBalance = await getBsvBalance();
-    const userAddress = await bsv.getAddress();
+    let accountInfo = await mvc.getAccount();
+    const mvcBalance = await getMvcBalance();
+    const userAddress = await mvc.getAddress();
     const tokenBalance = await getSensibleFtBalance();
 
     const userBalance = {
-      BSV: bsvBalance,
+      MVC: mvcBalance,
       ...tokenBalance,
     };
     accountInfo = {
@@ -43,16 +43,16 @@ export default {
   },
 
   connectAccount: () => {
-    return bsv.requestAccount();
+    return mvc.requestAccount();
   },
 
   exitAccount: () => {
-    return bsv.exitAccount();
+    return mvc.exitAccount();
   },
 
-  transferBsv: (params) => {
+  transferMvc: (params) => {
     const { address, amount, noBroadcast } = params;
-    return bsv.transferBsv({
+    return mvc.transferMvc({
       noBroadcast,
       receivers: [
         {
@@ -68,7 +68,8 @@ export default {
     let data = [];
     datas.forEach((item) => {
       let { type, address, amount } = item;
-      if (type === 'bsv') {
+      console.log('transferAll:', item);
+      if (type === 'mvc') {
         data.push({
           receivers: [
             {
@@ -94,10 +95,11 @@ export default {
         });
       }
     });
-    return bsv.transferAll(data);
+    const res = mvc.transferAll(data);
+    return res;
   },
 
   signTx: (params) => {
-    return bsv.signTx(params);
+    return mvc.signTx(params);
   },
 };

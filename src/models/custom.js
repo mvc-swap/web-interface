@@ -1,6 +1,6 @@
 import sensibleApi from '../api/sensiblequery';
 import customApi from '../api/custom';
-import { TSWAP_SOURCE } from 'common/const';
+import { MVCSWAP_SOURCE } from 'common/const';
 import debug from 'debug';
 const log = debug('createPair');
 
@@ -33,7 +33,7 @@ export default {
       const { address } = payload;
       const res = yield customApi.req.call(customApi, {
         address,
-        source: TSWAP_SOURCE,
+        source: MVCSWAP_SOURCE,
       });
 
       if (res.code) {

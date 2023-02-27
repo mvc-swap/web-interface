@@ -9,7 +9,7 @@ import { sleep } from 'common/utils';
 import Wallet from '@/lib/main';
 import Popup from './popup';
 import ChooseWallet from './chooseWallet';
-import { TSWAP_LAST_WALLET_TYPE } from 'common/const';
+import { MVCSWAP_LAST_WALLET_TYPE } from 'common/const';
 import styles from './index.less';
 import _ from 'i18n';
 
@@ -47,7 +47,7 @@ export default class UserInfo extends Component {
   accountChanged = async (type) => {
     const { dispatch, isLogin } = this.props;
 
-    const lastType = localStorage.getItem(TSWAP_LAST_WALLET_TYPE);
+    const lastType = localStorage.getItem(MVCSWAP_LAST_WALLET_TYPE);
     // console.log(lastType);
 
     if (!isLogin && type === parseInt(lastType)) {

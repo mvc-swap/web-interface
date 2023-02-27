@@ -21,7 +21,7 @@ const stepData = [_('enter_details'), _('deposit_rewards')];
   return {
     ...user,
     ...farm,
-    bsvPrice: pair.bsvPrice,
+    mvcPrice: pair.mvcPrice,
     submiting:
       effects['farm/reqCreateFarm'] ||
       effects['user/transferAll'] ||
@@ -167,7 +167,7 @@ export default class CreateFarm extends Component {
   };
 
   render() {
-    const { submiting, close, bsvPrice } = this.props;
+    const { submiting, close, mvcPrice } = this.props;
     const { step, values, token1, token2 } = this.state;
     return (
       <>
@@ -192,7 +192,7 @@ export default class CreateFarm extends Component {
               />
             )}
             {step === 2 && (
-              <Content2 {...this.state} bsvPrice={bsvPrice} close={close} />
+              <Content2 {...this.state} mvcPrice={mvcPrice} close={close} />
             )}
           </Spin>
         </div>

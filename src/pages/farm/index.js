@@ -32,7 +32,7 @@ let busy = false;
       effects['farm/reqSwap'] ||
       effects['farm/harvest'] ||
       effects['farm/harvest2'] ||
-      effects['user/transferBsv'] ||
+      effects['user/transferMvc'] ||
       effects['user/transferAll'] ||
       effects['farm/withdraw'] ||
       effects['farm/withdraw2'] ||

@@ -31,15 +31,15 @@ async function payFee(props) {
   if (res.code) {
     return message.error(res.msg);
   }
-  const { requestIndex, tokenToAddress, bsvToAddress, txFee } = res.data;
+  const { requestIndex, tokenToAddress, mvcToAddress, txFee } = res.data;
 
   let tx_res = await dispatch({
     type: 'user/transferAll',
     payload: {
       datas: [
         {
-          type: 'bsv',
-          address: bsvToAddress,
+          type: 'mvc',
+          address: mvcToAddress,
           amount: txFee,
           changeAddress,
           note: 'mvcswap.com(createSwap)',
@@ -75,8 +75,8 @@ async function payFee(props) {
   const { rewardAmountPerBlock, rewardDays } = values;
   const payload = {
     requestIndex,
-    bsvRawTx: tx_res[0].txHex,
-    bsvOutputIndex: 0,
+    mvcRawTx: tx_res[0].txHex,
+    mvcOutputIndex: 0,
     tokenRawTx: tx_res[1].txHex,
     tokenOutputIndex: 0,
     amountCheckRawTx: tx_res[1].routeCheckTxHex,
@@ -127,7 +127,7 @@ export default function Content1(props) {
         <div className={styles.line}>
           <div className={styles.label}>{_('reward')}</div>
           <div className={styles.value}>
-            {rewardAmountPerBlock} {symbol} per BSV block
+            {rewardAmountPerBlock} {symbol} per MVC block
           </div>
         </div>
         <div className={styles.line}>

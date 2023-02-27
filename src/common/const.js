@@ -4,19 +4,19 @@ export const USDT_PAIR = 'space-usdt';
 export const USDT_TSC_PAIR = 'usdt-tsc';
 export const ACD_PAIR = 'space-acd';
 
-export const TSWAP_NETWORK = 'TSwapNetwork';
-export const TSWAP_CURRENT_PAIR = 'TSwapCurrentPair';
-export const TSWAP_CURRENT_FARM_PAIR = 'TSwapCurrentFarmPair';
-export const TSWAP_POOL_SHOW_OP = 'TSwapPoolShowOP';
-export const TSWAP_LAST_WALLET_TYPE = 'TSwapLastWalletType';
-export const TSWAP_DARKMODE = 'TSwapDarkMode';
+export const MVCSWAP_NETWORK = 'MVCSwapNetwork';
+export const MVCSWAP_CURRENT_PAIR = 'MVCSwapCurrentPair';
+export const MVCSWAP_CURRENT_FARM_PAIR = 'MVCSwapCurrentFarmPair';
+export const MVCSWAP_POOL_SHOW_OP = 'MVCSwapPoolShowOP';
+export const MVCSWAP_LAST_WALLET_TYPE = 'MVCSwapLastWalletType';
+export const MVCSWAP_DARKMODE = 'MVCSwapDarkMode';
 
-export const TSWAP_SOURCE = 'mvcswap.com';
+export const MVCSWAP_SOURCE = 'mvcswap.com';
 
 export const REFRESH_CHARTDAT = 60;
 
 export const COLOR1 = '#2BB696';
 export const COLOR2 = '#EB5757';
 
-// export const StableTokenPair = ['BSV-USDT', 'BSV-ACD'];
+// export const StableTokenPair = ['MVC-USDT', 'MVC-ACD'];
 export const StableToken = ['USDT', 'ACD'];

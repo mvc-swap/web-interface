@@ -26,7 +26,7 @@ export default function btn(props) {
   const { swapToken1Amount, swapToken2Amount } = pairData;
   const origin_token = dirForward ? token1 : token2;
   const aim_token = dirForward ? token2 : token1;
-  const balance = userBalance[origin_token.tokenID || 'BSV'];
+  const balance = userBalance[origin_token.tokenID || 'MVC'];
 
   // const beyond = parseFloat(slip) > parseFloat(tol);
 
@@ -53,7 +53,7 @@ export default function btn(props) {
     {
       key: 'lowerAmount',
       cond:
-        origin_token.symbol === 'bsv' &&
+        origin_token.symbol === 'mvc' &&
         parseFloat(origin_amount) <= formatSat(MINAMOUNT),
     },
     {

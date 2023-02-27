@@ -1,7 +1,7 @@
 // import BigNumber from 'bignumber.js';
 import farmApi from '../api/farm';
 // import pairApi from '../api/pair';
-import { TSWAP_CURRENT_FARM_PAIR, TSWAP_SOURCE } from 'common/const';
+import { MVCSWAP_CURRENT_FARM_PAIR, MVCSWAP_SOURCE } from 'common/const';
 import { formatSat, getCurrentPair } from 'common/utils';
 import { handleFarmData, fetchFarmData } from 'common/farmUtils';
 import debug from 'debug';
@@ -48,7 +48,7 @@ export default {
           if (item !== 'blockHeight' && pairsData[data[item].token.tokenID]) {
             currentFarmPair = item;
             // console.log('localstorage.set:', item)
-            localStorage.setItem(TSWAP_CURRENT_FARM_PAIR, item);
+            localStorage.setItem(MVCSWAP_CURRENT_FARM_PAIR, item);
           }
         });
       }
@@ -111,7 +111,7 @@ export default {
     },
 
     *reqSwap({ payload }, { call, put }) {
-      payload.source = TSWAP_SOURCE;
+      payload.source = MVCSWAP_SOURCE;
       const res = yield farmApi.reqSwap.call(farmApi, payload);
       log('reqSwap:', res);
       return res;

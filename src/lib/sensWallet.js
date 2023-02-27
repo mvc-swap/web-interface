@@ -2,7 +2,7 @@ import { formatSat, strAbbreviation } from 'common/utils';
 import _ from 'i18n';
 // import 'common/vconsole';
 
-const bsv = window.sensilet;
+const mvc = window.sensilet;
 
 function checkExtension() {
   if (!window.sensilet) {
@@ -14,8 +14,8 @@ function checkExtension() {
   return true;
 }
 
-const getBsvBalance = async () => {
-  const res = await window.sensilet.getBsvBalance();
+const getMvcBalance = async () => {
+  const res = await window.sensilet.getMvcBalance();
   return formatSat(res.balance.total);
 };
 
@@ -33,15 +33,15 @@ export default {
   info: async () => {
     if (checkExtension()) {
       let accountInfo = {};
-      const bsvBalance = await getBsvBalance();
+      const mvcBalance = await getMvcBalance();
 
       const userAddress = await window.sensilet.getAccount();
       const tokenBalance = await getSensibleFtBalance();
-      // const network = await bsv.getNetwork();
+      // const network = await mvc.getNetwork();
       const network = 'mainnet';
 
       const userBalance = {
-        BSV: bsvBalance,
+        MVC: mvcBalance,
         ...tokenBalance,
       };
       accountInfo = {
@@ -66,11 +66,11 @@ export default {
     return window.sensilet.exitAccount();
   },
 
-  transferBsv: async (params) => {
+  transferMvc: async (params) => {
     if (checkExtension()) {
       const { address, amount, noBroadcast } = params;
 
-      const res = await window.sensilet.transferBsv({
+      const res = await window.sensilet.transferMvc({
         broadcast: !noBroadcast,
         receivers: [{ address, amount }],
       });
@@ -85,7 +85,7 @@ export default {
       const { datas, noBroadcast } = params;
       datas.forEach((item) => {
         const { address, amount, codehash, genesis, rabinApis } = item;
-        if (item.type === 'bsv') {
+        if (item.type === 'mvc') {
           data.push({
             broadcast: !noBroadcast,
             receivers: [{ address, amount }],

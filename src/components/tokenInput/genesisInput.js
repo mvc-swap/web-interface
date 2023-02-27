@@ -7,9 +7,9 @@ import styles from './genesis.less';
 import _ from 'i18n';
 
 const FormItem = Form.Item;
-const BSV = {
-  symbol: 'BSV',
-  name: 'BSV',
+const MVC = {
+  symbol: 'MVC',
+  name: 'MVC',
 };
 
 export default class GenesisTokenInput extends Component {
@@ -20,14 +20,14 @@ export default class GenesisTokenInput extends Component {
   //     }
   // }
 
-  changeValue = async (e, supportBsv) => {
+  changeValue = async (e, supportMvc) => {
     const { value } = e.target;
     const { dispatch, change } = this.props;
     let token = undefined;
-    const isBsv = supportBsv && value.toUpperCase() === 'SPACE';
+    const isMvc = supportMvc && value.toUpperCase() === 'SPACE';
 
-    if (isBsv) {
-      token = BSV;
+    if (isMvc) {
+      token = MVC;
     } else {
       const res = await dispatch({
         type: 'custom/query',
@@ -50,7 +50,7 @@ export default class GenesisTokenInput extends Component {
 
   render() {
     // const { token } = this.state;
-    const { title, name, supportBsv = false, token, tips } = this.props;
+    const { title, name, supportMvc = false, token, tips } = this.props;
     return (
       <div>
         <div className={styles.title}>{title}</div>
@@ -65,7 +65,7 @@ export default class GenesisTokenInput extends Component {
           <FormItem name={name}>
             <Input.TextArea
               className={styles.input}
-              onChange={(e) => this.changeValue(e, supportBsv)}
+              onChange={(e) => this.changeValue(e, supportMvc)}
             />
           </FormItem>
 
@@ -73,7 +73,7 @@ export default class GenesisTokenInput extends Component {
             <div className={styles.token_info}>
               <TokenLogo
                 name={token.symbol}
-                genesisID={token.symbol === 'BSV' ? 'bsv' : token.genesis}
+                genesisID={token.symbol === 'MVC' ? 'mvc' : token.genesis}
               />
               <div className={styles.token_name}>
                 <div className={styles.symbol}>{token.symbol}</div>

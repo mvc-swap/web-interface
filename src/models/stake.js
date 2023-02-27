@@ -212,9 +212,9 @@ export default {
         };
       }
 
-      // const { tokenToAddress, requestIndex, bsvToAddress, txFee } = req.data;
+      // const { tokenToAddress, requestIndex, mvcToAddress, txFee } = req.data;
 
-      const isLackBalance = LeastFee(req.data.txFee, userBalance.BSV);
+      const isLackBalance = LeastFee(req.data.txFee, userBalance.MVC);
       if (isLackBalance.code) {
         return {
           msg: isLackBalance.msg,
@@ -228,8 +228,8 @@ export default {
       let liq_data = {
         symbol: currentStakePair,
         requestIndex: requestIndex,
-        bsvRawTx: data[0].txHex,
-        bsvOutputIndex: 0,
+        mvcRawTx: data[0].txHex,
+        mvcOutputIndex: 0,
         tokenRawTx: data[1].txHex,
         tokenOutputIndex: 0,
         amountCheckRawTx: data[1].routeCheckTxHex,
@@ -251,8 +251,8 @@ export default {
       let liq_data = {
         symbol: currentStakePair,
         requestIndex: requestIndex,
-        bsvRawTx: data[0].txHex,
-        bsvOutputIndex: 0,
+        mvcRawTx: data[0].txHex,
+        mvcOutputIndex: 0,
         tokenRemoveAmount,
       };
       liq_data = JSON.stringify(liq_data);
@@ -290,8 +290,8 @@ export default {
       let liq_data = {
         symbol: currentStakePair,
         requestIndex: requestIndex,
-        bsvRawTx: data[0].txHex,
-        bsvOutputIndex: 0,
+        mvcRawTx: data[0].txHex,
+        mvcOutputIndex: 0,
       };
       liq_data = JSON.stringify(liq_data);
       liq_data = yield gzip(liq_data);
@@ -328,8 +328,8 @@ export default {
       let liq_data = {
         symbol: currentStakePair,
         requestIndex: requestIndex,
-        bsvRawTx: data[0].txHex,
-        bsvOutputIndex: 0,
+        mvcRawTx: data[0].txHex,
+        mvcOutputIndex: 0,
       };
       liq_data = JSON.stringify(liq_data);
       liq_data = yield gzip(liq_data);
@@ -368,8 +368,8 @@ export default {
       let liq_data = {
         symbol: currentStakePair,
         requestIndex: requestIndex,
-        bsvRawTx: data[0].txHex,
-        bsvOutputIndex: 0,
+        mvcRawTx: data[0].txHex,
+        mvcOutputIndex: 0,
         voteID: voteInfoArr[currentVoteIndex].id,
         voteOption,
         confirmVote: true,

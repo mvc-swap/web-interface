@@ -40,7 +40,7 @@ export default function SwapResult(props) {
           <div className={styles.detail_item}>
             <div className={styles.item_label}>{_('swap_fee')}</div>
             <div className={styles.item_value}>
-              <FormatNumber value={formatSat(txFee)} suffix="BSV" />
+              <FormatNumber value={formatSat(txFee)} suffix="MVC" />
             </div>
           </div>
           <div className={styles.detail_item}>

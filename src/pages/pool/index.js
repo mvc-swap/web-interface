@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { history, connect } from 'umi';
 import { jc } from 'common/utils';
-import { TSWAP_POOL_SHOW_OP } from 'common/const';
+import { MVCSWAP_POOL_SHOW_OP } from 'common/const';
 import Pair from 'components/pair';
 import Chart from 'components/chart/poolChart';
 import { AppTitle } from 'components/ui';
@@ -26,7 +26,7 @@ import Layout from '../layout';
 export default class Pool extends Component {
   constructor(props) {
     super(props);
-    const flag = sessionStorage.getItem(TSWAP_POOL_SHOW_OP);
+    const flag = sessionStorage.getItem(MVCSWAP_POOL_SHOW_OP);
     this.state = {
       app_pannel: flag === 'true',
     };
@@ -35,14 +35,14 @@ export default class Pool extends Component {
   showPannel = (type) => {
     const { currentPair } = this.props;
     history.push(`/pool/${currentPair}/${type}`);
-    sessionStorage.setItem(TSWAP_POOL_SHOW_OP, 'true');
+    sessionStorage.setItem(MVCSWAP_POOL_SHOW_OP, 'true');
     this.setState({
       app_pannel: true,
     });
   };
 
   hidePannel = () => {
-    sessionStorage.setItem(TSWAP_POOL_SHOW_OP, 'false');
+    sessionStorage.setItem(MVCSWAP_POOL_SHOW_OP, 'false');
     this.setState({
       app_pannel: false,
     });

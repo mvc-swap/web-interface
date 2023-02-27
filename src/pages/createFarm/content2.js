@@ -12,11 +12,11 @@ export default function Content2(props) {
     token2 = {},
     values = {},
     result,
-    bsvPrice,
+    mvcPrice,
     close,
   } = props;
   const { rewardAmountPerBlock, rewardDays, total } = values;
-  const fee = formatAmount(BN(result.fee).multipliedBy(bsvPrice), 4);
+  const fee = formatAmount(BN(result.fee).multipliedBy(mvcPrice), 4);
 
   return (
     <div className={styles.content2}>
@@ -40,7 +40,7 @@ export default function Content2(props) {
           <div className={styles.line}>
             <div className={styles.label}>{_('reward')}</div>
             <div className={styles.value}>
-              {rewardAmountPerBlock} {token2.symbol} per BSV block
+              {rewardAmountPerBlock} {token2.symbol} per MVC block
             </div>
           </div>
           <div className={styles.line}>
@@ -62,7 +62,7 @@ export default function Content2(props) {
           <div className={styles.line}>
             <div className={styles.label}>{_('network_fee')}</div>
             <div className={styles.value}>
-              -{result.fee} BSV | -${fee} USD
+              -{result.fee} MVC | -${fee} USD
             </div>
           </div>
         </div>

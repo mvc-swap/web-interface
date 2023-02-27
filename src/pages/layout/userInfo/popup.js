@@ -32,8 +32,12 @@ export default class Popup extends Component {
   };
 
   render() {
-    const { walletType, accountInfo, chooseLoginWallet, disConnect } =
-      this.props;
+    const {
+      walletType,
+      accountInfo,
+      chooseLoginWallet,
+      disConnect,
+    } = this.props;
     const { userAddress, userAddressShort, userBalance } = accountInfo;
     const { qr_code_visible } = this.state;
 
@@ -74,7 +78,7 @@ export default class Popup extends Component {
           <div className={styles.hd}>
             <div className={styles.hd_title}>{_('your_balance')}</div>
             <div className={styles.balance}>
-              <FormatNumber value={userBalance.BSV} /> SPACE
+              <FormatNumber value={userBalance.MVC} /> SPACE
             </div>
           </div>
           <div className={styles.line} onClick={() => this.toggleQrCode(true)}>

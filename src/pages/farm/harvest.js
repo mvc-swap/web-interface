@@ -104,11 +104,11 @@ export default class Harvest extends Component {
       return message.error(res.msg);
     }
 
-    const { requestIndex, bsvToAddress, txFee } = res.data;
+    const { requestIndex, mvcToAddress, txFee } = res.data;
     let tx_res = await dispatch({
-      type: 'user/transferBsv',
+      type: 'user/transferMvc',
       payload: {
-        address: bsvToAddress,
+        address: mvcToAddress,
         amount: txFee,
         changeAddress,
         note: 'mvcswap.com(farm harvest)',
@@ -127,8 +127,8 @@ export default class Harvest extends Component {
     let hav_data = {
       symbol: currentFarmPair,
       requestIndex,
-      bsvRawTx: tx_res.txHex,
-      bsvOutputIndex: 0,
+      mvcRawTx: tx_res.txHex,
+      mvcOutputIndex: 0,
     };
     hav_data = JSON.stringify(hav_data);
     hav_data = await gzip(hav_data);

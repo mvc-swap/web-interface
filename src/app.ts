@@ -21,7 +21,7 @@
 //   let icons;
 //   if (data.success && data.data.list) {
 //     icons = {
-//       bsv: {
+//       mvc: {
 //         type: 'iconlogo-bitcoin',
 //       },
 //     };

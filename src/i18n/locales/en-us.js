@@ -207,7 +207,7 @@ const texts = {
   all_balance: 'Max',
   back_to_swap: 'Back to Swap',
   swap_question:
-    'You have to add both BSV and pair token into the pool according to current BSV/Token share',
+    'You have to add both MVC and pair token into the pool according to current MVC/Token share',
   withdraw_success: 'Withdraw success!',
   add_success: 'Success',
   swap_price_change_title: 'Price change alert',
@@ -240,7 +240,7 @@ const texts = {
   harvest: 'Harvest',
   farm_desc:
     'Provide liquidity and deposit your LP tokens to earn and harvest tokens',
-  last_block_height: 'Latest BSV block height:',
+  last_block_height: 'Latest MVC block height:',
   your_deposited_lp: 'Your deposited LP',
   abandoned_deposited_lp:
     'Withdraw all your LP token and yield, deposit LP token to the new contract',
@@ -262,7 +262,7 @@ const texts = {
   harvest_success: 'Yield Withdrawal successful',
   amount: 'Amount',
   payout: 'Payout',
-  payout_tips: 'Payout per BSV block',
+  payout_tips: 'Payout per MVC block',
   deposit_lp: 'Deposit LP',
   withdraw_lp: 'Withdraw LP',
 
@@ -280,7 +280,7 @@ const texts = {
   pay_fee: 'Pay fee',
   finish: 'Finish',
   enter_tokenid: 'Enter Token Genesis ID',
-  enter_bsv_or_tokenid: 'Enter BSV or Token Genesis ID',
+  enter_mvc_or_tokenid: 'Enter MVC or Token Genesis ID',
   find_tokenid: 'Token Genesis IDs can be found on',
   select_token_pair: 'Select and enter a token pair',
   next_step: 'Next step',
@@ -308,7 +308,7 @@ const texts = {
   reward_genesis_id: 'Genesis ID of reward token',
   reward_per_block: 'Reward per block',
   duration_in_days: 'Duration in days',
-  avg_per_block: 'Avg. 10 mins per BSV block',
+  avg_per_block: 'Avg. 10 mins per MVC block',
   minimum_days: 'Minimum %s days',
   create_farm_tips: 'Please have your reward tokens ready for next step',
   reward_estimate: 'Approx. %s reward tokens to be deposited',

@@ -18,8 +18,8 @@ import { Plus } from 'components/ui';
 const { Step } = Steps;
 const FormItem = Form.Item;
 const stepData = [_('select_pair'), _('pay_fee'), _('finish')];
-const bsvtsc = 'bsv-tsc';
-const bsvtest = 'tbsv-test';
+const mvctsc = 'mvc-tsc';
+const mvctest = 'tmvc-test';
 
 @connect(({ custom, user, pair, loading }) => {
   const { effects } = loading;
@@ -46,7 +46,7 @@ export default class CreatePair extends Component {
 
   componentDidMount() {
     const { allPairs, dispatch } = this.props;
-    if (!allPairs[bsvtsc]) {
+    if (!allPairs[mvctsc]) {
       dispatch({
         type: 'pair/getAllPairs',
       });
@@ -79,10 +79,10 @@ export default class CreatePair extends Component {
             },
       );
     }
-    if (index === 1 && e.target.value.toUpperCase() === 'BSV') {
+    if (index === 1 && e.target.value.toUpperCase() === 'MVC') {
       return this.setState({
         token1: {
-          symbol: 'BSV',
+          symbol: 'MVC',
           name: 'Bitcoin SV',
         },
       });
@@ -94,7 +94,7 @@ export default class CreatePair extends Component {
           genesisHash: e.target.value,
         },
       });
-      if (e.target.value.toUpperCase() === 'BSV') return;
+      if (e.target.value.toUpperCase() === 'MVC') return;
       if (!res || res.code) {
         return this.setState(
           index === 1
@@ -151,7 +151,7 @@ export default class CreatePair extends Component {
     return (
       <div className={styles.create_content}>
         <div className={styles.title}>
-          {_('input')} A: {_('enter_bsv_or_tokenid')}
+          {_('input')} A: {_('enter_mvc_or_tokenid')}
         </div>
 
         <div
@@ -172,7 +172,7 @@ export default class CreatePair extends Component {
             <div className={styles.token_info}>
               <TokenLogo
                 name={token1.symbol}
-                genesisID={token1.genesis || 'bsv'}
+                genesisID={token1.genesis || 'mvc'}
               />
               <div className={styles.token_name}>
                 <div className={styles.symbol}>{token1.symbol}</div>
@@ -233,7 +233,7 @@ export default class CreatePair extends Component {
             <div className={styles.coin}>
               <TokenLogo
                 name={token1.symbol}
-                genesisID={token1.genesis || 'bsv'}
+                genesisID={token1.genesis || 'mvc'}
                 size={25}
               />
               <div className={styles.name}>{token1.symbol}</div>
@@ -315,7 +315,7 @@ export default class CreatePair extends Component {
     const {
       requestIndex,
       tokenToAddress,
-      bsvToAddress,
+      mvcToAddress,
       txFee,
       op,
       requiredTscAmount,
@@ -325,7 +325,7 @@ export default class CreatePair extends Component {
       genesisHash = '52e6021649be1d0621c52c9f61a54ef58c6d8dbe';
       codeHash = '777e4dd291059c9f7a0fd563f7204576dcceb791';
     } else {
-      const payToken = allPairs[bsvtsc].token2;
+      const payToken = allPairs[mvctsc].token2;
       genesisHash = payToken.tokenID;
       codeHash = payToken.codeHash;
     }
@@ -335,8 +335,8 @@ export default class CreatePair extends Component {
       payload: {
         datas: [
           {
-            type: 'bsv',
-            address: bsvToAddress,
+            type: 'mvc',
+            address: mvcToAddress,
             amount: txFee,
             changeAddress,
             note: 'mvcswap.com(createSwap)',
@@ -373,8 +373,8 @@ export default class CreatePair extends Component {
 
     const payload = {
       requestIndex,
-      bsvRawTx: tx_res[0].txHex,
-      bsvOutputIndex: 0,
+      mvcRawTx: tx_res[0].txHex,
+      mvcOutputIndex: 0,
       tokenRawTx: tx_res[1].txHex,
       tokenOutputIndex: 0,
       amountCheckRawTx: tx_res[1].routeCheckTxHex,

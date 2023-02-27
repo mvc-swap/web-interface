@@ -33,7 +33,7 @@ const { slippage_tolerance_value, defaultSlipValue } = slippage_data;
       effects['pair/reqSwap'] ||
       effects['pair/token1toToken2'] ||
       effects['pair/token2toToken1'] ||
-      effects['user/transferBsv'] ||
+      effects['user/transferMvc'] ||
       effects['user/transferAll'] ||
       false,
   };
@@ -239,8 +239,8 @@ export default class Swap extends Component {
     }
 
     let origin_amount = this.state.dirForward
-      ? token1.isBsv
-        ? userBalance.BSV * 0.98 || 0
+      ? token1.isMvc
+        ? userBalance.MVC * 0.98 || 0
         : userBalance[token1.tokenID]
       : userBalance[token2.tokenID] || 0;
     origin_amount = formatAmount(origin_amount, decimal);
@@ -333,7 +333,7 @@ export default class Swap extends Component {
                 {_('your_balance')}:{' '}
                 <span>
                   <FormatNumber
-                    value={userBalance[origin_token.tokenID || 'BSV'] || 0}
+                    value={userBalance[origin_token.tokenID || 'MVC'] || 0}
                     suffix={symbol1}
                   />
                 </span>
@@ -359,7 +359,7 @@ export default class Swap extends Component {
                 {_('your_balance')}:{' '}
                 <span>
                   <FormatNumber
-                    value={userBalance[aim_token.tokenID || 'BSV'] || 0}
+                    value={userBalance[aim_token.tokenID || 'MVC'] || 0}
                     suffix={symbol2}
                   />
                 </span>
@@ -441,8 +441,14 @@ export default class Swap extends Component {
 
   handleSubmit = async () => {
     const { dirForward, origin_amount } = this.state;
-    const { dispatch, currentPair, token1, token2, rabinApis, accountInfo } =
-      this.props;
+    const {
+      dispatch,
+      currentPair,
+      token1,
+      token2,
+      rabinApis,
+      accountInfo,
+    } = this.props;
     const { userBalance, changeAddress, userAddress } = accountInfo;
 
     const res = await dispatch({
@@ -458,7 +464,7 @@ export default class Swap extends Component {
       return message.error(msg);
     }
 
-    const { bsvToAddress, tokenToAddress, txFee, requestIndex } = data;
+    const { mvcToAddress, tokenToAddress, txFee, requestIndex } = data;
     let payload = {
       symbol: currentPair,
       requestIndex: requestIndex,
@@ -467,8 +473,8 @@ export default class Swap extends Component {
     if (dirForward) {
       let amount = formatTok(origin_amount, token1.decimal);
 
-      if (token1.isBsv) {
-        const userTotal = BigNumber(userBalance.BSV).multipliedBy(1e8);
+      if (token1.isMvc) {
+        const userTotal = BigNumber(userBalance.MVC).multipliedBy(1e8);
         let total = BigInt(amount) + BigInt(txFee);
         const _allBalance = total > BigInt(userTotal);
         if (_allBalance) {
@@ -479,9 +485,9 @@ export default class Swap extends Component {
           return message.error(_('lower_amount', MINAMOUNT));
         }
         const ts_res = await dispatch({
-          type: 'user/transferBsv',
+          type: 'user/transferMvc',
           payload: {
-            address: bsvToAddress,
+            address: mvcToAddress,
             amount: total.toString(),
             changeAddress,
             note: 'mvcswap.com(swap)',
@@ -499,8 +505,8 @@ export default class Swap extends Component {
         payload = {
           ...payload,
           // token1TxID: ts_res.txid,
-          bsvOutputIndex: 0,
-          bsvRawTx: ts_res.list ? ts_res.list[0].txHex : ts_res.txHex,
+          mvcOutputIndex: 0,
+          mvcRawTx: ts_res.list ? ts_res.list[0].txHex : ts_res.txHex,
           token1AddAmount: amount.toString(),
         };
       } else {
@@ -509,8 +515,8 @@ export default class Swap extends Component {
           payload: {
             datas: [
               {
-                type: 'bsv',
-                address: bsvToAddress,
+                type: 'mvc',
+                address: mvcToAddress,
                 amount: txFee,
                 changeAddress,
                 note: 'mvcswap.com(swap)',
@@ -544,8 +550,8 @@ export default class Swap extends Component {
 
         payload = {
           ...payload,
-          bsvRawTx: tx_res[0].txHex,
-          bsvOutputIndex: 0,
+          mvcRawTx: tx_res[0].txHex,
+          mvcOutputIndex: 0,
           token1RawTx: tx_res[1].txHex,
           token1OutputIndex: 0,
           amountCheckRawTx: tx_res[1].routeCheckTxHex,
@@ -558,8 +564,8 @@ export default class Swap extends Component {
         payload: {
           datas: [
             {
-              type: 'bsv',
-              address: bsvToAddress,
+              type: 'mvc',
+              address: mvcToAddress,
               amount: txFee,
               changeAddress,
               note: 'mvcswap.com(swap)',
@@ -593,8 +599,8 @@ export default class Swap extends Component {
 
       payload = {
         ...payload,
-        bsvRawTx: tx_res[0].txHex,
-        bsvOutputIndex: 0,
+        mvcRawTx: tx_res[0].txHex,
+        mvcOutputIndex: 0,
         token2RawTx: tx_res[1].txHex,
         token2OutputIndex: 0,
         amountCheckRawTx: tx_res[1].routeCheckTxHex,

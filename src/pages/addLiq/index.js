@@ -190,7 +190,7 @@ export default class Liquidity extends Component {
     const { userBalance } = accountInfo;
     const { swapLpAmount, swapToken1Amount, swapToken2Amount } = pairData;
     const origin_amount =
-      (token1.isBsv ? userBalance.BSV : userBalance[token1.tokenID]) || 0;
+      (token1.isMvc ? userBalance.MVC : userBalance[token1.tokenID]) || 0;
 
     if (swapToken1Amount === '0' && swapToken2Amount === '0') {
       //第一次添加流动性
@@ -370,8 +370,8 @@ export default class Liquidity extends Component {
                 <span>
                   <FormatNumber
                     value={
-                      (token1.isBsv
-                        ? userBalance.BSV
+                      (token1.isMvc
+                        ? userBalance.MVC
                         : userBalance[token1.tokenID]) || 0
                     }
                     suffix={token1.symbol}
@@ -453,14 +453,14 @@ export default class Liquidity extends Component {
       },
       {
         key: 'lowerAmount',
-        cond: token1.isBsv && parseFloat(origin_amount) <= formatSat(MINAMOUNT),
+        cond: token1.isMvc && parseFloat(origin_amount) <= formatSat(MINAMOUNT),
       },
       {
         key: 'lackBalance',
         cond:
           parseFloat(origin_amount) >
           parseFloat(
-            (token1.isBsv ? userBalance.BSV : userBalance[token1.tokenID]) || 0,
+            (token1.isMvc ? userBalance.MVC : userBalance[token1.tokenID]) || 0,
           ),
         txtParam: token1.symbol,
       },
@@ -488,7 +488,7 @@ export default class Liquidity extends Component {
         {this.renderFormInfo()}
         <div className={styles.warning}>
           {parseFloat(origin_amount) > 0 &&
-          parseFloat(origin_amount) + 0.0012 > parseFloat(userBalance.BSV || 0)
+          parseFloat(origin_amount) + 0.0012 > parseFloat(userBalance.MVC || 0)
             ? _('addliq_warning')
             : ''}
         </div>
@@ -560,17 +560,17 @@ export default class Liquidity extends Component {
     let _origin_amount, _aim_amount;
 
     if (
-      token1.isBsv &&
+      token1.isMvc &&
       BigNumber(origin_amount)
         .plus(BigNumber(txFee + 100000).div(Math.pow(10, token1.decimal)))
-        .isGreaterThan(userBalance.BSV || 0)
+        .isGreaterThan(userBalance.MVC || 0)
     ) {
       //余额不足支付矿工费，在金额中扣除矿工费
       origin_amount = BigNumber(origin_amount).minus(
         BigNumber(txFee + 100000).div(Math.pow(10, token1.decimal)),
       );
       if (origin_amount.toNumber() <= 0) {
-        return message.error(_('lac_token_balance', 'BSV'));
+        return message.error(_('lac_token_balance', 'MVC'));
       }
       // origin_amount =.toString();
       lastMod = 'origin';
@@ -662,22 +662,29 @@ export default class Liquidity extends Component {
   handleSubmit = async (data, _origin_amount, _aim_amount) => {
     if (!_origin_amount) _origin_amount = this.state._origin_amount;
     if (!_aim_amount) _aim_amount = this.state._aim_amount;
-    const { token1, token2, currentPair, dispatch, rabinApis, accountInfo } =
-      this.props;
+    const {
+      token1,
+      token2,
+      currentPair,
+      dispatch,
+      rabinApis,
+      accountInfo,
+    } = this.props;
     const { changeAddress } = accountInfo;
     const { reqSwapData } = this.state;
-    const { bsvToAddress, tokenToAddress, requestIndex, txFee } =
+    const { mvcToAddress, tokenToAddress, requestIndex, txFee } =
       reqSwapData || data;
 
+    console.log('handleSubmit:', reqSwapData, data);
     let liq_data;
-    if (token1.isBsv) {
+    if (token1.isMvc) {
       let tx_res = await dispatch({
         type: 'user/transferAll',
         payload: {
           datas: [
             {
-              type: 'bsv',
-              address: bsvToAddress,
+              type: 'mvc',
+              address: mvcToAddress,
               amount: (BigInt(_origin_amount) + BigInt(txFee)).toString(),
               changeAddress,
               note: 'mvcswap.com(add liquidity)',
@@ -709,8 +716,8 @@ export default class Liquidity extends Component {
       liq_data = {
         symbol: currentPair,
         requestIndex: requestIndex,
-        bsvRawTx: tx_res[0].txHex,
-        bsvOutputIndex: 0,
+        mvcRawTx: tx_res[0].txHex,
+        mvcOutputIndex: 0,
         token2RawTx: tx_res[1].txHex,
         token2OutputIndex: 0,
         token1AddAmount: _origin_amount.toString(),
@@ -722,8 +729,8 @@ export default class Liquidity extends Component {
         payload: {
           datas: [
             {
-              type: 'bsv',
-              address: bsvToAddress,
+              type: 'mvc',
+              address: mvcToAddress,
               amount: txFee,
               changeAddress,
               note: 'mvcswap.com(add liquidity)',
@@ -766,8 +773,8 @@ export default class Liquidity extends Component {
       liq_data = {
         symbol: currentPair,
         requestIndex: requestIndex,
-        bsvRawTx: tx_res[0].txHex,
-        bsvOutputIndex: 0,
+        mvcRawTx: tx_res[0].txHex,
+        mvcOutputIndex: 0,
         token1AddAmount: _origin_amount.toString(),
         token1RawTx: tx_res[1].txHex,
         token1OutputIndex: 0,

@@ -80,7 +80,7 @@ export default class FarmList extends Component {
                 symbol1={symbol2}
                 symbol2={symbol1}
                 size={20}
-                genesisID2={token1.tokenID || 'bsv'}
+                genesisID2={token1.tokenID || 'mvc'}
                 genesisID1={token2.tokenID}
               />
             </div>

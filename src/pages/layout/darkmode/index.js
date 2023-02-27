@@ -2,7 +2,7 @@
 import { connect } from 'umi';
 import React, { Component } from 'react';
 import CustomIcon from 'components/icon';
-import { TSWAP_DARKMODE } from 'common/const';
+import { MVCSWAP_DARKMODE } from 'common/const';
 import styles from './index.less';
 
 @connect(({ user }) => {
@@ -20,7 +20,7 @@ export default class DarkMode extends Component {
         darkMode: key,
       },
     });
-    window.localStorage.setItem(TSWAP_DARKMODE, key);
+    window.localStorage.setItem(MVCSWAP_DARKMODE, key);
     // window.location.reload();
   }
 

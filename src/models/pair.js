@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import BigNumber from 'bignumber.js';
 import pairApi from '../api/pair';
 import customApi from '../api/custom';
-import { TSWAP_CURRENT_PAIR } from 'common/const';
+import { MVCSWAP_CURRENT_PAIR } from 'common/const';
 import debug from 'debug';
 import { getCurrentPair } from 'common/utils';
 import { filterTokens } from 'common/pairUtils';
@@ -27,7 +27,7 @@ export default {
     LP: 100000,
     iconList: '',
     tokenPrices: {},
-    currentToken1: 'BSV',
+    currentToken1: 'MVC',
     currentToken2: '',
   },
 
@@ -51,8 +51,8 @@ export default {
                 url: `${iconBaseUrl}/${item.logo}`,
               };
             });
-            icons.bsv = icons.SPACE;
-            icons.BSV = icons.SPACE;
+            icons.mvc = icons.SPACE;
+            icons.MVC = icons.SPACE;
           }
           dispatch({
             type: 'save',
@@ -93,7 +93,7 @@ export default {
       const currentPairArr = currentPair.split('-');
       let [currentToken1, currentToken2] = currentPairArr;
       if (currentPairArr.length === 1) {
-        currentToken1 = 'bsv';
+        currentToken1 = 'mvc';
         currentToken2 = currentPairArr[0];
       }
       // const pairData = yield select((state) => state.pair);
@@ -102,7 +102,7 @@ export default {
         token1ID: currentToken1,
         token2ID: currentToken2,
       });
-      // console.log('localStorage:',localStorage.getItem(TSWAP_CURRENT_PAIR))
+      // console.log('localStorage:',localStorage.getItem(MVCSWAP_CURRENT_PAIR))
 
       if (data[currentPair]) {
         customPair = false;
@@ -128,7 +128,7 @@ export default {
       // console.log('105-currentPair:',currentPair, 'payload:',payload)
       if (!currentPair || !allPairs[currentPair]) {
         Object.keys(data).forEach((item) => {
-          if (item.indexOf('bsv-') > -1 || item.indexOf('-bsv') > -1) {
+          if (item.indexOf('mvc-') > -1 || item.indexOf('-mvc') > -1) {
             currentPair = item;
             customPair = false;
           }
@@ -136,7 +136,7 @@ export default {
       }
 
       // console.log('localstorage.set:', currentPair);
-      localStorage.setItem(TSWAP_CURRENT_PAIR, currentPair);
+      localStorage.setItem(MVCSWAP_CURRENT_PAIR, currentPair);
 
       yield put({
         type: 'savePair',
@@ -256,7 +256,7 @@ export default {
     },
 
     *changeCurrentToken({ payload }, { call, put, select }) {
-      const { token1ID = 'BSV', token2ID } = payload;
+      const { token1ID = 'MVC', token2ID } = payload;
 
       const pairData = yield select((state) => state.pair);
       const { allPairs } = pairData;
@@ -384,7 +384,7 @@ export default {
         ...state,
         ...action.payload,
         currentPair,
-        token1: { ...token1, symbol: symbol1, isBsv: symbol1 === 'space' },
+        token1: { ...token1, symbol: symbol1, isMvc: symbol1 === 'space' },
         token2: { ...token2, symbol: symbol2 },
         lptoken,
         rabinApis,

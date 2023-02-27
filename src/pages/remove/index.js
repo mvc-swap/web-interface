@@ -250,9 +250,9 @@ export default class RemovePage extends Component {
       return message.error(res.msg);
     }
 
-    const { tokenToAddress, requestIndex, bsvToAddress, txFee } = res.data;
+    const { tokenToAddress, requestIndex, mvcToAddress, txFee } = res.data;
 
-    const isLackBalance = LeastFee(txFee, userBalance.BSV);
+    const isLackBalance = LeastFee(txFee, userBalance.MVC);
     if (isLackBalance.code) {
       return message.error(isLackBalance.msg);
     }
@@ -267,8 +267,8 @@ export default class RemovePage extends Component {
       payload: {
         datas: [
           {
-            type: 'bsv',
-            address: bsvToAddress,
+            type: 'mvc',
+            address: mvcToAddress,
             amount: txFee,
             changeAddress,
             note: 'mvcswap.com(remove liquidity)',
@@ -301,8 +301,8 @@ export default class RemovePage extends Component {
     let liq_data = {
       symbol: currentPair,
       requestIndex: requestIndex,
-      bsvRawTx: tx_res[0].txHex,
-      bsvOutputIndex: 0,
+      mvcRawTx: tx_res[0].txHex,
+      mvcOutputIndex: 0,
       lpTokenRawTx: tx_res[1].txHex,
       lpTokenOutputIndex: 0,
       amountCheckRawTx: tx_res[1].routeCheckTxHex,

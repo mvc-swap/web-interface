@@ -6,10 +6,10 @@ import BigNumber from 'bignumber.js';
 import format from 'format-number';
 import querystring from 'querystringify';
 import {
-  TSWAP_NETWORK,
+  MVCSWAP_NETWORK,
   DEFAULT_NET,
-  TSWAP_CURRENT_FARM_PAIR,
-  TSWAP_CURRENT_PAIR,
+  MVCSWAP_CURRENT_FARM_PAIR,
+  MVCSWAP_CURRENT_PAIR,
   DEFAULT_PAIR,
 } from 'common/const';
 import debug from 'debug';
@@ -331,7 +331,7 @@ export function isTestNet() {
   const query = querystring.parse(window.location.search);
 
   if (typeof query.network === 'undefined') {
-    const net = window.localStorage.getItem(TSWAP_NETWORK) || DEFAULT_NET;
+    const net = window.localStorage.getItem(MVCSWAP_NETWORK) || DEFAULT_NET;
     return net === 'testnet';
   } else {
     return query.network === 'testnet';
@@ -339,7 +339,7 @@ export function isTestNet() {
 }
 
 export function tokenPre() {
-  return isTestNet() ? 'tbsv-' : 'bsv-';
+  return isTestNet() ? 'tmvc-' : 'mvc-';
 }
 
 //获取url中当前交易对名称或id
@@ -359,7 +359,7 @@ export function parseUrl(hash) {
   }
 
   currentPair &&
-    window.localStorage.setItem(TSWAP_CURRENT_FARM_PAIR, currentPair);
+    window.localStorage.setItem(MVCSWAP_CURRENT_FARM_PAIR, currentPair);
   return currentPair;
 }
 
@@ -369,7 +369,7 @@ export function getCurrentPair(type = 'pair') {
   let currentPair =
     urlPair ||
     window.localStorage.getItem(
-      type === 'farm' ? TSWAP_CURRENT_FARM_PAIR : TSWAP_CURRENT_PAIR,
+      type === 'farm' ? MVCSWAP_CURRENT_FARM_PAIR : MVCSWAP_CURRENT_PAIR,
     ) ||
     DEFAULT_PAIR;
   return currentPair;
@@ -388,7 +388,7 @@ export function LeastFee(txFee, balance) {
   if (needLeastAmount.isGreaterThan(balance)) {
     return {
       code: 1,
-      msg: `${_('need_token')} ${needLeastAmount.toString()}BSV, ${_(
+      msg: `${_('need_token')} ${needLeastAmount.toString()}MVC, ${_(
         'you_have',
       )} ${balance}`,
     };

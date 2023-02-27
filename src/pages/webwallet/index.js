@@ -54,7 +54,7 @@ export default class WebWallet extends Component {
     amount = BigNumber(amount).multipliedBy(1e8);
     const { dispatch } = this.props;
     const res = await dispatch({
-      type: 'user/transferBsv',
+      type: 'user/transferMvc',
       payload: {
         address,
         amount,
@@ -79,10 +79,10 @@ export default class WebWallet extends Component {
   setMaxAmount = () => {
     const { userBalance } = this.props.accountInfo;
     this.formRef.current.setFieldsValue({
-      amount: userBalance.BSV,
+      amount: userBalance.MVC,
     });
     this.setState({
-      amount: userBalance.BSV,
+      amount: userBalance.MVC,
     });
   };
   render() {
@@ -115,10 +115,10 @@ export default class WebWallet extends Component {
           </div>
           <div className={styles.withdraw}>
             <div className={styles.title}>
-              <div>{_('withdraw_title')} BSV</div>
+              <div>{_('withdraw_title')} MVC</div>
               <div className={styles.balance}>
                 ({_('availabel')}:{' '}
-                <span className={styles.blue}>{userBalance.BSV || 0}</span> BSV)
+                <span className={styles.blue}>{userBalance.MVC || 0}</span> MVC)
               </div>
             </div>
             <Form onFinish={this.handleSubmit} ref={this.formRef}>

@@ -224,9 +224,9 @@ export default class Withdraw extends Component {
       return message.error(res.msg);
     }
 
-    const { requestIndex, bsvToAddress, txFee } = res.data;
+    const { requestIndex, mvcToAddress, txFee } = res.data;
 
-    const isLackBalance = LeastFee(txFee, userBalance.BSV);
+    const isLackBalance = LeastFee(txFee, userBalance.MVC);
     if (isLackBalance.code) {
       return message.error(isLackBalance.msg);
     }
@@ -237,9 +237,9 @@ export default class Withdraw extends Component {
     const _value = formatTok(removeLP, lptoken.decimal);
     // console.log(_value,formatTok(removeLP, lptoken.decimal) )
     let tx_res = await dispatch({
-      type: 'user/transferBsv',
+      type: 'user/transferMvc',
       payload: {
-        address: bsvToAddress,
+        address: mvcToAddress,
         amount: txFee,
         note: 'mvcswap.com(farm withdraw)',
         changeAddress,
@@ -262,8 +262,8 @@ export default class Withdraw extends Component {
       symbol: currentFarmPair,
       requestIndex,
       tokenRemoveAmount: _value,
-      bsvRawTx: tx_res.txHex,
-      bsvOutputIndex: 0,
+      mvcRawTx: tx_res.txHex,
+      mvcOutputIndex: 0,
     };
     data = JSON.stringify(data);
     data = await gzip(data);

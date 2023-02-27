@@ -1,15 +1,15 @@
-// import bsv from 'common/walletFun';
+// import mvc from 'common/walletFun';
 import {
-  TSWAP_NETWORK,
-  TSWAP_DARKMODE,
+  MVCSWAP_NETWORK,
+  MVCSWAP_DARKMODE,
   DEFAULT_NET,
-  TSWAP_LAST_WALLET_TYPE,
+  MVCSWAP_LAST_WALLET_TYPE,
 } from 'common/const';
 import Wallet from '../lib/main';
 import debug from 'debug';
 const log = debug('user');
 const { localStorage } = window;
-const darkMode = localStorage.getItem(TSWAP_DARKMODE);
+const darkMode = localStorage.getItem(MVCSWAP_DARKMODE);
 
 export default {
   namespace: 'user',
@@ -35,7 +35,10 @@ export default {
         const _wallet = Wallet({ type });
         const accountInfo = yield _wallet.info();
 
-        localStorage.setItem(TSWAP_NETWORK, accountInfo.network || DEFAULT_NET);
+        localStorage.setItem(
+          MVCSWAP_NETWORK,
+          accountInfo.network || DEFAULT_NET,
+        );
 
         log('userData:', accountInfo);
 
@@ -60,7 +63,10 @@ export default {
       try {
         const _wallet = Wallet({ type });
         const accountInfo = yield _wallet.info();
-        localStorage.setItem(TSWAP_NETWORK, accountInfo.network || DEFAULT_NET);
+        localStorage.setItem(
+          MVCSWAP_NETWORK,
+          accountInfo.network || DEFAULT_NET,
+        );
 
         yield put({
           type: 'save',
@@ -109,18 +115,18 @@ export default {
         console.log(error);
         return { msg: error.message || error.toString() };
       }
-      localStorage.setItem(TSWAP_LAST_WALLET_TYPE, type);
+      localStorage.setItem(MVCSWAP_LAST_WALLET_TYPE, type);
       return {};
     },
 
-    *transferBsv({ payload }, { call, put, select }) {
+    *transferMvc({ payload }, { call, put, select }) {
       // const { address, amount, note, changeAddress, noBroadcast } = payload;
       const type = yield select((state) => state.user.walletType);
 
-      log('transferBsv:', payload);
+      log('transferMvc:', payload);
       try {
         const _wallet = Wallet({ type });
-        const res = yield _wallet.transferBsv(payload);
+        const res = yield _wallet.transferMvc(payload);
         log(res);
         return res;
       } catch (error) {
@@ -136,7 +142,7 @@ export default {
       try {
         const _wallet = Wallet({ type });
         const res = yield _wallet.transferAll(payload);
-        // const res = yield bsv.transferAll(type, datas);
+        // const res = yield mvc.transferAll(type, datas);
         // console.log(res);
         log(res);
         if (res.list) return res.list;
@@ -147,7 +153,7 @@ export default {
     },
     *transferAll2({ payload }, { call, put, select }) {
       const { reqData, tokenData, tokenAmount, note } = payload;
-      const { tokenToAddress, bsvToAddress, txFee } = reqData;
+      const { tokenToAddress, mvcToAddress, txFee } = reqData;
       const type = yield select((state) => state.user.walletType);
       const { accountInfo } = yield select((state) => state.user);
       const { changeAddress } = accountInfo;
@@ -157,8 +163,8 @@ export default {
         let params = {
           datas: [
             {
-              type: 'bsv',
-              address: bsvToAddress,
+              type: 'mvc',
+              address: mvcToAddress,
               amount: txFee,
               changeAddress,
               note,
@@ -181,7 +187,7 @@ export default {
         }
         // console.log(params);
         const res = yield _wallet.transferAll(params);
-        // const res = yield bsv.transferAll(type, datas);
+        // const res = yield mvc.transferAll(type, datas);
         // console.log(res);
         log(res);
         if (res.code) {
@@ -206,7 +212,7 @@ export default {
           ...payload.datas,
           address: userAddress,
         });
-        // const res = yield bsv.signTx(type, payload.datas);
+        // const res = yield mvc.signTx(type, payload.datas);
         log(res);
         if (res[0]) return res[0];
         return res;
