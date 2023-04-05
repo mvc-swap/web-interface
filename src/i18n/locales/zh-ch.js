@@ -56,7 +56,6 @@ const texts = {
   view_tx_detail: '查看交易细节',
   tx_details: '交易详情',
   status: '状态',
-  volt_account: 'Volt 账户',
   paid: '支付',
   received: '收到',
   swap_fee: '矿工费',
@@ -94,10 +93,6 @@ const texts = {
 
   select_wallet_title: '选择钱包',
   permission_request: 'MVCSwap 授权请求',
-  permis_tips_1: '用您的Volt账号登录',
-  permis_tips_2: '使用您的Volt数据(头像, Paymail)',
-  permis_tips_3: '获取您的账户余额',
-  permis_tips_4: '发起交易',
   agree_switch: '同意切换',
   cancel: '取消',
 
@@ -135,15 +130,10 @@ const texts = {
   your_pos: '您移除的仓位',
   your_re_liq: '您赎回的流动性',
 
-  connect_volt: '连接您的Volt钱包',
-  scan_app: '用您的Volt钱包扫描解锁',
-  refresh_url: '点击刷新二维码',
-  download_app_1: '从',
-  download_app_2: '或以下渠道下载',
-
   launch_app: '交易',
-  tokenswap: 'MVCSwap',
-  tokenswap_desc: '基于MVC的链上去中心化交易所',
+  mvcswap: 'MVCSwap',
+  mvcswap_desc:
+    '体验基于UTXO的去中心化交易所，享受无与伦比的安全性、隐私性和速度',
   documentation: '文档',
   comparisons: '比较',
   comp_ts: 'MVCSwap和其他类型交易所的异同对比',
@@ -313,8 +303,6 @@ const texts = {
   create_farm_success_desc: '你的流动性挖矿计划已生效',
   network_fee: '矿工费',
   only_custom_token: 'Token B 只能是项目方Token',
-  download_voltwallet:
-    '请先安装Volt插件。如果已经安装，请刷新页面。点击确定下载插件。',
   tokenb_tips: 'Token B 只能是项目方token',
   tmp_tips: '测试交易对，请移除和此交易对相关的资产，一周后下架该交易对',
   //stake

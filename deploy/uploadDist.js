@@ -15,7 +15,7 @@ const main = async () => {
   const dirFiles = readdir.readSync(path.resolve(__dirname, '../dist'));
 
   for (let fileName of dirFiles) {
-    const url = `/tokenswap/${gitCommitHash}/${fileName}`;
+    const url = `/mvcswap/${gitCommitHash}/${fileName}`;
     await client.put(url, path.resolve(__dirname, '../dist', fileName));
   }
 };

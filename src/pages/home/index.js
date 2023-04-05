@@ -22,7 +22,7 @@ export default class Home extends Component {
         <div className={styles.list}>
           <div className={styles.list_hd}>
             <div className={styles.col_1}>{_('feature')}</div>
-            <div className={styles.col_2}>{_('tokenswap')}</div>
+            <div className={styles.col_2}>{_('mvcswap')}</div>
             <div className={styles.col_3}>{_('cex')}</div>
             <div className={styles.col_4}>{_('other_dex')}</div>
           </div>
@@ -179,8 +179,8 @@ export default class Home extends Component {
             </div>
           </nav>
           <section className={styles.main}>
-            <div className={styles.main_title}>{_('tokenswap')}</div>
-            <div className={styles.main_desc}>{_('tokenswap_desc')}</div>
+            <div className={styles.main_title}>{_('mvcswap')}</div>
+            <div className={styles.main_desc}>{_('mvcswap_desc')}</div>
             <div className={styles.btns}>
               <Button
                 type="primary"

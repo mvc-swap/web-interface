@@ -30,7 +30,7 @@ export function agentVersion() {
 }
 
 export const slippage_data = {
-  slippage_tolerance_value: 'VoltTokenSwapSlipTolValue',
+  slippage_tolerance_value: 'VoltMVCSwapSlipTolValue',
   defaultSlipValue: 1,
 };
 

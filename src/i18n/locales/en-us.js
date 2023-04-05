@@ -56,7 +56,6 @@ const texts = {
   view_tx_detail: 'View transaction details',
   tx_details: 'Transaction details',
   status: 'Status',
-  volt_account: 'Volt Account',
   paid: 'Paid',
   received: 'Received',
   swap_fee: 'Miners fee',
@@ -94,10 +93,6 @@ const texts = {
 
   select_wallet_title: 'Select a wallet to connect',
   permission_request: 'MVCSwap permission request',
-  permis_tips_1: 'Login with Volt',
-  permis_tips_2: 'Use your Volt profile (Image, Paymail)',
-  permis_tips_3: 'Get your account balance',
-  permis_tips_4: 'Construct transactions and make payments',
   agree_switch: 'Agree and switch',
   cancel: 'Cancel',
 
@@ -136,14 +131,10 @@ const texts = {
   your_re_liq: 'Your redeemed liquidity',
   earned: 'Earned',
 
-  connect_volt: 'Connect to your Volt App',
-  scan_app: 'Scan with your Mobile Volt App to unlock',
-  download_app_1: 'Download from',
-  download_app_2: 'or the following app stores',
-
   launch_app: 'Launch App',
-  tokenswap: 'MVCSwap',
-  tokenswap_desc: 'Your onchain DEX built on MVC',
+  mvcswap: 'MVCSwap',
+  mvcswap_desc:
+    'Experience UTXO-based DEX with unmatched Security, Privacy, and Speed',
   documentation: 'Documentation',
   comparisons: 'Comparisons',
   comp_ts: 'Comparing MVCSwap',
@@ -322,8 +313,6 @@ const texts = {
   create_farm_success_desc: 'Your liquidity mining program (LMP) is now live',
   network_fee: 'Network fee',
   only_custom_token: 'Token B should be your project token',
-  download_voltwallet:
-    'Install Volt extention. Refresh the page if you have installed.',
 
   tokenb_tips: 'Token B should be your project token',
   tmp_tips:
