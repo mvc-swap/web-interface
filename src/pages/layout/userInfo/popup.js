@@ -47,7 +47,6 @@ export default class Popup extends Component {
           title={_('wallet_connected')}
           left={
             <div style={{ display: 'flex' }}>
-              <DarkMode />
               <Lang />
             </div>
           }

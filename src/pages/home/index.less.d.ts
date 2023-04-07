@@ -9,11 +9,16 @@ interface CssExports {
   container: string;
   content: string;
   cta: string;
+  feature: string;
+  feature_icon: string;
+  features: string;
+  gradient: string;
   green: string;
   head: string;
   head_inner: string;
   head_right: string;
   hidden_mobile: string;
+  icon_title: string;
   label: string;
   list: string;
   list_container: string;

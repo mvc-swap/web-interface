@@ -14,7 +14,6 @@ export default function Header() {
       <div className={styles.user_info}>
         <UserInfo />
         <div className={styles.hidden_mobile}>
-          <DarkMode />
           <Lang />
         </div>
       </div>

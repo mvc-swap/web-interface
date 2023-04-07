@@ -131,14 +131,25 @@ const texts = {
   your_re_liq: '您赎回的流动性',
 
   launch_app: '交易',
-  mvcswap: 'MVCSwap',
+  mvcswap: '欢迎来到MVCSwap',
   mvcswap_desc:
-    '体验基于UTXO的去中心化交易所，享受无与伦比的安全性、隐私性和速度',
+    '体验基于UTXO的去中心化交易所，享受无与伦比的安全性、可扩展性和响应速度',
   documentation: '文档',
   comparisons: '比较',
-  comp_ts: 'MVCSwap和其他类型交易所的异同对比',
-  comp_ts_h5: '比较MVCSwap',
-  feature: '关键功能',
+  feature: '特点',
+  feature_h5: '特点',
+  feature_privacy: '隐私',
+  privacy_desc:
+    '基于UTXO模型的去中心化交易所可以提供更强大的隐私特性，这归功于其独特的交易结构。在基于UTXO的区块链中，交易并不直接引用发送者和接收者的地址。相反，它们消耗和创建与地址关联的UTXO。这使得跟踪代币流动和将交易与特定用户关联变得更加困难。',
+  feature_security: '安全',
+  security_desc:
+    '通过使用基于UTXO的链式交易，可以消除前运行问题，确保用户不再需要担心三明治攻击。使用UTXO模型的代币不需要预先授权给合约，从而避免了可能的合约恶意攻击。',
+  feature_speed: '速度',
+  speed_desc:
+    '利用零确认技术，使得交易可以获得即时响应，大大提高用户体验。这种快速的响应时间使用户能够享受更顺畅、更高效的交易过程，从而提高用户在平台上的参与度和满意度。',
+  feature_scalability: '可扩展性',
+  scalability_desc:
+    '每个UTXO合约都可以在链上独立执行和验证，这使得我们能够充分利用现代多核处理器进行合约的并行执行和验证，从而大大提高智能合约的每秒交易数（TPS）。',
   cex: '中心化交易所',
   other_dex: '其他 DEX',
   lb_1: '资产保存在自管钱包',

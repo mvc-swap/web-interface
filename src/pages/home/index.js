@@ -13,144 +13,12 @@ import Cookie from 'js-cookie';
 import styles from './index.less';
 import _ from 'i18n';
 import { IconX, IconTick } from 'components/ui';
+import scalabilityLogo from '../../../public/assets/scalability.jpg';
+import securityLogo from '../../../public/assets/security.jpg';
+import speedLogo from '../../../public/assets/speed.jpg';
 
 const _lang = Cookie.get('lang') || navigator.language;
 export default class Home extends Component {
-  renderList() {
-    return (
-      <div className={styles.list_container}>
-        <div className={styles.list}>
-          <div className={styles.list_hd}>
-            <div className={styles.col_1}>{_('feature')}</div>
-            <div className={styles.col_2}>{_('mvcswap')}</div>
-            <div className={styles.col_3}>{_('cex')}</div>
-            <div className={styles.col_4}>{_('other_dex')}</div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_1')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconX />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_2')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconX />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_3')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconTick />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_4')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconTick />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_5')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconTick />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_6')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconTick />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_7')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconX />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_8')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconX />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_9')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconTick />
-            </div>
-          </div>
-          <div className={styles.list_item}>
-            <div className={styles.col_1}>{_('lb_10')}</div>
-            <div className={styles.col_2}>
-              <IconX />
-            </div>
-            <div className={styles.col_3}>
-              <IconTick />
-            </div>
-            <div className={styles.col_4}>
-              <IconTick />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   render() {
     const isZh = _lang.toLowerCase() === 'zh-cn';
     return (
@@ -172,7 +40,6 @@ export default class Home extends Component {
                   {_('launch_app')}
                 </Button>
                 <div className={styles.hidden_mobile}>
-                  <DarkMode />
                   <Lang />
                 </div>
               </div>
@@ -182,17 +49,6 @@ export default class Home extends Component {
             <div className={styles.main_title}>{_('mvcswap')}</div>
             <div className={styles.main_desc}>{_('mvcswap_desc')}</div>
             <div className={styles.btns}>
-              <Button
-                type="primary"
-                className={styles.btn}
-                shape="round"
-                style={{ marginRight: 20 }}
-                onClick={() => {
-                  history.push('swap');
-                }}
-              >
-                {_('launch_app')}
-              </Button>
               <Button
                 className={styles.btn}
                 shape="round"
@@ -204,10 +60,40 @@ export default class Home extends Component {
               </Button>
             </div>
           </section>
+
           <section className={styles.content}>
-            <div className={styles.title_web}>{_('comp_ts')}</div>
-            <div className={styles.title_h5}>{_('comp_ts_h5')}</div>
-            {this.renderList()}
+            <div className={styles.title_web}>{_('feature')}</div>
+            <div className={styles.title_h5}>{_('feature_h5')}</div>
+            {/* Add the new feature section */}
+            <section className={styles.features}>
+              <div className={styles.feature}>
+                <img
+                  src={securityLogo}
+                  alt="security Icon"
+                  className={styles.feature_icon}
+                />
+                <h3>{_('feature_security')}</h3>
+                <p>{_('security_desc')}</p>
+              </div>
+              <div className={styles.feature}>
+                <img
+                  src={scalabilityLogo}
+                  alt="scalability Icon"
+                  className={styles.feature_icon}
+                />
+                <h3>{_('feature_scalability')}</h3>
+                <p>{_('scalability_desc')}</p>
+              </div>
+              <div className={styles.feature}>
+                <img
+                  src={speedLogo}
+                  alt="Speed Icon"
+                  className={styles.feature_icon}
+                />
+                <h3>{_('feature_speed')}</h3>
+                <p>{_('speed_desc')}</p>
+              </div>
+            </section>
           </section>
           <Footer />
         </section>

@@ -132,14 +132,25 @@ const texts = {
   earned: 'Earned',
 
   launch_app: 'Launch App',
-  mvcswap: 'MVCSwap',
+  mvcswap: 'Welcome to MVCSwap',
   mvcswap_desc:
-    'Experience UTXO-based DEX with unmatched Security, Privacy, and Speed',
-  documentation: 'Documentation',
+    'Experience UTXO-based DEX with unmatched Security, Scalability, and Speed',
+  documentation: 'Learn More',
   comparisons: 'Comparisons',
-  comp_ts: 'Comparing MVCSwap',
-  comp_ts_h5: 'Comparing MVCSwap',
-  feature: 'Feature or capability',
+  feature: 'Features',
+  feature_h5: 'Features',
+  feature_privacy: 'Privacy',
+  privacy_desc:
+    "UTXO model can provide enhanced privacy features for DEX due to its unique transaction structure. In UTXO-based blockchains, transactions do not directly reference the sender's and receiver's addresses. Instead, they consume and create UTXOs, which are associated with the addresses. This makes it more difficult to track the flow of tokens and link transactions to specific users.",
+  feature_security: 'Security',
+  security_desc:
+    'By employing UTXO-based chain transactions, front-running can be eliminated, ensuring users no longer need to worry about sandwich attacks. Tokens that use the UTXO model do not require pre-authorization for contracts, thereby avoiding potential malicious attacks from contracts.',
+  feature_speed: 'Speed',
+  speed_desc:
+    'Utilizing zero-confirmation technology enables transactions to receive instant responses, significantly improving the user experience. This rapid response time allows users to enjoy a smoother and more efficient trading process, which in turn encourages higher engagement and satisfaction with the platform.',
+  feature_scalability: 'Scalability',
+  scalability_desc:
+    'Each UTXO contract can operate and validate independently on the chain, allowing for the full utilization of modern multi-core processors to execute and verify contracts in parallel. This significantly enhances the TPS (Transactions Per Second) of smart contracts.',
   cex: 'CEX',
   other_dex: 'Other DEX',
   lb_1: 'Funds kept in non-custodial wallet',
