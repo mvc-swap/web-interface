@@ -206,13 +206,12 @@
   margin: 2rem 0;
 }
 
-.feature {
-  flex: 0 0 30%;
+/*.feature {
+  flex: 1 1 calc(33% - 2rem);
   box-sizing: border-box;
   padding: 1rem;
   margin-bottom: 2rem;
   text-align: left;
-  //background-image: url('https://icons.mvcswap.com/resources/ms.png');
   background-color: var(--bg-color-4rd);
   background-position: center;
   background-repeat: no-repeat;
@@ -220,6 +219,37 @@
   border: 1px solid #130404;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+}*/
+
+.feature {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  text-align: left;
+  background-color: var(--bg-color-4rd);
+  border: 1px solid #130404;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  margin: 1rem; /* Change the margin value to increase the gap between features */
+}
+
+/* For screens with a minimum width of 768px */
+@media (min-width: 768px) {
+  .feature {
+    flex: 1 1 calc(50% - 4rem); /* Adjust this value to increase the gap between features */
+    max-width: 50%;
+  }
+}
+
+/* For screens with a minimum width of 1024px */
+@media (min-width: 1024px) {
+  .feature {
+    flex: 1 1 calc(33% - 4rem); /* Adjust this value to increase the gap between features */
+    max-width: 33%;
+  }
 }
 
 .icon_title {
