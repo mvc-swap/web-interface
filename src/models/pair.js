@@ -6,6 +6,7 @@ import { MVCSWAP_CURRENT_PAIR } from 'common/const';
 import debug from 'debug';
 import { getCurrentPair } from 'common/utils';
 import { filterTokens } from 'common/pairUtils';
+import { DEFAULT_PAIR } from '../common/const';
 
 const log = debug('pair');
 //TODO:
@@ -87,6 +88,9 @@ export default {
       let customPair;
       if (!currentPair) {
         currentPair = getCurrentPair();
+        if (!allPairs[currentPair]) {
+          currentPair = DEFAULT_PAIR;
+        }
       }
       // console.log(currentPair);
 
@@ -136,7 +140,7 @@ export default {
       }
 
       // console.log('localstorage.set:', currentPair);
-      localStorage.setItem(MVCSWAP_CURRENT_PAIR, currentPair);
+      localStorage.setItem(MVCSWAP_CURRENT_PAIR, currentPair || '');
 
       yield put({
         type: 'savePair',

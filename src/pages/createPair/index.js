@@ -87,7 +87,7 @@ export default class CreatePair extends Component {
 
   finish = () => {
     const { token2 } = this.state;
-    history.push(`/pool/${token2.genesis}/add`);
+    history.push(`/pool/space-${token2.symbol.toLowerCase()}/add`);
     EventBus.emit('reloadPair');
   };
 
@@ -97,17 +97,7 @@ export default class CreatePair extends Component {
     return (
       <div className={styles.create_content}>
         <GenesisTokenInput
-          title={`${_('input')} A: ${_('enter_mvc_or_tokenid')}`}
-          dispatch={dispatch}
-          name="genesis1"
-          supportMvc={true}
-          token={token1}
-          change={(value) => this.change('token1', value)}
-        />
-
-        <Plus />
-        <GenesisTokenInput
-          title={`${_('input')} B: ${_('enter_tokenid')}`}
+          title={`${_('input')}: ${_('enter_tokenid')}`}
           tips={_('only_custom_token')}
           dispatch={dispatch}
           name="genesis2"
@@ -122,7 +112,10 @@ export default class CreatePair extends Component {
   }
 
   renderContent1() {
-    const { token1, token2 } = this.state;
+    let { token1, token2 } = this.state;
+    if (!token1) {
+      token1 = { symbol: 'SPACE' };
+    }
     return (
       <div className={styles.create_content}>
         <div className={styles.title}>{_('confirm_and_pay')}</div>
@@ -201,7 +194,7 @@ export default class CreatePair extends Component {
   }
 
   payFee = async () => {
-    const { accountInfo, dispatch, allPairs, rabinApis } = this.props;
+    const { accountInfo, dispatch, allPairs } = this.props;
     const { userAddress, changeAddress } = accountInfo;
     const res = await dispatch({
       type: 'custom/req',
@@ -213,46 +206,15 @@ export default class CreatePair extends Component {
     if (res.msg) {
       return message.error(res.msg);
     }
-    const {
-      requestIndex,
-      tokenToAddress,
-      mvcToAddress,
-      txFee,
-      op,
-      requiredTscAmount,
-    } = res;
-    let genesisHash, codeHash;
-    if (isTestNet()) {
-      genesisHash = '52e6021649be1d0621c52c9f61a54ef58c6d8dbe';
-      codeHash = '777e4dd291059c9f7a0fd563f7204576dcceb791';
-    } else {
-      const payToken = allPairs[mvctsc].token2;
-      genesisHash = payToken.tokenID;
-      codeHash = payToken.codeHash;
-    }
+    const { requestIndex, mvcToAddress, txFee, op } = res;
 
     let tx_res = await dispatch({
-      type: 'user/transferAll',
+      type: 'user/transferMvc',
       payload: {
-        datas: [
-          {
-            type: 'mvc',
-            address: mvcToAddress,
-            amount: txFee,
-            changeAddress,
-            note: 'mvcswap.com(createSwap)',
-          },
-          {
-            type: 'sensibleFt',
-            address: tokenToAddress,
-            amount: requiredTscAmount,
-            changeAddress,
-            codehash: codeHash,
-            genesis: genesisHash,
-            rabinApis,
-            note: 'mvcswap.com(createSwap)',
-          },
-        ],
+        address: mvcToAddress,
+        amount: txFee,
+        changeAddress,
+        note: 'mvcswap.com(swap)',
         noBroadcast: true,
       },
     });
@@ -275,13 +237,9 @@ export default class CreatePair extends Component {
 
     const payload = {
       requestIndex,
-      mvcRawTx: tx_res[0].txHex,
+      mvcRawTx: tx_res.txHex,
       mvcOutputIndex: 0,
-      tokenRawTx: tx_res[1].txHex,
-      tokenOutputIndex: 0,
-      amountCheckRawTx: tx_res[1].routeCheckTxHex,
-      token1ID: token1.genesis,
-      token2ID: token2.genesis,
+      token2ID: token2.genesisTxid,
     };
     // console.log(payload);
     let create_data = JSON.stringify(payload);

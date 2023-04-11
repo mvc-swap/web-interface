@@ -5,9 +5,9 @@ import { isTestNet } from 'common/utils';
 class Custom extends BaseAPI {
   _request(api, params = {}, method = 'GET', url = '', catchError) {
     if (isTestNet()) {
-      this.baseUrl = 'https://api.mvcswap.com/custom/test/';
+      this.baseUrl = 'https://api.mvcswap.com/swap/test/';
     } else {
-      this.baseUrl = 'https://api.mvcswap.com/custom/';
+      this.baseUrl = 'https://api.mvcswap.com/swap/';
     }
 
     if (url) this.baseUrl = url;
@@ -30,6 +30,10 @@ class Custom extends BaseAPI {
 
   pairInfo(params) {
     return this._request('pairinfo', params);
+  }
+
+  getTokenInfo(sensibleId) {
+    return this._request('tokeninfo', { sensibleId });
   }
 
   querySwapInfo(symbol) {

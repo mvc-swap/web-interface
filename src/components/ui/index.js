@@ -90,8 +90,8 @@ export function FoundGenesisIDs() {
   return (
     <div className={styles.found_desc}>
       {_('find_tokenid')}{' '}
-      <a href="https://blockcheck.info/" target="_blank">
-        BlockCheck
+      <a href="https://mvcscan.com/" target="_blank">
+        MVCScan
       </a>
     </div>
   );

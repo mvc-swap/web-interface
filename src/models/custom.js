@@ -1,4 +1,3 @@
-import sensibleApi from '../api/sensiblequery';
 import customApi from '../api/custom';
 import { MVCSWAP_SOURCE } from 'common/const';
 import debug from 'debug';
@@ -17,9 +16,7 @@ export default {
     *query({ payload }, { call, put, select }) {
       const { genesisHash } = payload;
       // console.log(payload)
-      const res = yield sensibleApi.genesisInfo.call(sensibleApi, {
-        genesisHash,
-      });
+      const res = yield customApi.getTokenInfo.call(customApi, genesisHash);
 
       if (res.code) {
         // console.log(res.msg);

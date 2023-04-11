@@ -48,7 +48,7 @@ export default {
           if (item !== 'blockHeight' && pairsData[data[item].token.tokenID]) {
             currentFarmPair = item;
             // console.log('localstorage.set:', item)
-            localStorage.setItem(MVCSWAP_CURRENT_FARM_PAIR, item);
+            localStorage.setItem(MVCSWAP_CURRENT_FARM_PAIR, item || '');
           }
         });
       }
