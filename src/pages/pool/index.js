@@ -95,11 +95,7 @@ export default class Pool extends Component {
           <dd className={styles.desc}>
             <span className={styles.dot}></span> {_('newpair_desc3')}
           </dd>
-          <p>
-            {_('newpair_note1')}
-            <br />
-            {_('newpair_note2')}
-          </p>
+          <p>{_('newpair_note1')}</p>
         </dl>
       </div>
     );
