@@ -1,4 +1,4 @@
-import metaletWallet from './sensWallet';
+//import metaletWallet from './sensWallet';
 import tsWallet from './tsWallet';
 
 export default function wallet(props) {
