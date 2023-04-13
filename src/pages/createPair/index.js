@@ -22,6 +22,10 @@ const stepData = [_('select_pair'), _('pay_fee'), _('finish')];
 const mvctsc = 'mvc-tsc';
 const mvctest = 'tmvc-test';
 
+const FEE_TIER1 = 5;
+const FEE_TIER2 = 30;
+const FEE_TIER3 = 100;
+
 @connect(({ custom, user, pair, loading }) => {
   const { effects } = loading;
   return {
@@ -41,6 +45,7 @@ export default class CreatePair extends Component {
     super(props);
     this.state = {
       step: 0,
+      selectedFeeTier: FEE_TIER2,
     };
     this.formRef = React.createRef();
   }
@@ -52,6 +57,10 @@ export default class CreatePair extends Component {
         type: 'pair/getAllPairs',
       });
     }
+  }
+
+  selectOption(value) {
+    this.setState({ selectedFeeTier: value });
   }
 
   renderSteps() {
@@ -154,6 +163,32 @@ export default class CreatePair extends Component {
             </div>
           </div>
         </div>
+        {/* Add this block of code for the three options */}
+        <div className={styles.title}>{_('choose_fee_tier')}</div>
+        <button
+          className={`${styles.optionButton} ${
+            this.state.selectedFeeTier === FEE_TIER1 ? styles.selected : ''
+          }`}
+          onClick={() => this.selectOption(FEE_TIER1)}
+        >
+          0.05%
+        </button>
+        <button
+          className={`${styles.optionButton} ${
+            this.state.selectedFeeTier === FEE_TIER2 ? styles.selected : ''
+          }`}
+          onClick={() => this.selectOption(FEE_TIER2)}
+        >
+          0.3%
+        </button>
+        <button
+          className={`${styles.optionButton} ${
+            this.state.selectedFeeTier === FEE_TIER3 ? styles.selected : ''
+          }`}
+          onClick={() => this.selectOption(FEE_TIER3)}
+        >
+          1%
+        </button>
         <div className={styles.desc}>{_('confirm_pair_desc')}</div>
         {this.renderButton()}
       </div>
@@ -240,6 +275,7 @@ export default class CreatePair extends Component {
       mvcRawTx: tx_res.txHex,
       mvcOutputIndex: 0,
       token2ID: token2.genesisTxid,
+      feeTier: this.state.selectedFeeTier,
     };
     // console.log(payload);
     let create_data = JSON.stringify(payload);

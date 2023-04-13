@@ -280,6 +280,7 @@ const texts = {
   next_step: '下一步',
   pay_listing_fee: '支付创建费用',
   confirm_and_pay: '确认细节支付费用',
+  choose_fee_tier: '选择手续费级别',
   confirm_pair_desc: '创建此交易对合约需要支付5SPACE',
   edit: '编辑',
   create_success: '交易对添加成功',

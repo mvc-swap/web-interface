@@ -288,6 +288,7 @@ const texts = {
   next_step: 'Next step',
   pay_listing_fee: 'Pay creating fee',
   confirm_and_pay: 'Confirm details and pay fee',
+  choose_fee_tier: 'Choose fee tier',
   confirm_pair_desc:
     'A single payment of 5 SPACE is required to create this token pair on MVCSwap',
   edit: 'Edit',

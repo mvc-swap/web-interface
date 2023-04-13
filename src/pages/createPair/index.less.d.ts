@@ -15,6 +15,9 @@ interface CssExports {
   line: string;
   name: string;
   no: string;
+  optionButton: string;
+  options: string;
+  selected: string;
   steps: string;
   sub_title: string;
   switch_icon: string;
