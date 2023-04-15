@@ -53,7 +53,7 @@ export default class Home extends Component {
                 className={styles.btn}
                 shape="round"
                 onClick={() => {
-                  window.location.href = 'https://mvcswap.gitbook.io/mvcswap/';
+                  window.location.href = 'https://docs.mvcswap.com/';
                 }}
               >
                 {_('documentation')}
