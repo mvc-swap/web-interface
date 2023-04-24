@@ -1,5 +1,5 @@
-//import metaletWallet from './sensWallet';
 import tsWallet from './tsWallet';
+import metaWallet from './metaWallet';
 
 export default function wallet(props) {
   const { type } = props;
@@ -8,7 +8,7 @@ export default function wallet(props) {
     return tsWallet;
   }
 
-  /*if (type === 4) {
-    return metaletWallet;
-  }*/
+  if (type === 4) {
+    return metaWallet;
+  }
 }
