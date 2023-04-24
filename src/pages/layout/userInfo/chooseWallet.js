@@ -10,6 +10,16 @@ const network = query.network == 'testnet' ? 'testnet' : 'mainnet';
 
 export default function ChooseWallet(props) {
   const { closeChooseDialog, connectWebWallet } = props;
+        /*{(
+          <>
+            <li onClick={() => connectWebWallet(4, 'mainnet')}>
+              <div className={styles.sens_icon}>
+                <img src={metaletIcon} style={{height: 30}} />
+              </div>
+              <div className={styles.label}>Metalet</div>
+            </li>
+          </>
+        )}*/
   return (
     <Modal
       title=""
@@ -23,16 +33,6 @@ export default function ChooseWallet(props) {
     >
       <div className={styles.title}>{_('connect_wallet')}</div>
       <ul>
-        {(
-          <>
-            <li onClick={() => connectWebWallet(4, 'mainnet')}>
-              <div className={styles.sens_icon}>
-                <img src={metaletIcon} style={{height: 30}} />
-              </div>
-              <div className={styles.label}>Metalet</div>
-            </li>
-          </>
-        )}
         {(
           <>
             <li onClick={() => connectWebWallet(1)} style={{ fontSize: 15 }}>
