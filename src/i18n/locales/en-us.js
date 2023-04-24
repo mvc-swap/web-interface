@@ -284,6 +284,7 @@ const texts = {
   enter_tokenid: 'Enter Token SensibleId',
   enter_mvc_or_tokenid: 'Enter MVC or Token Genesis ID',
   find_tokenid: 'Token SensibleId can be found on',
+  check_create_doc: 'Learn how to create trading pairs',
   select_token_pair: 'Input a token',
   next_step: 'Next step',
   pay_listing_fee: 'Pay creating fee',

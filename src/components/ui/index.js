@@ -96,3 +96,13 @@ export function FoundGenesisIDs() {
     </div>
   );
 }
+
+export function CreatePairDocument() {
+  return (
+    <div className={styles.found_desc}>
+      <a href="https://docs.mvcswap.com/mvcswap/create-token-pair" target="_blank">
+        {_('check_create_doc')}
+      </a>{' '}
+    </div>
+  )
+}

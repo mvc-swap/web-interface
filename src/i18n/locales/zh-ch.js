@@ -276,6 +276,7 @@ const texts = {
   enter_tokenid: '输入Token的SensibleId',
   enter_mvc_or_tokenid: '输入MVC或Token的Genesis ID',
   find_tokenid: 'Token SensibleId 可以找到',
+  check_create_doc: '查看文档如何创建交易对',
   select_token_pair: '输入token',
   next_step: '下一步',
   pay_listing_fee: '支付创建费用',

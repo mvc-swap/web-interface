@@ -8,7 +8,7 @@ import Loading from 'components/loading';
 import PoolMenu from 'components/poolMenu';
 import { BtnWait } from 'components/btns';
 import { SuccessResult } from 'components/result';
-import { Plus, FoundGenesisIDs } from 'components/ui';
+import { Plus, CreatePairDocument } from 'components/ui';
 import GenesisTokenInput from 'components/tokenInput/genesisInput';
 import { isTestNet } from 'common/utils';
 import EventBus from 'common/eventBus';
@@ -107,13 +107,12 @@ export default class CreatePair extends Component {
       <div className={styles.create_content}>
         <GenesisTokenInput
           title={`${_('input')}: ${_('enter_tokenid')}`}
-          tips={_('only_custom_token')}
           dispatch={dispatch}
           name="genesis2"
           token={token2}
           change={(value) => this.change('token2', value)}
         />
-        <FoundGenesisIDs />
+        <CreatePairDocument />
 
         {this.renderButton()}
       </div>
