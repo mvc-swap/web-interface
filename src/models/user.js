@@ -110,7 +110,7 @@ export default {
       try {
         const _wallet = Wallet({ type });
         res = yield _wallet.connectAccount(network);
-        // console.log(res);
+        console.log('connect:', res);
       } catch (error) {
         console.log(error);
         return { msg: error.message || error.toString() };

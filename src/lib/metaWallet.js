@@ -5,7 +5,7 @@ import _ from 'i18n';
 function checkExtension() {
   if (!window.metaidwallet) {
     if (confirm(_('download_metalet'))) {
-      window.open('https://metalet.com/');
+      window.open('https://metalet.space/');
     }
     return false;
   }
@@ -13,16 +13,25 @@ function checkExtension() {
 }
 
 const getMvcBalance = async () => {
-  const res = await window.metaidwallet.getBalance();
-  return formatSat(res.balance.total);
+  try {
+    const isConnected = await window.metaidwallet.isConnected();
+    console.log('isConnected:', isConnected)
+    const res = await window.metaidwallet.getBalance();
+    console.log('getBalance:', res.total)
+    return formatSat(res.total);
+    //return formatSat(0);
+  } catch(err) {
+    return formatSat(0)
+  }
 };
 
 const getTokenBalance = async () => {
   const res = await window.metaidwallet.token.getBalance();
-  // console.log('getSensibleFtBalance:',res);
+  console.log('getTokenBalance:',res);
   const userBalance = {};
   res.forEach((item) => {
-    userBalance[item.genesis] = formatSat(item.balance, item.decimal);
+    const balance = BigInt(item.confirmedString) + BigInt(item.unconfirmedString);
+    userBalance[item.genesis] = formatSat(balance, item.decimal);
   });
   return userBalance;
 };
@@ -56,7 +65,7 @@ export default {
 
   connectAccount: () => {
     if (checkExtension()) {
-      return window.metaidwallet.connect({});
+      return window.metaidwallet.connect();
     }
   },
 
@@ -68,11 +77,15 @@ export default {
     if (checkExtension()) {
       const { address, amount, noBroadcast } = params;
 
-      const res = await window.metaidwallet.transferMvc({
+      const res = await window.metaidwallet.transfer({
         broadcast: !noBroadcast,
-        receivers: [{ address, amount }],
+        tasks: [{
+          type: 'space',
+          receivers: [{ address, amount }],
+        }]
       });
-      // console.log(res);
+      console.log('transferMVC:', res);
+      res.list = res.res
       return res;
     }
   },
@@ -86,13 +99,11 @@ export default {
         if (item.type === 'mvc') {
           data.push({
             type: 'space',
-            broadcast: !noBroadcast,
             receivers: [{ address, amount }],
           });
         } else if (item.type === 'sensibleFt') {
           data.push({
             type: 'token',
-            broadcast: !noBroadcast,
             codehash,
             genesis,
             receivers: [{ address, amount }],
@@ -100,7 +111,12 @@ export default {
         }
       });
 
-      const res = await window.metaidwallet.transferAll(data);
+      const res = await window.metaidwallet.transfer({
+        broadcast: !noBroadcast,
+        tasks: data
+      });
+      //console.log('transferAll:', res)
+      res.list = res.res
       return res;
     }
   },
