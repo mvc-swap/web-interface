@@ -30,7 +30,6 @@ jobs:
           echo "::set-output name=deployment_key::${{ secrets.MVCSWAP_DEPLOY_KEY }}"
         elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
           echo "::set-output name=deployment_directory::mvc-swap/dev.mvcswap.com"
-          echo "::set-output name=deployment_key::${{ secrets.MVCSWAP_DEV_DEPLOY_KEY }}"
         else
           echo "Unknown branch. Skipping deployment."
           exit 1
@@ -56,9 +55,8 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with:
           folder: build # The folder the action should deploy.
-          token: ${DEPLOYMENT_KEY}
+          token: ${{ secrets.MVCSWAP_DEPLOY_KEY }}
           branch: gh-page # git branch deployed
-          repository-name: ${DEPLOYMENT_DIRECTORY}
+          repository-name: ${{ steps.set_deployment_directory.outputs.deployment_directory }}
       env:
         DEPLOYMENT_DIRECTORY: ${{ steps.set_deployment_directory.outputs.deployment_directory }}
-        DEPLOYMENT_KEY: ${{ steps.set_deployment_directory.outputs.deployment_key }}
