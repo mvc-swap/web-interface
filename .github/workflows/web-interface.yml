@@ -5,7 +5,7 @@ name: Mvcswap CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "dev" ]
     
 permissions:
   contents: write
@@ -21,6 +21,21 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    
+    - name: Set deployment directory
+      id: set_deployment_directory
+      run: |
+        if [ "${{ github.ref }}" == "refs/heads/master" ]; then
+          echo "::set-output name=deployment_directory::mvc-swap/mvc-swap.github.io"
+          echo "::set-output name=deployment_key::${{ secrets.MVCSWAP_DEPLOY_KEY }}"
+        elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+          echo "::set-output name=deployment_directory::mvc-swap/dev.mvcswap.com"
+          echo "::set-output name=deployment_key::${{ secrets.MVCSWAP_DEV_DEPLOY_KEY }}"
+        else
+          echo "Unknown branch. Skipping deployment."
+          exit 1
+        fi
+        
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -41,6 +56,9 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4
       with:
           folder: build # The folder the action should deploy.
-          token: ${{ secrets.MVCSWAP_DEPLOY_KEY }}
+          token: ${DEPLOYMENT_KEY}
           branch: gh-page # git branch deployed
-          repository-name: mvc-swap/mvc-swap.github.io
+          repository-name: ${DEPLOYMENT_DIRECTORY}
+      env:
+        DEPLOYMENT_DIRECTORY: ${{ steps.set_deployment_directory.outputs.deployment_directory }}
+        DEPLOYMENT_KEY: ${{ steps.set_deployment_directory.outputs.deployment_key }}
