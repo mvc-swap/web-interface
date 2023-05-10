@@ -44,8 +44,7 @@ export default {
 
       const userAddress = await window.metaidwallet.getAddress();
       const tokenBalance = await getTokenBalance();
-      // const network = await mvc.getNetwork();
-      const network = 'mainnet';
+      const network = await window.metaidwallet.getNetwork();
 
       const userBalance = {
         MVC: mvcBalance,
