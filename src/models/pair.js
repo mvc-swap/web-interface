@@ -6,7 +6,6 @@ import { MVCSWAP_CURRENT_PAIR } from 'common/const';
 import debug from 'debug';
 import { getCurrentPair } from 'common/utils';
 import { filterTokens } from 'common/pairUtils';
-import { DEFAULT_PAIR } from '../common/const';
 
 const log = debug('pair');
 //TODO:
@@ -89,7 +88,7 @@ export default {
       if (!currentPair) {
         currentPair = getCurrentPair();
         if (!allPairs[currentPair]) {
-          currentPair = DEFAULT_PAIR;
+          currentPair = Object.keys(allPairs)[0];
         }
       }
       // console.log(currentPair);

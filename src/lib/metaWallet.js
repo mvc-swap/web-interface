@@ -55,7 +55,7 @@ export default {
         userBalance,
         userAddress,
         userAddressShort: strAbbreviation(userAddress, [7, 7]),
-        network,
+        network: network.network,
       };
       //   console.log('accountInfo:', accountInfo);
       return accountInfo;

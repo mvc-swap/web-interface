@@ -4,7 +4,7 @@ export const USDT_PAIR = 'space-usdt';
 export const USDT_TSC_PAIR = 'usdt-tsc';
 export const ACD_PAIR = 'space-acd';
 
-export const MVCSWAP_NETWORK = 'MVCSwapNetwork';
+export const MVCSWAP_NETWORK = 'networkType';
 export const MVCSWAP_CURRENT_PAIR = 'MVCSwapCurrentPair';
 export const MVCSWAP_CURRENT_FARM_PAIR = 'MVCSwapCurrentFarmPair';
 export const MVCSWAP_POOL_SHOW_OP = 'MVCSwapPoolShowOP';
