@@ -24,7 +24,8 @@ const mvctest = 'tmvc-test';
 
 const FEE_TIER1 = 5;
 const FEE_TIER2 = 30;
-const FEE_TIER3 = 100;
+const FEE_TIER3 = 60;
+const FEE_TIER4 = 100;
 
 @connect(({ custom, user, pair, loading }) => {
   const { effects } = loading;
@@ -185,6 +186,14 @@ export default class CreatePair extends Component {
             this.state.selectedFeeTier === FEE_TIER3 ? styles.selected : ''
           }`}
           onClick={() => this.selectOption(FEE_TIER3)}
+        >
+          0.6%
+        </button>
+        <button
+          className={`${styles.optionButton} ${
+            this.state.selectedFeeTier === FEE_TIER4 ? styles.selected : ''
+          }`}
+          onClick={() => this.selectOption(FEE_TIER4)}
         >
           1%
         </button>
