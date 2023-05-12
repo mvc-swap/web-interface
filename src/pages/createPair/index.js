@@ -260,9 +260,6 @@ export default class CreatePair extends Component {
     if (tx_res.msg) {
       return message.error(tx_res.msg);
     }
-    if (tx_res.list) {
-      tx_res = tx_res.list;
-    }
     // if (!tx_res[0] || !tx_res[0].txid || !tx_res[1] || !tx_res[1].txid) {
     //   return message.error(_('txs_fail'));
     // }
@@ -271,12 +268,12 @@ export default class CreatePair extends Component {
 
     const payload = {
       requestIndex,
-      mvcRawTx: tx_res.txHex,
+      mvcRawTx: tx_res.list ? tx_res.list[0].txHex : tx_res.txHex,
       mvcOutputIndex: 0,
       token2ID: token2.genesisTxid,
       feeTier: this.state.selectedFeeTier,
     };
-    // console.log(payload);
+    //console.log('payload:', tx_res, payload);
     let create_data = JSON.stringify(payload);
 
     create_data = await gzip(create_data);
