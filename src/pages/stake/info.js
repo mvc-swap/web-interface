@@ -45,7 +45,7 @@ function Content(props) {
     lockedTokenAmount = 0,
     rewardTokenAmount = 0,
     unlockingTokens_user,
-    rewardAmountPerBlock,
+    rewardAmountPerSecond,
     _yield,
   } = pairData;
   return (
@@ -82,9 +82,9 @@ function Content(props) {
             <div className={styles.item}>
               <div className={styles.label}>{_('payout_per_block')}</div>
               <div className={styles.value}>
-                {rewardAmountPerBlock > 0 ? (
+                {rewardAmountPerSecond > 0 ? (
                   <FormatNumber
-                    value={formatSat(rewardAmountPerBlock, rewardTokenDecimal)}
+                    value={formatSat(rewardAmountPerSecond, rewardTokenDecimal)}
                     suffix={rewardTokenSymbol}
                   />
                 ) : (

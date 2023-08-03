@@ -31,7 +31,7 @@ export default class Deposit extends Component {
       // addLPRate: 0,
       addLP: 0,
       formFinish: false,
-      blockHeight: 0,
+      blockTime: 0,
     };
   }
 
@@ -224,7 +224,7 @@ export default class Deposit extends Component {
       this.updateData();
       this.setState({
         formFinish: true,
-        blockHeight: deposit_res.data.blockHeight,
+        blockTime: deposit_res.data.blockTime,
       });
     } else {
       return message.error(deposit_res.msg);
@@ -280,11 +280,11 @@ export default class Deposit extends Component {
   }
 
   renderResult() {
-    const { addLP, blockHeight } = this.state;
+    const { addLP, blockTime } = this.state;
     return (
       <div className={styles.content}>
         <SuccessResult
-          success_txt={`${_('deposit_success')}@block${blockHeight}`}
+          success_txt={`${_('deposit_success')}@block${blockTime}`}
           done={this.clear}
         >
           <>

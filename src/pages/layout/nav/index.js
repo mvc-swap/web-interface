@@ -23,11 +23,11 @@ const menu = [
   //   key: ['stake', 'vote'],
   //   children: <StakeSubmenu />,
   // },
-  // {
-  //   key: 'farm',
-  //   label: _('farm'),
-  //   path: 'farm',
-  // },
+  {
+    key: 'farm',
+    label: _('farm'),
+    path: 'farm',
+  },
   // {
   //     key: 'explore',
   //     label: _('explore')

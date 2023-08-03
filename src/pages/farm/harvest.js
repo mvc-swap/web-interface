@@ -10,7 +10,7 @@ import _ from 'i18n';
 import { userSignTx } from 'common/signTx';
 
 export default class Harvest extends Component {
-  showModal = (amount, txid, symbol, tokenID, blockHeight, onOk) => {
+  showModal = (amount, txid, symbol, tokenID, blockTime, onOk) => {
     const { iconList } = this.props;
     Modal.info({
       title: '',
@@ -31,7 +31,7 @@ export default class Harvest extends Component {
             <span className={styles.symbol}>{symbol}</span>
           </div>
           <div className={styles.txt}>
-            {_('harvest_success')}@block{blockHeight}
+            {_('harvest_success')}@block{blockTime}
           </div>
           <div className={styles.txid}>{`Txid: ${txid}`}</div>
         </div>
@@ -170,7 +170,7 @@ export default class Harvest extends Component {
         data.txid,
         params.rewardToken.symbol,
         params.rewardToken.tokenID,
-        harvest2_res.data.blockHeight,
+        harvest2_res.data.blockTime,
         update,
       );
     } else {

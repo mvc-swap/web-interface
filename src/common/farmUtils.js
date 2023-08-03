@@ -9,15 +9,18 @@ export async function fetchFarmData(data) {
   let pairs = [];
 
   Object.keys(data).forEach((item) => {
-    if (item !== 'blockHeight') {
-      let { tokenID } = data[item].token;
-      pairs.push(tokenID);
+    if (item !== 'blockTime') {
+      if (data[item].token) {
+        let { tokenID } = data[item].token;
+        pairs.push(tokenID);
 
-      p.push(
-        data[item].custom
-          ? customApi.querySwapInfo(tokenID)
-          : pairApi.querySwapInfo(tokenID),
-      );
+        p.push(
+          data[item].custom
+            ? customApi.querySwapInfo(tokenID)
+            : pairApi.querySwapInfo(tokenID),
+        );
+      }
+      
     }
   });
   const datas_res = await Promise.all(p);
@@ -48,12 +51,12 @@ export function handleFarmData(data, pairsData, tokenPrices) {
     allFarmArr = [];
   // console.log(data)
   Object.keys(data).forEach((id) => {
-    if (id === 'blockHeight') return;
+    if (id === 'blockTime') return;
     let item = {
       ...data[id],
       id,
     };
-    const { poolTokenAmount, rewardAmountPerBlock, rewardToken, token } = data[
+    const { poolTokenAmount, rewardAmountPerSecond, rewardToken, token } = data[
       id
     ];
 
@@ -82,7 +85,7 @@ export function handleFarmData(data, pairsData, tokenPrices) {
     // console.log('lpTotal:',lpTotal.toString(),`${token1_symbol_UpperCase}-Price:`,tokenPrices[token1_symbol_UpperCase] , 'lpTotalUsd:', _total.toString())
 
     const _yield = calcYield(
-      rewardAmountPerBlock,
+      rewardAmountPerSecond,
       rewardToken.decimal,
       tokenPrices[rewardToken.symbol],
       _total,

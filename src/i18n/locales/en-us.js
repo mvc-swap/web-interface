@@ -242,12 +242,12 @@ const texts = {
   harvest: 'Harvest',
   farm_desc:
     'Provide liquidity and deposit your LP tokens to earn and harvest tokens',
-  last_block_height: 'Latest MVC block height:',
+  last_block_time: 'Latest MVC block time:',
   your_deposited_lp: 'Your deposited LP',
   abandoned_deposited_lp:
     'Withdraw all your LP token and yield, deposit LP token to the new contract',
   apy_info:
-    'APR = rewardTokenAmountPerBlock * 144 * 365 *  Token price / TVL * 100%',
+    'APR = rewardTokenAmountPerSecond * 86400 * 365 *  Token price / TVL * 100%',
   deposit: 'Deposit',
   earn: 'Earn',
   deposit_success: 'Deposit successful',
@@ -264,7 +264,7 @@ const texts = {
   harvest_success: 'Yield Withdrawal successful',
   amount: 'Amount',
   payout: 'Payout',
-  payout_tips: 'Payout per MVC block',
+  payout_tips: 'Payout per second',
   deposit_lp: 'Deposit LP',
   withdraw_lp: 'Withdraw LP',
 
@@ -310,7 +310,7 @@ const texts = {
   deposit_rewards: 'Deposit rewards',
   lptoken_genesis_id: 'Genesis ID of LP token',
   reward_genesis_id: 'Genesis ID of reward token',
-  reward_per_block: 'Reward per block',
+  reward_per_second: 'Reward per second',
   duration_in_days: 'Duration in days',
   avg_per_block: 'Avg. 10 mins per MVC block',
   minimum_days: 'Minimum %s days',

@@ -17,7 +17,7 @@ function Harvest(props) {
   const { rewardToken } = stakePairInfo;
   const { symbol, decimal } = rewardToken;
 
-  const showModal = (amount, txid, blockHeight) => {
+  const showModal = (amount, txid, blockTime) => {
     const _amount = formatSat(amount, decimal);
     Modal.info({
       title: '',
@@ -35,7 +35,7 @@ function Harvest(props) {
             </div>
           </div>
           <div className={styles.txt}>
-            {_('harvest_success')}@block{blockHeight}
+            {_('harvest_success')}@block{blockTime}
           </div>
           <div className={styles.txid}>{`Txid: ${txid}`}</div>
         </div>
@@ -152,7 +152,7 @@ function Harvest(props) {
       showModal(
         harvest2_res.rewardTokenAmount,
         harvest2_res.txid,
-        harvest2_res.blockHeight,
+        harvest2_res.blockTime,
       );
       dispatch({
         type: 'stake/getStakeInfo',

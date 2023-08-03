@@ -33,7 +33,7 @@ export default class Withdraw extends Component {
       removeLP: 0,
       formFinish: false,
       price: 0,
-      blockHeight: 0,
+      blockTime: 0,
     };
   }
 
@@ -295,7 +295,7 @@ export default class Withdraw extends Component {
       this.updateData();
       this.setState({
         formFinish: true,
-        blockHeight: withdraw2_res.data.blockHeight,
+        blockTime: withdraw2_res.data.blockTime,
       });
     } else {
       return message.error(withdraw2_res.msg);
@@ -337,11 +337,11 @@ export default class Withdraw extends Component {
   };
 
   renderResult() {
-    const { removeLP, blockHeight } = this.state;
+    const { removeLP, blockTime } = this.state;
     return (
       <div className={styles.content}>
         <SuccessResult
-          success_txt={`${_('withdraw_success')}@block${blockHeight}`}
+          success_txt={`${_('withdraw_success')}@block${blockTime}`}
           done={this.clear}
         >
           <>

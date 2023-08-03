@@ -38,7 +38,7 @@ export default class FarmList extends Component {
       token,
       abandoned = false,
       lockedTokenAmount,
-      rewardAmountPerBlock,
+      rewardAmountPerSecond,
       rewardTokenAmount = 0,
       rewardToken,
       _total = 0,
@@ -61,7 +61,7 @@ export default class FarmList extends Component {
       ? formatSat(lockedTokenAmount, token.decimal)
       : 0;
 
-    const reword_amount = formatSat(rewardAmountPerBlock, decimal);
+    const reword_amount = formatSat(rewardAmountPerSecond, decimal);
 
     let cls = styles.item;
     if (abandoned || symbol === 'TSC/FTT') {
@@ -157,12 +157,13 @@ export default class FarmList extends Component {
   }
 
   render() {
-    const { allFarmPairsArr, blockHeight } = this.props;
+    const { allFarmPairsArr, blockTime } = this.props;
+    const localTime = new Date(blockTime * 1000).toLocaleString();
     return (
       <div className={styles.content}>
         <div className={styles.farm_intro}>{_('farm_desc')}</div>
         <div className={styles.farm_title}>
-          {blockHeight && `${_('last_block_height')} #${blockHeight}`}
+          {blockTime && `${_('last_block_time')} ${localTime}`}
         </div>
         <div className={styles.items}>
           {allFarmPairsArr.length > 0 &&

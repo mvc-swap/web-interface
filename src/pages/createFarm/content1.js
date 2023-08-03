@@ -72,7 +72,7 @@ async function payFee(props) {
   //   return message.error(_('txs_fail'));
   // }
   let fee = BN(txFee).plus(tx_res[0].fee).plus(tx_res[1].fee).toString();
-  const { rewardAmountPerBlock, rewardDays } = values;
+  const { rewardAmountPerSecond, rewardDays } = values;
   const payload = {
     requestIndex,
     mvcRawTx: tx_res[0].txHex,
@@ -83,7 +83,7 @@ async function payFee(props) {
 
     tokenID: token1.genesis,
     rewardTokenID: token2.genesis,
-    rewardAmountPerBlock: formatTok(rewardAmountPerBlock, token2.decimal),
+    rewardAmountPerSecond: formatTok(rewardAmountPerSecond, token2.decimal),
     rewardDays,
   };
   log(payload);
@@ -111,7 +111,7 @@ async function payFee(props) {
 export default function Content1(props) {
   const { token2, values } = props;
   const { symbol, genesisID } = token2;
-  const { rewardAmountPerBlock, rewardDays, total } = values;
+  const { rewardAmountPerSecond, rewardDays, total } = values;
 
   return (
     <div className={styles.content1}>
@@ -127,7 +127,7 @@ export default function Content1(props) {
         <div className={styles.line}>
           <div className={styles.label}>{_('reward')}</div>
           <div className={styles.value}>
-            {rewardAmountPerBlock} {symbol} per MVC block
+            {rewardAmountPerSecond} {symbol} per second 
           </div>
         </div>
         <div className={styles.line}>

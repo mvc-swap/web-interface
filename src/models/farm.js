@@ -28,7 +28,7 @@ export default {
   effects: {
     *getAllPairs({ payload }, { call, put, select }) {
       const res = yield farmApi.queryAllPairs.call(farmApi, payload.address);
-      log('farmApi:', res);
+      console.log('farmApi:', res);
       let { data } = res;
 
       if (res.code !== 0) {
@@ -45,7 +45,7 @@ export default {
         !pairsData[data[currentFarmPair].token.tokenID]
       ) {
         Object.keys(data).forEach((item) => {
-          if (item !== 'blockHeight' && pairsData[data[item].token.tokenID]) {
+          if (item !== 'blockTime' && pairsData[data[item].token.tokenID]) {
             currentFarmPair = item;
             // console.log('localstorage.set:', item)
             localStorage.setItem(MVCSWAP_CURRENT_FARM_PAIR, item || '');
@@ -69,7 +69,7 @@ export default {
           allFarmPairsArr: allFarmArr,
           currentFarmPair,
           pairsData,
-          blockHeight: data.blockHeight,
+          blockTime: data.blockTime,
         },
       });
       return {
@@ -102,7 +102,7 @@ export default {
         payload: {
           allFarmPairs: allFarmData,
           allFarmPairsArr: allFarmArr,
-          blockHeight: data.blockHeight,
+          blockTime: data.blockTime,
         },
       });
 

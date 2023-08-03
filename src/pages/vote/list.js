@@ -9,7 +9,7 @@ function List(props) {
     dispatch,
     currentVoteIndex,
     loading,
-    blockHeight,
+    blockTime,
   } = props;
 
   const detail = (index) => {
@@ -52,7 +52,7 @@ function List(props) {
       <div className={styles.list}>
         {voteInfoArr.map((item, index, arr) => {
           const currentVoteInfo = item;
-          const { title, beginBlockNum, endBlockNum, id } = currentVoteInfo;
+          const { title, beginBlockTime, endBlockTime, id } = currentVoteInfo;
           return (
             <div
               className={
@@ -68,10 +68,10 @@ function List(props) {
                 <div className={styles.status}>{status(currentVoteInfo)}</div>
               </div>
               <div className={styles.desc}>
-                {arr.length - index} {_('from_block')} #{beginBlockNum}{' '}
-                {_('to_block')} #{endBlockNum}.{' '}
-                {endBlockNum > blockHeight &&
-                  _('vesting_term', endBlockNum - blockHeight)}
+                {arr.length - index} {_('from_block')} #{beginBlockTime}{' '}
+                {_('to_block')} #{endBlockTime}.{' '}
+                {endBlockTime > blockTime &&
+                  _('vesting_term', endBlockTime - blockTime)}
               </div>
             </div>
           );

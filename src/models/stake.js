@@ -14,7 +14,7 @@ export default {
     pairData: {},
     voteInfoArr: [],
     currentVoteIndex: 0,
-    blockHeight: 0,
+    blockTime: 0,
   },
 
   subscriptions: {
@@ -31,10 +31,10 @@ export default {
       let allPairs = [];
       if (allpairs_res.code === 0) {
         const { data } = allpairs_res;
-        const { blockHeight } = data;
-        // console.log('blockHeight', blockHeight)
+        const { blockTime } = data;
+        // console.log('blockTime', blockTime)
         Object.keys(data).forEach((item) => {
-          if (item !== 'blockHeight') {
+          if (item !== 'blockTime') {
             allPairs.push({ ...data[item], name: item });
           }
         });
@@ -48,7 +48,7 @@ export default {
             allStakePairs: allPairs,
             currentStakePair: currrentPair,
             stakePairInfo: _stakePairInfo,
-            blockHeight: parseInt(blockHeight),
+            blockTime: parseInt(blockTime),
           },
         });
       } else {
@@ -61,7 +61,7 @@ export default {
       }
     },
     *getStakeInfo({ payload }, { call, put, select }) {
-      const { currentStakePair, stakePairInfo, blockHeight } = yield select(
+      const { currentStakePair, stakePairInfo, blockTime } = yield select(
         (state) => state.stake,
       );
       const { accountInfo } = yield select((state) => state.user);
@@ -85,7 +85,7 @@ export default {
           unlockingTokens.forEach((item) => {
             const { expired, amount } = item;
             const _amount = formatSat(amount, decimal);
-            let left = parseInt(expired) - parseInt(blockHeight);
+            let left = parseInt(expired) - parseInt(blockTime);
             if (left <= 0) left = 0;
             const freeIndex = arr.findIndex((v) => v.left === left);
             if (freeIndex > -1) {
@@ -103,7 +103,7 @@ export default {
 
         res.data.unlockingTokens_user = arr;
 
-        const { poolTokenAmount = 0, rewardAmountPerBlock } = res.data;
+        const { poolTokenAmount = 0, rewardAmountPerSecond } = res.data;
         if (!poolTokenAmount) {
           res.data._yield = 0;
         } else {
@@ -116,7 +116,7 @@ export default {
             .multipliedBy(tokenPrices[token.symbol]);
 
           res.data._yield = calcYield(
-            rewardAmountPerBlock,
+            rewardAmountPerSecond,
             rewardToken.decimal,
             tokenPrices[rewardToken.symbol],
             _total,
@@ -135,7 +135,7 @@ export default {
       });
     },
     *getVoteInfo({ payload }, { call, put, select }) {
-      const { currentStakePair, blockHeight, currentVoteIndex } = yield select(
+      const { currentStakePair, blockTime, currentVoteIndex } = yield select(
         (state) => state.stake,
       );
       if (!currentStakePair) return;
@@ -153,8 +153,8 @@ export default {
           // , passItemIndex = -1;
           const {
             voteSumData,
-            beginBlockNum,
-            endBlockNum,
+            beginBlockTime,
+            endBlockTime,
             // minVoteAmount,
           } = data[item];
           voteSumData.forEach((v) => {
@@ -169,19 +169,19 @@ export default {
           // console.log(rate)
           data[item].total = total;
           data[item].voteSumRate = rate;
-          data[item].unStated = beginBlockNum > parseInt(blockHeight);
-          data[item].finished = endBlockNum < parseInt(blockHeight);
+          data[item].unStated = beginBlockTime > parseInt(blockTime);
+          data[item].finished = endBlockTime < parseInt(blockTime);
           dataArr.push({
             ...data[item],
             id: item,
             total,
             voteSumRate: rate,
-            unStated: beginBlockNum > parseInt(blockHeight),
-            finished: endBlockNum < parseInt(blockHeight),
+            unStated: beginBlockTime > parseInt(blockTime),
+            finished: endBlockTime < parseInt(blockTime),
           });
         });
 
-        dataArr.sort((a, b) => b.beginBlockNum - a.beginBlockNum);
+        dataArr.sort((a, b) => b.beginBlockTime - a.beginBlockTime);
 
         yield put({
           type: 'save',

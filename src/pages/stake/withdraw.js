@@ -16,7 +16,7 @@ function Withdraw(props) {
   const { rewardToken } = stakePairInfo;
   const { symbol, decimal } = rewardToken;
 
-  const showModal = (txid, blockHeight) => {
+  const showModal = (txid, blockTime) => {
     const _amount = formatSat(amount, decimal);
     Modal.info({
       title: '',
@@ -34,7 +34,7 @@ function Withdraw(props) {
             </div>
           </div>
           <div className={styles.txt}>
-            {_('withdraw_success')}@block{blockHeight}
+            {_('withdraw_success')}@block{blockTime}
           </div>
           <div className={styles.txid}>{`Txid: ${txid}`}</div>
         </div>
@@ -148,7 +148,7 @@ function Withdraw(props) {
     // console.log(withdraw2_res)
     if (withdraw2_res.txid) {
       message.success('success');
-      showModal(withdraw2_res.txid, withdraw2_res.blockHeight);
+      showModal(withdraw2_res.txid, withdraw2_res.blockTime);
       dispatch({
         type: 'stake/getStakeInfo',
       });

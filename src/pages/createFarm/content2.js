@@ -15,7 +15,7 @@ export default function Content2(props) {
     mvcPrice,
     close,
   } = props;
-  const { rewardAmountPerBlock, rewardDays, total } = values;
+  const { rewardAmountPerSecond, rewardDays, total } = values;
   const fee = formatAmount(BN(result.fee).multipliedBy(mvcPrice), 4);
 
   return (
@@ -40,7 +40,7 @@ export default function Content2(props) {
           <div className={styles.line}>
             <div className={styles.label}>{_('reward')}</div>
             <div className={styles.value}>
-              {rewardAmountPerBlock} {token2.symbol} per MVC block
+              {rewardAmountPerSecond} {token2.symbol} per MVC block
             </div>
           </div>
           <div className={styles.line}>

@@ -448,12 +448,12 @@ export const formatRate = (data, dec = 2) => {
   return (data * 100).toFixed(dec) + '%';
 };
 
-export function calcYield(rewardAmountPerBlock, decimal, token_price, _total) {
-  const reword_amount = formatSat(rewardAmountPerBlock, decimal);
+export function calcYield(rewardAmountPerSecond, decimal, token_price, _total) {
+  const reword_amount = formatSat(rewardAmountPerSecond, decimal);
 
   // console.log('token_price:', token_price)
   let _yield = BigNumber(reword_amount)
-    .multipliedBy(144)
+    .multipliedBy(86400)
     .multipliedBy(365)
     .multipliedBy(token_price)
     .div(_total)

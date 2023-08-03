@@ -80,10 +80,10 @@ export default class CreateFarm extends Component {
     );
   };
 
-  totalReward(rewardAmountPerBlock, rewardDays) {
-    return BN(6 * 24)
+  totalReward(rewardAmountPerSecond, rewardDays) {
+    return BN(86400)
       .multipliedBy(rewardDays)
-      .multipliedBy(rewardAmountPerBlock)
+      .multipliedBy(rewardAmountPerSecond)
       .toString();
   }
 
@@ -92,7 +92,7 @@ export default class CreateFarm extends Component {
       step: 1,
       values: {
         ...values,
-        total: this.totalReward(values.rewardAmountPerBlock, values.rewardDays),
+        total: this.totalReward(values.rewardAmountPerSecond, values.rewardDays),
       },
     });
   };
@@ -125,9 +125,9 @@ export default class CreateFarm extends Component {
 
         <div className={styles.row}>
           <div className={styles.col}>
-            <div className={styles.title}>{_('reward_per_block')}</div>
+            <div className={styles.title}>{_('reward_per_second')}</div>
             <div className={styles.desc}>{_('avg_per_block')}</div>
-            <FormItem name="rewardAmountPerBlock" rules={[{ required: true }]}>
+            <FormItem name="rewardAmountPerSecond" rules={[{ required: true }]}>
               <InputNumber min={0} />
             </FormItem>
           </div>

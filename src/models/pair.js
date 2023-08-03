@@ -219,8 +219,14 @@ export default {
     },
 
     *getUSDPrice({ payload }, { call, put, select }) {
-      const res = yield pairApi.queryAllPairs.call(pairApi);
-      if (res.code !== 0) return;
+      let res
+      try {
+        res = yield pairApi.queryAllPairs.call(pairApi);
+      } catch (error) {
+        console.log(error)
+        return
+      }
+      if (!res || res.code !== 0) return;
       // console.log('allPairs:', res);
       let tokenPrices = {};
       const USDTDecimal = 6;
