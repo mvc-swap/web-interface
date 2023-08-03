@@ -15,6 +15,7 @@ import styles from './index.less';
 import _ from 'i18n';
 import { SuccessResult } from 'components/result';
 import { Arrow } from 'components/ui';
+import { OP_DEPOSIT } from '../../common/const';
 
 @connect(({ user, farm, loading }) => {
   const { effects } = loading;
@@ -149,7 +150,7 @@ export default class Deposit extends Component {
       payload: {
         symbol: currentFarmPair,
         address: userAddress,
-        op: 1,
+        op: OP_DEPOSIT,
       },
     });
 

@@ -33,7 +33,7 @@ class Farm extends BaseAPI {
   }
 
   reqSwap(params) {
-    return this._request('reqfarmargs', params, 'POST');
+    return this._request('reqstakeargs', params, 'POST');
   }
 
   deposit(params) {

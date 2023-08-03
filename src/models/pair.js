@@ -28,7 +28,7 @@ export default {
     LP: 100000,
     iconList: '',
     tokenPrices: {},
-    currentToken1: 'MVC',
+    currentToken1: 'SPACE',
     currentToken2: '',
   },
 
@@ -233,8 +233,8 @@ export default {
       Object.keys(res.data).forEach((key) => {
         const item = res.data[key];
         const { poolAmount, token1Amount, token2Amount, token1, token2 } = item;
-        const token1SymbolUpper = token1.symbol.toUpperCase();
-        const token2SymbolUpper = token2.symbol.toUpperCase();
+        const token1SymbolUpper = token1.symbol;
+        const token2SymbolUpper = token2.symbol;
         if (!tokenPrices[token1SymbolUpper]) {
           tokenPrices[token1SymbolUpper] =
             parseFloat(poolAmount) > 0

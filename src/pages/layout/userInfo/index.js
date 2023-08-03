@@ -268,8 +268,8 @@ export default class UserInfo extends Component {
               />
             }
             trigger="click"
-            visible={pop_visible}
-            onVisibleChange={this.handleVisibleChange}
+            open={pop_visible}
+            onOpenChange={this.handleVisibleChange}
             overlayClassName={styles.popover}
             placement="bottom"
             getPopupContainer={() => document.getElementById('J_Page')}

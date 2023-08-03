@@ -8,6 +8,7 @@ import { formatSat } from 'common/utils';
 import styles from './index.less';
 import _ from 'i18n';
 import { userSignTx } from 'common/signTx';
+import { OP_HARVEST } from 'common/const';
 
 export default class Harvest extends Component {
   showModal = (amount, txid, symbol, tokenID, blockTime, onOk) => {
@@ -96,7 +97,7 @@ export default class Harvest extends Component {
       payload: {
         symbol: currentFarmPair,
         address: userAddress,
-        op: 3,
+        op: OP_HARVEST,
       },
     });
 

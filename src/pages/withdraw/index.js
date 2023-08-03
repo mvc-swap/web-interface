@@ -17,6 +17,7 @@ import { BtnWait } from 'components/btns';
 import { SuccessResult } from 'components/result';
 import { Arrow } from 'components/ui';
 import { userSignTx } from 'common/signTx';
+import { OP_WITHDRAW } from '../../common/const';
 
 @connect(({ user, farm, loading }) => {
   const { effects } = loading;
@@ -216,7 +217,7 @@ export default class Withdraw extends Component {
       payload: {
         symbol: currentFarmPair,
         address: userAddress,
-        op: 2,
+        op: OP_WITHDRAW,
       },
     });
 

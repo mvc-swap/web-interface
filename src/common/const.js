@@ -1,8 +1,6 @@
-export const DEFAULT_NET = 'maintest';
-export const DEFAULT_PAIR = 'space-mtt';
+export const DEFAULT_NET = 'mainnet';
+export const DEFAULT_PAIR = 'space-usdt';
 export const USDT_PAIR = 'space-usdt';
-export const USDT_TSC_PAIR = 'usdt-tsc';
-export const ACD_PAIR = 'space-acd';
 
 export const MVCSWAP_NETWORK = 'MVCSwapNetwork';
 export const MVCSWAP_CURRENT_PAIR = 'MVCSwapCurrentPair';
@@ -20,3 +18,11 @@ export const COLOR2 = '#EB5757';
 
 // export const StableTokenPair = ['MVC-USDT', 'MVC-ACD'];
 export const StableToken = ['USDT', 'ACD'];
+
+export const OP_DEPOSIT = 1
+export const OP_WITHDRAW = 2
+export const OP_PRE_WITHDRAW = 3
+export const OP_FINISH_WITHDRAW = 4
+export const OP_HARVEST = 5
+export const OP_ADMIN = 6
+export const OP_VOTE = 7
