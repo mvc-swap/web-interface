@@ -19,6 +19,7 @@ interface CssExports {
   'icon': string;
   'input': string;
   'item': string;
+  'item_bottom': string;
   'item_data': string;
   'item_detail_line_2': string;
   'item_header': string;

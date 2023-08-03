@@ -267,6 +267,8 @@ const texts = {
   payout_tips: 'Payout per second',
   deposit_lp: 'Deposit LP',
   withdraw_lp: 'Withdraw LP',
+  start_time: 'Start Time',
+  end_time: 'End Time',
 
   create_new_pair: 'Create pair',
   create_newpair: 'Create new token pair',

@@ -16,8 +16,7 @@ export const REFRESH_CHARTDAT = 60;
 export const COLOR1 = '#2BB696';
 export const COLOR2 = '#EB5757';
 
-// export const StableTokenPair = ['MVC-USDT', 'MVC-ACD'];
-export const StableToken = ['USDT', 'ACD'];
+export const StableToken = ['USDT', ];
 
 export const OP_DEPOSIT = 1
 export const OP_WITHDRAW = 2

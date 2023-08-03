@@ -69,7 +69,7 @@ export function handleFarmData(data, pairsData, tokenPrices) {
     const { token1, swapToken1Amount, swapLpAmount } = pairData;
     // console.log(pairData.lptoken.symbol)
 
-    const token1_symbol_UpperCase = token1.symbol.toUpperCase();
+    const token1_symbol_UpperCase = token1.symbol;
     // console.log(token1_symbol_UpperCase);
 
     let lpTotal = calcLPTotal(

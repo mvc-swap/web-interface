@@ -259,6 +259,8 @@ const texts = {
   payout_tips: '每秒的奖励',
   deposit_lp: '锁仓LP',
   withdraw_lp: '提取LP',
+  start_time: '开始时间',
+  end_time: '结束时间',
 
   create_new_pair: '创建交易对',
   create_newpair: '上架新交易对',

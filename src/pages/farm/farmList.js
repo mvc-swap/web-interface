@@ -39,6 +39,8 @@ export default class FarmList extends Component {
       abandoned = false,
       lockedTokenAmount,
       rewardAmountPerSecond,
+      rewardBeginTime = 0,
+      rewardEndTime = 0,
       rewardTokenAmount = 0,
       rewardToken,
       _total = 0,
@@ -51,6 +53,8 @@ export default class FarmList extends Component {
     const { token1, token2 } = pairsData[tokenID];
     const symbol1 = token1.symbol.toUpperCase();
     const symbol2 = token2.symbol.toUpperCase();
+    const rewardBeginTimeStr = new Date(rewardBeginTime * 1000).toLocaleString(); 
+    const rewardEndTimeStr = new Date(rewardEndTime * 1000).toLocaleString();
 
     const { decimal } = rewardToken;
 
@@ -151,6 +155,15 @@ export default class FarmList extends Component {
             {...this.props}
             rewardTokenAmount={rewardTokenAmount}
           />
+        </div>
+
+        <div>
+          <div className={styles.item_bottom}>
+            <div className={styles.label}>{_('start_time')}:</div>
+            <div className={styles.label}>{rewardBeginTimeStr}</div>
+            <div className={styles.label}>{_('end_time')}:</div>
+            <div className={styles.label}>{rewardEndTimeStr}</div>
+          </div>
         </div>
       </div>
     );
