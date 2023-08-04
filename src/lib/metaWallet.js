@@ -122,8 +122,8 @@ export default {
   },
 
   signTx: async (params) => {
-    const res = await window.metaidwallet.signTransactions({ list: [params] });
-    // console.log(res); debugger
-    return res.sigList[0];
+    const res = await window.metaidwallet.signTransaction({ transaction: params });
+    //console.log(res); //debugger
+    return res.signature;
   },
 };

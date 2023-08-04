@@ -156,7 +156,7 @@ export default class Harvest extends Component {
       requestIndex,
       { symbol: currentFarmPair },
     );
-    if (harvest2_res.code && harvest2_res.msg) {
+    if (harvest2_res.code !== 0 && harvest2_res.msg) {
       return message.error(harvest2_res.msg);
     }
     const { code, data, msg } = harvest2_res;
