@@ -13,6 +13,7 @@ import { OP_HARVEST } from 'common/const';
 export default class Harvest extends Component {
   showModal = (amount, txid, symbol, tokenID, blockTime, onOk) => {
     const { iconList } = this.props;
+    const timeStr = new Date(blockTime * 1000).toLocaleString();
     Modal.info({
       title: '',
       content: (
@@ -32,7 +33,7 @@ export default class Harvest extends Component {
             <span className={styles.symbol}>{symbol}</span>
           </div>
           <div className={styles.txt}>
-            {_('harvest_success')}@block{blockTime}
+            {_('harvest_success')}@{timeStr}
           </div>
           <div className={styles.txid}>{`Txid: ${txid}`}</div>
         </div>

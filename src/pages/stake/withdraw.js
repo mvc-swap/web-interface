@@ -18,6 +18,7 @@ function Withdraw(props) {
 
   const showModal = (txid, blockTime) => {
     const _amount = formatSat(amount, decimal);
+    const timeStr = new Date(blockTime * 1000).toLocaleString();
     Modal.info({
       title: '',
       content: (
@@ -34,7 +35,7 @@ function Withdraw(props) {
             </div>
           </div>
           <div className={styles.txt}>
-            {_('withdraw_success')}@block{blockTime}
+            {_('withdraw_success')}@{timeStr}
           </div>
           <div className={styles.txid}>{`Txid: ${txid}`}</div>
         </div>

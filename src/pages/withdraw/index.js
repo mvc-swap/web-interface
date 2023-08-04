@@ -339,10 +339,11 @@ export default class Withdraw extends Component {
 
   renderResult() {
     const { removeLP, blockTime } = this.state;
+    const timeStr = new Date(blockTime * 1000).toLocaleString();
     return (
       <div className={styles.content}>
         <SuccessResult
-          success_txt={`${_('withdraw_success')}@block${blockTime}`}
+          success_txt={`${_('withdraw_success')}@${timeStr}`}
           done={this.clear}
         >
           <>

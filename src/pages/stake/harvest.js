@@ -19,6 +19,7 @@ function Harvest(props) {
 
   const showModal = (amount, txid, blockTime) => {
     const _amount = formatSat(amount, decimal);
+    const timeStr = new Date(blockTime * 1000).toLocaleString();
     Modal.info({
       title: '',
       content: (
@@ -35,7 +36,7 @@ function Harvest(props) {
             </div>
           </div>
           <div className={styles.txt}>
-            {_('harvest_success')}@block{blockTime}
+            {_('harvest_success')}@{timeStr}
           </div>
           <div className={styles.txid}>{`Txid: ${txid}`}</div>
         </div>

@@ -41,11 +41,11 @@ class Farm extends BaseAPI {
   }
 
   withdraw(params) {
-    return this._request('withdraw', params, 'POST');
+    return this._request('directwithdraw', params, 'POST');
   }
 
   withdraw2(params) {
-    return this._request('withdraw2', params, 'POST');
+    return this._request('directwithdraw2', params, 'POST');
   }
 
   harvest(params) {

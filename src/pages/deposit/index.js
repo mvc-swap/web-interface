@@ -282,10 +282,11 @@ export default class Deposit extends Component {
 
   renderResult() {
     const { addLP, blockTime } = this.state;
+    const timeStr = new Date(blockTime * 1000).toLocaleString();
     return (
       <div className={styles.content}>
         <SuccessResult
-          success_txt={`${_('deposit_success')}@block${blockTime}`}
+          success_txt={`${_('deposit_success')}@${timeStr}`}
           done={this.clear}
         >
           <>
