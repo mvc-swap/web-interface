@@ -154,8 +154,8 @@ export default class Deposit extends Component {
       },
     });
 
-    if (res.code) {
-      return message.error(res.msg);
+    if (res.code !== 0) {
+      return message.error(res.msg || 'unknown error');
     }
 
     const { tokenToAddress, requestIndex, mvcToAddress, txFee } = res.data;

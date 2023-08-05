@@ -141,8 +141,8 @@ export default class Harvest extends Component {
       },
     });
 
-    if (harvest_res.code) {
-      return message.error(harvest_res.msg);
+    if (harvest_res.code !== 0) {
+      return message.error(harvest_res.msg || 'unknown error');
     }
     // const harvest2_res = await this.harvest2(
     //   harvest_res.data,

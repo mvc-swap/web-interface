@@ -287,8 +287,10 @@ export default class Withdraw extends Component {
       { symbol: currentFarmPair },
     );
 
-    if (withdraw2_res.code && withdraw2_res.msg) {
-      return message.error(withdraw2_res.msg);
+    //console.log('withdraw2_res:', withdraw2_res)
+
+    if (withdraw2_res.code !== 0) {
+      return message.error(withdraw2_res.msg || 'unknown error');
     }
 
     if (!withdraw2_res.code && withdraw2_res.data.txid) {
