@@ -329,6 +329,7 @@ export function strAbbreviation(str, arr = [7, 5]) {
 
 export function isTestNet() {
   const query = querystring.parse(window.location.search);
+  //console.log('isTestNet: query.network', query.network)
 
   if (typeof query.network === 'undefined') {
     const net = window.localStorage.getItem(MVCSWAP_NETWORK) || DEFAULT_NET;

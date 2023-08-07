@@ -220,7 +220,7 @@ const texts = {
   total_lp: 'LP(%s)总量',
   txs_fail: '交易失败',
   notice: '通知',
-  notice2709: '⚠️ MVCSwap目前只支持测试网',
+  notice2709: '⚠️ MVCSwap的交易对是由用户自主创建的。在交易时需注意可能的风险',
 
   cant_remove: '您没有可移除的流动性资产',
   insufficient_balance: '您的流动性资产不足',

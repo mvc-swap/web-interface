@@ -68,7 +68,7 @@ export default class Pool extends Component {
         />
         <div className={styles.main_title}>
           <h2>
-            <PairIcon keyword="pair" txt="LP(name2/name1)" />
+            <PairIcon keyword="pair" txt="LP(name1/name2)" />
           </h2>
         </div>
         <Pair
