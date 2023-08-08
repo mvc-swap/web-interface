@@ -1,9 +1,10 @@
 import webWallet from 'mvc-web-wallet';
 import { formatSat, strAbbreviation } from 'common/utils';
+import { MVCSWAP_WALLET_URL } from 'common/const';
 const { Mvc } = webWallet;
 
 const mvc = new Mvc({
-  pageUrl: 'https://wallet.mvcswap.com/',
+  pageUrl: MVCSWAP_WALLET_URL,
 });
 
 const getMvcBalance = async () => {

@@ -52,6 +52,7 @@ export default {
         });
       } catch (error) {
         console.log(error.toString());
+        console.log(error.stack);
         return { msg: error.toString() };
       }
 
@@ -142,12 +143,12 @@ export default {
       try {
         const _wallet = Wallet({ type });
         const res = yield _wallet.transferAll(payload);
-        // const res = yield mvc.transferAll(type, datas);
-        // console.log(res);
-        log(res);
+        console.log(res);
         if (res.list) return res.list;
         return res;
       } catch (error) {
+        console.log(error)
+        console.log(error.stack)
         return { msg: error.message || error.toString() };
       }
     },

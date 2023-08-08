@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import QRCode from 'qrcode.react';
 import { DollarOutlined } from '@ant-design/icons';
 import { AppTitle } from 'components/ui';
+import { MVCSWAP_WALLET_URL } from 'common/const';
 import CustomIcon from 'components/icon';
 import Clipboard from 'components/clipboard';
 import FormatNumber from 'components/formatNumber';
@@ -97,7 +98,7 @@ export default class Popup extends Component {
               <DollarOutlined />
               <a
                 target="_blank"
-                href="https://wallet.mvcswap.com/"
+                href={MVCSWAP_WALLET_URL}
                 className={styles.name}
               >
                 {_('withdraw')}

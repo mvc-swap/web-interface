@@ -5,8 +5,7 @@ import { isTestNet } from 'common/utils';
 class Farm extends BaseAPI {
   _request(api, params = {}, method = 'GET', url = '', catchError) {
     if (isTestNet()) {
-      //TODO: this.baseUrl = 'https://api.mvcswap.com/farm/test/';
-      this.baseUrl = 'http://127.0.0.1:45100/';
+      this.baseUrl = 'https://api.mvcswap.com/farm/test/';
     } else {
       this.baseUrl = 'https://api.mvcswap.com/farm/';
       // console.log(TS_ENV)
