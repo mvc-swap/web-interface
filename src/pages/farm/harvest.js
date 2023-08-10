@@ -13,7 +13,7 @@ import { OP_HARVEST } from 'common/const';
 export default class Harvest extends Component {
   showModal = (amount, txid, symbol, tokenID, blockTime, onOk) => {
     const { iconList } = this.props;
-    const timeStr = new Date(blockTime * 1000).toLocaleString();
+    const timeStr = new Date(blockTime * 1000).toLocaleString('en-GB');
     Modal.info({
       title: '',
       content: (

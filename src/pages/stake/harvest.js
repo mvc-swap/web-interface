@@ -19,7 +19,7 @@ function Harvest(props) {
 
   const showModal = (amount, txid, blockTime) => {
     const _amount = formatSat(amount, decimal);
-    const timeStr = new Date(blockTime * 1000).toLocaleString();
+    const timeStr = new Date(blockTime * 1000).toLocaleString('en-GB');
     Modal.info({
       title: '',
       content: (

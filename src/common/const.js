@@ -26,5 +26,4 @@ export const OP_HARVEST = 5
 export const OP_ADMIN = 6
 export const OP_VOTE = 7
 
-//export const MVCSWAP_WALLET_URL = 'https://wallet.mvcswap.com/';
-export const MVCSWAP_WALLET_URL = 'http://127.0.0.1:3000/';
+export const MVCSWAP_WALLET_URL = 'https://wallet.mvcswap.com/';

@@ -53,8 +53,8 @@ export default class FarmList extends Component {
     const { token1, token2 } = pairsData[tokenID];
     const symbol1 = token1.symbol.toUpperCase();
     const symbol2 = token2.symbol.toUpperCase();
-    const rewardBeginTimeStr = new Date(rewardBeginTime * 1000).toLocaleString(); 
-    const rewardEndTimeStr = new Date(rewardEndTime * 1000).toLocaleString();
+    const rewardBeginTimeStr = new Date(rewardBeginTime * 1000).toLocaleString('en-GB'); 
+    const rewardEndTimeStr = new Date(rewardEndTime * 1000).toLocaleString('en-GB');
 
     const { decimal } = rewardToken;
 
@@ -65,7 +65,7 @@ export default class FarmList extends Component {
       ? formatSat(lockedTokenAmount, token.decimal)
       : 0;
 
-    const reword_amount = formatSat(rewardAmountPerSecond, decimal);
+    const reword_amount = formatSat(rewardAmountPerSecond * 86400, decimal);
 
     let cls = styles.item;
     if (abandoned || symbol === 'TSC/FTT') {
@@ -159,10 +159,8 @@ export default class FarmList extends Component {
 
         <div>
           <div className={styles.item_bottom}>
-            <div className={styles.label}>{_('start_time')}:</div>
-            <div className={styles.label}>{rewardBeginTimeStr}</div>
-            <div className={styles.label}>{_('end_time')}:</div>
-            <div className={styles.label}>{rewardEndTimeStr}</div>
+            <div className={styles.label}>{_('start_time')}:  {rewardBeginTimeStr}</div>
+            <div className={styles.label}>{_('end_time')}:  {rewardEndTimeStr}</div>
           </div>
         </div>
       </div>
@@ -171,7 +169,7 @@ export default class FarmList extends Component {
 
   render() {
     const { allFarmPairsArr, blockTime } = this.props;
-    const localTime = new Date(blockTime * 1000).toLocaleString();
+    const localTime = new Date(blockTime * 1000).toLocaleString('en-GB');
     return (
       <div className={styles.content}>
         <div className={styles.farm_intro}>{_('farm_desc')}</div>
