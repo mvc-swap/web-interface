@@ -167,14 +167,6 @@ export default class CreatePair extends Component {
         <div className={styles.title}>{_('choose_fee_tier')}</div>
         <button
           className={`${styles.optionButton} ${
-            this.state.selectedFeeTier === FEE_TIER1 ? styles.selected : ''
-          }`}
-          onClick={() => this.selectOption(FEE_TIER1)}
-        >
-          0.05%
-        </button>
-        <button
-          className={`${styles.optionButton} ${
             this.state.selectedFeeTier === FEE_TIER2 ? styles.selected : ''
           }`}
           onClick={() => this.selectOption(FEE_TIER2)}
