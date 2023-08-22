@@ -13,9 +13,6 @@ export default function Header() {
       <Nav />
       <div className={styles.user_info}>
         <UserInfo />
-        <div className={styles.hidden_mobile}>
-          <Lang />
-        </div>
       </div>
     </header>
   );
