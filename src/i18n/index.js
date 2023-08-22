@@ -4,17 +4,16 @@ import querystring from 'querystringify';
 const zh_cn = require('./locales/zh-ch');
 const en_us = require('./locales/en-us');
 
-const query = querystring.parse(window.location.search);
+/*const query = querystring.parse(window.location.search);
 let _lang = query.lang;
 if (_lang) _lang = _lang.toLowerCase();
 
 if (_lang !== 'en-us' && _lang !== 'zh-cn') {
   _lang = Cookie.get('lang') || navigator.language;
-}
+}*/
 
-// let locale = zh_cn;
-export const lang = _lang;
-//export const lang = 'en-us';
+//export const lang = _lang;
+export const lang = 'en-us';
 
 const langData = {
   'en-us': en_us,

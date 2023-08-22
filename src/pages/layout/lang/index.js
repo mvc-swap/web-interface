@@ -14,7 +14,7 @@ const cookieDomain =
     .join('.');
 
 // 语言选择保存在cookie中
-let currentLang = Cookie.get('lang') || navigator.language;
+/*let currentLang = Cookie.get('lang') || navigator.language;
 if (currentLang) currentLang = currentLang.toLowerCase();
 // let currentLang = window.localStorage.getItem(LOCAL_NAME.LANG);
 let langMatch = false;
@@ -28,7 +28,8 @@ for (let item of langs) {
 // default en
 if (!langMatch) {
   currentLang = 'en-us';
-}
+}*/
+const currentLang = 'en-us'
 
 // 生成语言选择的下拉菜单
 let currentLangLabel;

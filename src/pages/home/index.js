@@ -39,9 +39,6 @@ export default class Home extends Component {
                 >
                   {_('launch_app')}
                 </Button>
-                <div className={styles.hidden_mobile}>
-                  <Lang />
-                </div>
               </div>
             </div>
           </nav>
