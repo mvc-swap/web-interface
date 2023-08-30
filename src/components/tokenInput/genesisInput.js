@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { Input, Form } from 'antd';
+import { Input, Form, message } from 'antd';
 import { jc } from 'common/utils';
 import TokenLogo from 'components/tokenicon';
 import styles from './genesis.less';
@@ -39,6 +39,8 @@ export default class GenesisTokenInput extends Component {
       if (e.target.value.toUpperCase() === 'SPACE') return;
       if (res && !res.code) {
         token = res;
+      } else {
+        message.error(res.msg)
       }
     }
     // console.log(token)
