@@ -268,7 +268,7 @@ const texts = {
   deposit_lp: 'Deposit LP',
   withdraw_lp: 'Withdraw LP',
 
-  create_new_pair: 'Create pair',
+  create_new_pair: 'Create',
   create_newpair: 'Create new token pair',
   newpair_title: 'MVCSwap requirements to create a new token pair',
   newpair_desc1: 'Agree you’re not a scammer or rug puller',
