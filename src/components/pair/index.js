@@ -48,6 +48,14 @@ export default function Pair(props) {
         </div>
         <div className={styles.info_item}>
           <div className={styles.info_label}>
+            {_('volume_24h')}
+          </div>
+          <div className={styles.info_value}>
+            <FormatNumber value={formatSat(totalVolume24h)} />
+          </div>
+        </div>
+        <div className={styles.info_item}>
+          <div className={styles.info_label}>
             {_('fee_24h')}
           </div>
           <div className={styles.info_value}>
