@@ -76,6 +76,8 @@ const texts = {
   pool_share: 'Prices and pool share',
   pooled: 'Pooled %s',
   your_share: 'Your share of Pool',
+  volume_24h: 'Volume(24h) in SPACE',
+  fee_24h: 'LP Fees(24h) in SPACE',
   select_a_token_pair: 'Select a token pair',
   supply_liq: 'Supply liquidity',
   pair_created: 'Pair successfully created',
