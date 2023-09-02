@@ -356,11 +356,16 @@ export function parseUrl(hash) {
     hash.indexOf('pool/remove') < 0 &&
     hash.indexOf('pool/create') < 0
   ) {
-    currentPair = hash2;
+    currentPair = decodeURI(hash2);
+  }
+
+  let type = 'pair';
+  if ('farm'.indexOf(hash1) > -1) {
+    type = 'farm';
   }
 
   currentPair &&
-    window.localStorage.setItem(MVCSWAP_CURRENT_FARM_PAIR, currentPair);
+    window.localStorage.setItem(type === 'farm' ? MVCSWAP_CURRENT_FARM_PAIR : MVCSWAP_CURRENT_PAIR, currentPair);
   return currentPair;
 }
 
