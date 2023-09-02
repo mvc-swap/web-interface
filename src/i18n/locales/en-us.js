@@ -228,7 +228,7 @@ const texts = {
   total_lp: 'Total LP(%s) supply',
   txs_fail: 'Transaction failed',
   notice: 'Notice',
-  notice2709: '⚠️ MVCSwap trading pairs are freely created by users. Be aware of potential risks when trading',
+  notice2709: '⚠️ MVCSwap trading pairs are created by users permissionless. Be aware of potential risks when trading',
 
   cant_remove: 'You have no liquidity to remove',
   insufficient_balance: 'Exceeded available balance',

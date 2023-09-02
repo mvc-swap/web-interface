@@ -70,6 +70,12 @@ export default function Pair(props) {
             <FormatNumber value={lpApy} />%
           </div>
         </div>
+        <div className={styles.info_item}>
+          <div className={styles.info_label}>{_('your_share')}</div>
+          <div className={styles.info_value}>
+            <FormatNumber value={_rate} />%
+          </div>
+        </div>
       </div>
     </div>
   );
