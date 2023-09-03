@@ -3,7 +3,9 @@ import React, { useEffect, useRef } from 'react';
 import { createChart, CrosshairMode } from 'lightweight-charts';
 import candelData from './candleData.json';
 
-const TradingViewChart = () => {
+const chartUrl = 'http://localhost:28001/chartdata'
+
+const TradingViewChart = (props) => {
     const chartContainerRef = useRef(null);
     let chart;
 
@@ -51,22 +53,32 @@ const TradingViewChart = () => {
             wickUpColor: upColor,
         });
 
-        //TODO: You can fetch the data from an API or use a static dataset
-        /*fetch('YOUR_API_URL') // Replace with your data source or API endpoint
-            .then(res => res.json())
-            .then(data => {
-                // Map your data to the format required by the library
-                const chartData = data.map(item => ({
-                    time: item.date, // e.g., "2020-04-01"
-                    open: item.open,
-                    high: item.high,
-                    low: item.low,
-                    close: item.close,
-                }));
-                candlestickSeries.setData(chartData);
-            });*/
+        const {symbol1, symbol2} = props
 
-        candlestickSeries.setData(candelData);
+        //TODO: You can fetch the data from an API or use a static dataset
+        try {
+          const colname = symbol1.toLowerCase() + '-' + symbol2.toLowerCase() + '-candle-1d&limit=100'
+          const uri = chartUrl + '?colname=' + colname
+          fetch(uri) // Replace with your data source or API endpoint
+              .then(res => res.json())
+              .then(data => {
+                  // Map your data to the format required by the library
+                  /*const chartData = data.data.map(item => ({
+                      time: item.date, // e.g., "2020-04-01"
+                      open: item.open,
+                      high: item.high,
+                      low: item.low,
+                      close: item.close,
+                  }));*/
+                  const items = data.data
+                  items.sort((a, b) => {return a.time - b.time})
+                  candlestickSeries.setData(items);
+              }).catch(err => console.log(err));
+        } catch (e) {
+          console.log(e)
+        }
+
+        //candlestickSeries.setData(candelData);
         //chart.priceScale().applyOptions({
         //  autoScale: false,
         //  minValue: 0.00000001,

@@ -1,6 +1,5 @@
 'use strict';
 import { COLOR1, COLOR2 } from 'common/const';
-import Chart from './index';
 import ChartTitle from './title';
 import styles from './index.less';
 import _ from 'i18n';
@@ -24,8 +23,8 @@ export default function SwapChart(props) {
           {unit}
         </div>
       </div>
-      <div classNme={styles.candlestick_chart}>
-        <CandlestickChart />
+      <div className={styles.candlestick_chart}>
+        <CandlestickChart symbol1={symbol1} symbol2={symbol2} />
       </div>
     </div>
   );
