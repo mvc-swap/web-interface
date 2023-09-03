@@ -24,7 +24,9 @@ export default function SwapChart(props) {
           {unit}
         </div>
       </div>
-      <CandlestickChart />
+      <div classNme={styles.candlestick_chart}>
+        <CandlestickChart />
+      </div>
     </div>
   );
 }

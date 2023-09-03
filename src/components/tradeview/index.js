@@ -9,7 +9,7 @@ const TradingViewChart = () => {
 
     useEffect(() => {
         chart = createChart(chartContainerRef.current, {
-            width: 500,
+            width: 520,
             height: 300,
             //autoSize: true,
             layout: {
