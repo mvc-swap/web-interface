@@ -356,7 +356,7 @@ export function parseUrl(hash) {
     hash.indexOf('pool/remove') < 0 &&
     hash.indexOf('pool/create') < 0
   ) {
-    currentPair = decodeURI(hash2);
+    currentPair = hash2 ? decodeURI(hash2) : undefined;
   }
 
   let type = 'pair';
@@ -364,8 +364,10 @@ export function parseUrl(hash) {
     type = 'farm';
   }
 
-  currentPair &&
+  if (currentPair) {
     window.localStorage.setItem(type === 'farm' ? MVCSWAP_CURRENT_FARM_PAIR : MVCSWAP_CURRENT_PAIR, currentPair);
+  }
+  
   return currentPair;
 }
 
