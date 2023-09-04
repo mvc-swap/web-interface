@@ -8,7 +8,7 @@ import CandlestickChart from 'components/tradeview';
 const type = 'swap';
 export default function SwapChart(props) {
   const { symbol1, symbol2, abandoned } = props;
-  const unit = symbol2 === 'USDT' ? 'usdt' : 'satoshi';
+  const unit = symbol2 === 'USDT' ? 'usdt' : 'satoshi(0.00000001 space)';
   return (
     <div className={styles.chart_container}>
       <ChartTitle

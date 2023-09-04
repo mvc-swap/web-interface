@@ -1,9 +1,8 @@
 // src/components/TradingViewChart.js
 import React, { useEffect, useRef } from 'react';
 import { createChart, CrosshairMode } from 'lightweight-charts';
-import candelData from './candleData.json';
 
-const chartUrl = 'http://localhost:28001/chartdata'
+const chartUrl = 'https://api.mvcswap.com/chart/chartdata/'
 
 const TradingViewChart = (props) => {
     const chartContainerRef = useRef(null);
