@@ -29,6 +29,11 @@ export default class GenesisTokenInput extends Component {
     if (isMvc) {
       token = MVC;
     } else {
+      if (e.target.value.toUpperCase() === 'SPACE') return;
+
+      if (value.length !== 72) 
+        return message.error('Illegal SensibleId')
+
       const res = await dispatch({
         type: 'custom/query',
         payload: {
@@ -36,7 +41,6 @@ export default class GenesisTokenInput extends Component {
         },
       });
 
-      if (e.target.value.toUpperCase() === 'SPACE') return;
       if (res && !res.code) {
         token = res;
       } else {
