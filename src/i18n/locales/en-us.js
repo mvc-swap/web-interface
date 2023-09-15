@@ -76,6 +76,8 @@ const texts = {
   pool_share: 'Prices and pool share',
   pooled: 'Pooled %s',
   your_share: 'Your share of Pool',
+  volume_24h: 'Volume(24h) in SPACE',
+  fee_24h: 'LP Fees(24h) in SPACE',
   select_a_token_pair: 'Select a token pair',
   supply_liq: 'Supply liquidity',
   pair_created: 'Pair successfully created',
@@ -226,7 +228,7 @@ const texts = {
   total_lp: 'Total LP(%s) supply',
   txs_fail: 'Transaction failed',
   notice: 'Notice',
-  notice2709: '⚠️ MVCSwap trading pairs are freely created by users. Be aware of potential risks when trading',
+  notice2709: '⚠️ MVCSwap trading pairs are created by users permissionless. Be aware of potential risks when trading',
 
   cant_remove: 'You have no liquidity to remove',
   insufficient_balance: 'Exceeded available balance',
@@ -270,7 +272,7 @@ const texts = {
   start_time: 'Reward Start Time',
   end_time: 'Reward End Time',
 
-  create_new_pair: 'Create pair',
+  create_new_pair: 'Create',
   create_newpair: 'Create new token pair',
   newpair_title: 'MVCSwap requirements to create a new token pair',
   newpair_desc1: 'Agree you’re not a scammer or rug puller',

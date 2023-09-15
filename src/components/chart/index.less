@@ -2,6 +2,8 @@
   background-color: var(--bg-color-2nd);
   border-radius: 12px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .chart_heading {
@@ -125,6 +127,7 @@
   font-size: 12px;
   font-weight: 500;
   margin-top: 5px;
+  align-self: flex-end;
 
   > div {
     display: flex;
@@ -134,6 +137,11 @@
   > div:not(:last-of-type) {
     margin-right: 15px;
   }
+}
+
+.candlestick_chart {
+    flex: 1;  // fill the entire container with the chart
+    align-items: center;
 }
 
 .dot {

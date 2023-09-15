@@ -9,7 +9,10 @@ import _ from 'i18n';
 
 export default function Pair(props) {
   const { pairData, curPair, userBalance } = props;
-  const { swapToken1Amount, swapToken2Amount, swapLpAmount } = pairData;
+  const { swapToken1Amount, swapToken2Amount, swapLpAmount, totalLpFee24h, totalVolume24h } = pairData;
+  const totalFee = Math.floor(Number(totalLpFee24h) / 0.6)
+  const lpAPR = totalLpFee24h * 365 * 100 / (swapToken1Amount * 2).toFixed(4)
+  const lpApy = ((1 + totalLpFee24h / (swapToken1Amount * 2)) ** 365 - 1).toFixed(4) * 100
   const { lptoken = {}, token1, token2 } = curPair;
   const LP = userBalance[lptoken.tokenID] || 0;
   const rate = LP / formatSat(swapLpAmount, lptoken.decimal) || 0;
@@ -45,18 +48,26 @@ export default function Pair(props) {
         </div>
         <div className={styles.info_item}>
           <div className={styles.info_label}>
-            {_('your_lp', `${symbol1}/${symbol2}`)}
+            {_('volume_24h')}
           </div>
           <div className={styles.info_value}>
-            <FormatNumber value={LP} />
+            <FormatNumber value={formatSat(totalVolume24h)} />
           </div>
         </div>
         <div className={styles.info_item}>
           <div className={styles.info_label}>
-            {_('total_lp', `${symbol1}/${symbol2}`)}
+            {_('fee_24h')}
           </div>
           <div className={styles.info_value}>
-            <FormatNumber value={formatSat(swapLpAmount, lptoken.decimal)} />
+            <FormatNumber value={formatSat(totalLpFee24h)} />
+          </div>
+        </div>
+        <div className={styles.info_item}>
+          <div className={styles.info_label}>
+            APY(based on 24h fees)
+          </div>
+          <div className={styles.info_value}>
+            <FormatNumber value={lpApy} />%
           </div>
         </div>
         <div className={styles.info_item}>

@@ -1,5 +1,5 @@
 export const DEFAULT_NET = 'mainnet';
-export const DEFAULT_PAIR = 'space-usdt';
+export const DEFAULT_PAIR = 'space-msp';
 export const USDT_PAIR = 'space-usdt';
 
 export const MVCSWAP_NETWORK = 'networkType';
