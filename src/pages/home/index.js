@@ -13,9 +13,10 @@ import Cookie from 'js-cookie';
 import styles from './index.less';
 import _ from 'i18n';
 import { IconX, IconTick } from 'components/ui';
-import scalabilityLogo from '../../../public/assets/scalability.jpg';
-import securityLogo from '../../../public/assets/security.jpg';
-import speedLogo from '../../../public/assets/speed.jpg';
+import homeLogo from '../../../public/assets/home.png';
+import securityLogo from '../../../public/assets/security.png';
+import scalabilityLogo from '../../../public/assets/scalability.png';
+import speedLogo from '../../../public/assets/speed.png';
 
 const _lang = Cookie.get('lang') || navigator.language;
 export default class Home extends Component {
@@ -32,30 +33,42 @@ export default class Home extends Component {
                 <Button
                   type="primary"
                   className={styles.cta}
-                  shape="round"
+                  shape="default"
                   onClick={() => {
                     history.push('swap');
                   }}
                 >
-                  {_('launch_app')}
+                  {_('connect_wallet')}
                 </Button>
               </div>
             </div>
           </nav>
           <section className={styles.main}>
-            <div className={styles.main_title}>{_('mvcswap')}</div>
-            <div className={styles.main_desc}>{_('mvcswap_desc')}</div>
-            <div className={styles.btns}>
-              <Button
-                className={styles.btn}
-                shape="round"
-                onClick={() => {
-                  window.location.href = 'https://docs.mvcswap.com/';
-                }}
-              >
-                {_('documentation')}
-              </Button>
+            <div className={styles.main_left}>
+              <div className={styles.main_title}>{_('mvcswap')}</div>
+              <div className={styles.main_desc}>{_('mvcswap_desc')}</div>
+              <div className={styles.btns}>
+                <button
+                  type="primary"
+                  className={styles.btn_start}
+                  shape="default"
+                  onClick={() => {
+                    history.push('swap');
+                  }}
+                >
+                  {_('launch_app')}
+                </button>
+                <button
+                  className={styles.btn_doc}
+                  onClick={() => {
+                    window.location.href = 'https://docs.mvcswap.com/';
+                  }}
+                  data={_('documentation')}
+                ></button>
+              </div>
             </div>
+
+            <img src={homeLogo} alt="Home Icon" className={styles.main_intro} />
           </section>
 
           <section className={styles.content}>
@@ -69,8 +82,12 @@ export default class Home extends Component {
                   alt="security Icon"
                   className={styles.feature_icon}
                 />
-                <h3>{_('feature_security')}</h3>
-                <p>{_('security_desc')}</p>
+                <div className={styles.feature_title}>
+                  {_('feature_security')}
+                </div>
+                <div className={styles.feature_content}>
+                  {_('security_desc')}
+                </div>
               </div>
               <div className={styles.feature}>
                 <img
@@ -78,8 +95,12 @@ export default class Home extends Component {
                   alt="scalability Icon"
                   className={styles.feature_icon}
                 />
-                <h3>{_('feature_scalability')}</h3>
-                <p>{_('scalability_desc')}</p>
+                <div className={styles.feature_title}>
+                  {_('feature_scalability')}
+                </div>
+                <div className={styles.feature_content}>
+                  {_('scalability_desc')}
+                </div>
               </div>
               <div className={styles.feature}>
                 <img
@@ -87,8 +108,8 @@ export default class Home extends Component {
                   alt="Speed Icon"
                   className={styles.feature_icon}
                 />
-                <h3>{_('feature_speed')}</h3>
-                <p>{_('speed_desc')}</p>
+                <div className={styles.feature_title}>{_('feature_speed')}</div>
+                <div className={styles.feature_content}>{_('speed_desc')}</div>
               </div>
             </section>
           </section>

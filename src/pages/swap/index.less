@@ -2,8 +2,9 @@
   background-color: var(--bg-color);
   width: 375px;
   border-radius: 12px;
-  -webkit-box-shadow: 0 10px 25px var(--bg-shadow);
-  box-shadow: 0 10px 25px var(--bg-shadow);
+  border: 1px solid var(--border-color);
+  // -webkit-box-shadow: 0 10px 25px var(--bg-shadow);
+  // box-shadow: 0 10px 25px var(--bg-shadow);
 }
 
 .head {
@@ -82,8 +83,9 @@
 
 .box {
   height: 70px;
-  background-color: #f6f6f9;
-  border-radius: 55px 8px 8px 55px;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   margin-top: 10px;
   display: flex;
   align-items: center;
@@ -136,13 +138,16 @@
 }
 .tol {
   width: 65px;
-  border-radius: 4px;
-  background-color: var(--bg-color);
+  border-radius: 6px;
+  background-color: var(--bg-color-2nd);
   // :global(.ant-input) {
   //   background-color: #f6f6f6;
   // }
-  border: 0.5px solid var(--border-color-2nd);
+  border: 0.5px solid var(--border-color);
   padding: 4px 8px;
+  .ant-input {
+    background-color: var(--bg-color-2nd) !important;
+  }
 }
 
 .btn,
@@ -154,6 +159,9 @@
   font-size: 18px;
   margin: 15px 0 0;
   width: 100%;
+  border-radius: 8px;
+  color: var(--bg-color);
+  background: var(--button-linear);
 }
 
 .btn_warn,

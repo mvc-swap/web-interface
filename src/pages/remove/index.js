@@ -187,9 +187,8 @@ export default class RemovePage extends Component {
             balance={LP}
             tokenPair={<PairIcon keyword="pair" txt="name1/name2-LP" />}
           />
-
-          <Arrow />
-
+          <Arrow noLine />
+          <div>sdfvs</div>
           <div className={styles.values}>
             <div className={styles.values_left}>
               <div className={styles.v_item}>
@@ -216,7 +215,6 @@ export default class RemovePage extends Component {
               </div>
             </div>
           </div>
-
           {this.renderButton()}
         </Spin>
       </div>
@@ -361,7 +359,7 @@ export default class RemovePage extends Component {
         <Button
           className={styles.btn}
           type="primary"
-          shape="round"
+          // shape="round"
           onClick={this.handleSubmit}
         >
           {_('remove')}

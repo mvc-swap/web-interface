@@ -50,7 +50,11 @@ export function BtnWait(conditions) {
 
     if (cond) {
       result = (
-        <Button className={styles.btn_wait} shape="round" onClick={item.evt}>
+        <Button
+          className={key === 'lackBalance' ? styles.btn_lack : styles.btn_wait}
+          shape="round"
+          onClick={item.evt}
+        >
           {txt}
         </Button>
       );

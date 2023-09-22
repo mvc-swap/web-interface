@@ -6,7 +6,14 @@ import styles from './index.less';
 const FormItem = Form.Item;
 
 export function TokenInput(props) {
-  const { pairData, tokenKey, showUI, changeAmount, formItemName } = props;
+  const {
+    pairData,
+    tokenKey,
+    showUI,
+    changeAmount,
+    formItemName,
+    isLackBalance,
+  } = props;
   const { swapToken1Amount, swapToken2Amount } = pairData;
   return (
     <div className={styles.box}>
@@ -18,7 +25,7 @@ export function TokenInput(props) {
       </div>
       <FormItem name={formItemName}>
         <Input
-          className={styles.input}
+          className={isLackBalance ? styles.input_error : styles.input}
           onChange={changeAmount}
           disabled={swapToken1Amount === '0' || swapToken2Amount === '0'}
         />

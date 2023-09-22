@@ -22,8 +22,8 @@ const texts = {
   total_value: 'Total_value',
   time: 'Time',
 
-  connect_wallet: 'Connect wallet',
-  connected_account: 'Connected account',
+  connect_wallet: 'Connect Wallet',
+  connected_account: 'Connected Account',
   show_qr_code: 'Show address QR code',
   qr_code: 'Address QR',
   copy_account: 'Copy account address',
@@ -133,7 +133,7 @@ const texts = {
   your_re_liq: 'Your redeemed liquidity',
   earned: 'Earned',
 
-  launch_app: 'Launch App',
+  launch_app: 'Launch APP',
   mvcswap: 'Welcome to MVCSwap',
   mvcswap_desc:
     'Experience UTXO-based DEX with unmatched Security, Scalability, and Speed',
@@ -162,8 +162,7 @@ const texts = {
   lb_5: '0 withdrawal fee',
   lb_6: 'Unlimited TPS (compared with ETH)',
   lb_7: 'Free from exchange hacks because of account information leakage',
-  lb_8:
-    'Free of unplug, manipulation from exchanges that fake or delete user data for their own favor',
+  lb_8: 'Free of unplug, manipulation from exchanges that fake or delete user data for their own favor',
   lb_9: 'No front-running, which happens on ETH DEXs that causes loss to users',
   lb_10:
     'Instant matching between users or user-pool with low fees, instant settlement',
@@ -228,7 +227,8 @@ const texts = {
   total_lp: 'Total LP(%s) supply',
   txs_fail: 'Transaction failed',
   notice: 'Notice',
-  notice2709: '⚠️ MVCSwap trading pairs are created by users permissionless. Be aware of potential risks when trading',
+  notice2709:
+    '⚠️ MVCSwap trading pairs are created by users permissionless. Be aware of potential risks when trading',
 
   cant_remove: 'You have no liquidity to remove',
   insufficient_balance: 'Exceeded available balance',

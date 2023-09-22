@@ -70,18 +70,13 @@ export default function btn(props) {
   if (beyond) {
     // 超出容忍度
     return (
-      <Button className={styles.btn_warn} shape="round" onClick={handleSubmit}>
+      <Button className={styles.btn_warn} onClick={handleSubmit}>
         {_('swap_anyway')}
       </Button>
     );
   } else {
     return (
-      <Button
-        className={styles.btn}
-        type="primary"
-        shape="round"
-        onClick={handleSubmit}
-      >
+      <Button className={styles.btn} type="primary" onClick={handleSubmit}>
         {_('swap')}
       </Button>
     );
