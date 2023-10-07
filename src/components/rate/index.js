@@ -100,13 +100,6 @@ export default class Rate extends Component {
 
         <div className={styles.pair_box}>
           <div className={styles.pair_left}>
-            <TokenPair
-              size={25}
-              symbol1={token1.symbol1}
-              symbol2={token2.symbol2}
-              genesisID1={token1.tokenID}
-              genesisID2={token2.tokenID}
-            />
             {tokenPair}
           </div>
           <div className={styles.pair_right}>
