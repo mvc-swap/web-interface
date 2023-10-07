@@ -136,7 +136,7 @@ const texts = {
   launch_app: 'Launch APP',
   mvcswap: 'Welcome To MVCSwap',
   mvcswap_desc:
-    'Experience UTXO-based DEX with unmatched Security, Scalability, and Speed',
+    'Experience UTXO-Based DEX with unmatched Security, Scalability, and Speed',
   documentation: 'Learn More',
   comparisons: 'Comparisons',
   feature: 'Features',
