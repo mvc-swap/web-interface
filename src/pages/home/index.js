@@ -41,7 +41,7 @@ export default class Home extends Component {
                     history.push('swap');
                   }}
                 >
-                  {_('connect_wallet')}
+                  {_('launch_app')}
                 </Button>
               </div>
             </div>
