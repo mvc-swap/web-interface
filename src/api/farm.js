@@ -6,6 +6,7 @@ class Farm extends BaseAPI {
   _request(api, params = {}, method = 'GET', url = '', catchError) {
     if (isTestNet()) {
       this.baseUrl = 'https://api.mvcswap.com/farm/test/';
+      //this.baseUrl = 'http://127.0.0.1:47100/';
     } else {
       this.baseUrl = 'https://api.mvcswap.com/farm/';
       // console.log(TS_ENV)
@@ -40,11 +41,11 @@ class Farm extends BaseAPI {
   }
 
   withdraw(params) {
-    return this._request('directwithdraw', params, 'POST');
+    return this._request('withdraw', params, 'POST');
   }
 
   withdraw2(params) {
-    return this._request('directwithdraw2', params, 'POST');
+    return this._request('withdraw2', params, 'POST');
   }
 
   harvest(params) {
@@ -53,6 +54,18 @@ class Farm extends BaseAPI {
 
   harvest2(params) {
     return this._request('harvest2', params, 'POST');
+  }
+
+  boostDeposit(params) {
+    return this._request('boostdeposit', params, 'POST')
+  }
+
+  boostWithdraw(params) {
+    return this._request('boostwithdraw', params, 'POST')
+  }
+
+  boostWithdraw2(params) {
+    return this._request('boostwithdraw2', params, 'POST')
   }
 
   reqcreatefarm(params) {
