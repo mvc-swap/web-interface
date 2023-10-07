@@ -54,7 +54,7 @@ export default class TokenPairList extends React.Component {
           {currentPair === id && (
             <CheckCircleOutlined
               theme="filled"
-              style={{ color: '#2F80ED', fontSize: 30 }}
+              style={{ color: '#1E2BFF', fontSize: 30 }}
             />
           )}
         </div>

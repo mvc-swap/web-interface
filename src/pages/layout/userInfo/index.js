@@ -17,6 +17,9 @@ let _timer = 0;
 
 @connect(({ pair, user, loading }) => {
   const effects = loading.effects;
+  // console.log('effects loadingUserData', effects['user/loadingUserData']);
+  // console.log('effects connectWebWallet', effects['user/connectWebWallet']);
+
   return {
     ...pair,
     ...user,
@@ -151,7 +154,7 @@ export default class UserInfo extends Component {
         network,
       },
     });
-    // console.log(con_res);
+    // console.log('------', con_res);
     if (con_res.msg) {
       this.busy = false;
       return message.error(con_res.msg);
@@ -162,6 +165,7 @@ export default class UserInfo extends Component {
         type,
       },
     });
+    console.log('loading userdata...', res);
     if (res.msg) {
       this.busy = false;
       return message.error(res.msg);

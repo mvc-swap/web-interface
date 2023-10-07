@@ -15,7 +15,9 @@
 .chart_title {
   font-size: 24px;
   cursor: pointer;
-
+  display: flex;
+  align-items: center;
+  gap: 10px;
   span {
     font-weight: 700;
   }
@@ -58,7 +60,7 @@
 
   // .active {
   //   background-color: #fff;
-  //   font-weight: 700;
+  //   font-weight: 500;
   // }
   :global {
     .ant-select:not(.ant-select-customize-input) .ant-select-selector {
@@ -145,6 +147,13 @@
 .candlestick_chart {
   flex: 1; // fill the entire container with the chart
   align-items: center;
+  padding-left: 50px;
+}
+
+@media (max-width: 767.99px) {
+  .candlestick_chart {
+    padding-left: 0px;
+  }
 }
 
 .dot {

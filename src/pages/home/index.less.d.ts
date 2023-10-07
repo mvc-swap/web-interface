@@ -3,9 +3,10 @@
 interface CssExports {
   'abs_item': string;
   'abstract': string;
-  'btn': string;
   'btn_doc': string;
+  'btn_doc_arrow': string;
   'btn_start': string;
+  'btn_start_arrow': string;
   'btns': string;
   'col_1': string;
   'container': string;
@@ -33,6 +34,7 @@ interface CssExports {
   'main_desc': string;
   'main_intro': string;
   'main_left': string;
+  'main_line': string;
   'main_title': string;
   'red': string;
   'title': string;

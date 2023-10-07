@@ -15,22 +15,23 @@ function checkExtension() {
 const getMvcBalance = async () => {
   try {
     const isConnected = await window.metaidwallet.isConnected();
-    console.log('isConnected:', isConnected)
+    console.log('isConnected:', isConnected);
     const res = await window.metaidwallet.getBalance();
-    console.log('getBalance:', res.total)
+    console.log('getBalance:', res.total);
     return formatSat(res.total);
     //return formatSat(0);
-  } catch(err) {
-    return formatSat(0)
+  } catch (err) {
+    return formatSat(0);
   }
 };
 
 const getTokenBalance = async () => {
   const res = await window.metaidwallet.token.getBalance();
-  console.log('getTokenBalance:',res);
+  // console.log('getTokenBalance:', res);
   const userBalance = {};
   res.forEach((item) => {
-    const balance = BigInt(item.confirmedString) + BigInt(item.unconfirmedString);
+    const balance =
+      BigInt(item.confirmedString) + BigInt(item.unconfirmedString);
     userBalance[item.genesis] = formatSat(balance, item.decimal);
   });
   return userBalance;
@@ -41,11 +42,14 @@ export default {
     if (checkExtension()) {
       let accountInfo = {};
       const mvcBalance = await getMvcBalance();
-
+      console.log('mvc', mvcBalance);
       const userAddress = await window.metaidwallet.getAddress();
-      const tokenBalance = await getTokenBalance();
+      console.log('uadress', userAddress);
       const network = await window.metaidwallet.getNetwork();
 
+      console.log('net', network);
+      const tokenBalance = await getTokenBalance();
+      console.log('tokenBB', tokenBalance);
       const userBalance = {
         MVC: mvcBalance,
         ...tokenBalance,
@@ -78,13 +82,15 @@ export default {
 
       const res = await window.metaidwallet.transfer({
         broadcast: !noBroadcast,
-        tasks: [{
-          type: 'space',
-          receivers: [{ address, amount }],
-        }]
+        tasks: [
+          {
+            type: 'space',
+            receivers: [{ address, amount }],
+          },
+        ],
       });
       console.log('transferMVC:', res);
-      res.list = res.res
+      res.list = res.res;
       return res;
     }
   },
@@ -112,10 +118,10 @@ export default {
 
       const res = await window.metaidwallet.transfer({
         broadcast: !noBroadcast,
-        tasks: data
+        tasks: data,
       });
       //console.log('transferAll:', res)
-      res.list = res.res
+      res.list = res.res;
       return res;
     }
   },

@@ -14,9 +14,12 @@ import styles from './index.less';
 import _ from 'i18n';
 import { IconX, IconTick } from 'components/ui';
 import homeLogo from '../../../public/assets/home.png';
+import homeLine from '../../../public/assets/home_line.png';
 import securityLogo from '../../../public/assets/security.png';
 import scalabilityLogo from '../../../public/assets/scalability.png';
 import speedLogo from '../../../public/assets/speed.png';
+import { FiArrowUpRight } from 'react-icons/fi';
+import cls from 'classnames';
 
 const _lang = Cookie.get('lang') || navigator.language;
 export default class Home extends Component {
@@ -47,6 +50,7 @@ export default class Home extends Component {
             <div className={styles.main_left}>
               <div className={styles.main_title}>{_('mvcswap')}</div>
               <div className={styles.main_desc}>{_('mvcswap_desc')}</div>
+
               <div className={styles.btns}>
                 <button
                   type="primary"
@@ -57,6 +61,7 @@ export default class Home extends Component {
                   }}
                 >
                   {_('launch_app')}
+                  <FiArrowUpRight className={styles.btn_start_arrow} />
                 </button>
                 <button
                   className={styles.btn_doc}
@@ -64,11 +69,38 @@ export default class Home extends Component {
                     window.location.href = 'https://docs.mvcswap.com/';
                   }}
                   data={_('documentation')}
-                ></button>
+                >
+                  <svg width="0" height="0">
+                    <linearGradient
+                      id="blue-gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
+                      <stop stopColor="#72f5f6" offset="0%" />
+                      <stop stopColor="#171aff" offset="100%" />
+                    </linearGradient>
+                  </svg>
+                  <FiArrowUpRight
+                    className={styles.btn_doc_arrow}
+                    style={{ stroke: 'url(#blue-gradient)' }}
+                  />
+                </button>
               </div>
+
+              <img
+                src={homeLine}
+                alt="Home Line"
+                className={styles.main_line}
+              />
             </div>
 
-            <img src={homeLogo} alt="Home Icon" className={styles.main_intro} />
+            <img
+              src={homeLogo}
+              alt="Home Icon"
+              className={cls(styles.hidden_mobile, styles.main_intro)}
+            />
           </section>
 
           <section className={styles.content}>
@@ -113,8 +145,8 @@ export default class Home extends Component {
               </div>
             </section>
           </section>
-          <Footer />
         </section>
+        <Footer />
       </Layout>
     );
   }

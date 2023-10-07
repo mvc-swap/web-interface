@@ -19,6 +19,7 @@ export default class PairIcon extends React.Component {
     if (this.props.loading) return null;
     const {
       keyword,
+      showPairIcon,
       size = 30,
       txt,
       children,
@@ -99,7 +100,7 @@ export default class PairIcon extends React.Component {
       }
       return (
         <>
-          <div className="pair-icon">{pairIcon}</div>
+          {showPairIcon && <div className="pair-icon">{pairIcon}</div>}
           <div className="pair-name">{str}</div>
         </>
       );

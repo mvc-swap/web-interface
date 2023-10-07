@@ -1,8 +1,10 @@
 @import '../layout.less';
+@import '../../common/global.less';
 
 .content,
 .content1 {
-  margin-right: 40px;
+  margin-right: -12px;
+  margin-top:25px
 }
 
 .first {
@@ -32,19 +34,27 @@
 }
 
 .content1 {
-  background-color: var(--bg-color-2nd);
-  border-radius: 12px;
+  margin-top: 116px;
+
+  background-color: var(--bg-color);
 
   .title {
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 500;
     padding: 20px;
-    border-bottom: 1px solid var(--border-color);
+    padding-left: 0px;
+    font-family: Montserrat-ExtraBold;
+    color:var(--fg-color)
+    // border-bottom: 1px solid var(--border-color);
   }
 
   .detail {
     padding: 40px 60px 50px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding-left: 30px;
   }
+  
 
   .sub_title {
     font-size: 18px;
@@ -55,6 +65,10 @@
   .desc {
     font-size: 16px;
     margin-bottom: 10px;
+    padding-left: 25px;
+  }
+  .note{
+    padding-left:25px;
   }
 
   .dot {
@@ -62,7 +76,7 @@
     width: 10px;
     height: 10px;
     line-height: 10px;
-    background-color: #2f80ed;
+    background-color: #259f2f;
     border-radius: 50%;
     margin-right: 10px;
   }

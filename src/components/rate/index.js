@@ -7,6 +7,7 @@ import FormatNumber from 'components/formatNumber';
 import Slider from './slider';
 import styles from './index.less';
 import _ from 'i18n';
+import TokenPair from 'components/tokenPair';
 
 export default class Rate extends Component {
   constructor(props) {
@@ -65,6 +66,8 @@ export default class Rate extends Component {
       balanceTxt,
       balanceTitle,
       balancePosTop = false,
+      token1,
+      token2,
     } = this.props;
     return (
       <div>
@@ -96,7 +99,16 @@ export default class Rate extends Component {
         )}
 
         <div className={styles.pair_box}>
-          <div className={styles.pair_left}>{tokenPair}</div>
+          <div className={styles.pair_left}>
+            <TokenPair
+              size={25}
+              symbol1={token1.symbol1}
+              symbol2={token2.symbol2}
+              genesisID1={token1.tokenID}
+              genesisID2={token2.tokenID}
+            />
+            {tokenPair}
+          </div>
           <div className={styles.pair_right}>
             <Input
               className={styles.input}

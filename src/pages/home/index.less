@@ -43,26 +43,18 @@
 }
 
 .main {
-  //background-image: var(--bg-color-3rd);
-  //background-image: linear-gradient(270deg, #6200ee, #03dac5, #bb86fc);
-  // background-image: linear-gradient(270deg, #6a4c93, #3d8f85, #ff7f50);
-  // background-size: 600% 600%;
-  // animation: gradient 10s ease infinite;
   display: flex;
   color: #fff;
   padding: 160px 0;
-  text-align: center;
-  height: 415px;
-  .logo {
-    display: none;
-  }
+
   .main_left {
     text-align: left;
-    width: 50%;
+    position: relative;
+    margin-top: 50px;
+    // width: 50%;
     .main_title {
-      // width: 316px;
-      // height: 160px;
       font-size: 48px;
+      font-family: Montserrat-ExtraBold;
       font-weight: 800;
       color: #303133;
       line-height: 80px;
@@ -71,15 +63,11 @@
 
     .main_desc {
       font-size: 18px;
+      font-family: Montserrat-Regular;
       font-weight: 400;
       color: #909399;
       line-height: 36px;
       width: 60%;
-
-      // font-size: 28px;
-      // line-height: 60px;
-      // font-weight: 500;
-      // margin-top: 10px;
     }
 
     .btns {
@@ -100,6 +88,11 @@
         background: linear-gradient(132deg, #72f5f6 0%, #171aff 100%);
         cursor: pointer;
         color: white;
+        position: relative;
+        .btn_start_arrow {
+          position: absolute;
+          top: 10px;
+        }
       }
       .btn_doc {
         padding: 14px 60px;
@@ -115,18 +108,17 @@
         cursor: pointer;
         width: inherit;
         visibility: inherit;
+        position: relative;
+        .btn_doc_arrow {
+          position: absolute;
+          right: 42px;
+          top: 10px;
+          // background: linear-gradient(#fff 0 0) padding-box,
+          //   linear-gradient(132deg, #72f5f6 0%, #171aff 100%) border-box;
+          // // color: #171aff;
+        }
       }
 
-      // .btn_doc::before {
-      //   content: '';
-      //   position: absolute;
-      //   left: 1px;
-      //   right: 1px;
-      //   top: 1px;
-      //   bottom: 1px;
-      //   background-color: white;
-      //   border-radius: 7px;
-      // }
       .btn_doc::after {
         content: attr(data);
         font-size: 16px;
@@ -136,6 +128,7 @@
         transition: 200ms;
       }
       .btn_doc:hover::after {
+        color: linear-gradient(132deg, #72f5f6 0%, #171aff 100%);
         opacity: 50%;
         top: 0px;
         right: 0px;
@@ -143,13 +136,99 @@
         left: 0px;
       }
     }
+
+    .main_line {
+      position: absolute;
+      right: -80px;
+      top: -128px;
+    }
   }
   .main_intro {
     position: absolute;
     right: 0px;
-    width: 1000px;
-    height: 600px;
-    top: 160px;
+    width: 45%;
+    height: auto;
+    top: 25%;
+  }
+}
+
+@media (max-width: 1473px) {
+  .main {
+    .main_left {
+      margin-top: 25px;
+      .main_title {
+        width: 46%;
+      }
+
+      .main_desc {
+        width: 45%;
+      }
+      .btns {
+        margin-top: 25px;
+        button {
+          text-wrap: nowrap;
+        }
+      }
+    }
+    .main_intro {
+      right: -5%;
+      top: 28%;
+    }
+  }
+}
+
+@media (max-width: 1227px) {
+  .main {
+    .main_left {
+      margin-top: 10px;
+      .main_title {
+        width: 48%;
+      }
+      .main_intro {
+        width: 45%;
+      }
+      .main_desc {
+        width: 45%;
+      }
+      .btns {
+        margin-top: 25px;
+        button {
+          text-wrap: nowrap;
+        }
+      }
+    }
+    .main_intro {
+      width: 42%;
+      right: -5%;
+      top: 32%;
+    }
+  }
+}
+@media (max-width: 1096px) {
+  .main {
+    .main_left {
+      margin-top: 0px;
+      .main_title {
+        width: 50%;
+      }
+      .main_intro {
+        width: 50%;
+      }
+      .main_desc {
+        width: 45%;
+      }
+      .btns {
+        margin-top: 25px;
+        button {
+          text-wrap: nowrap;
+        }
+      }
+    }
+    .main_intro {
+      width: 42%;
+      right: -5%;
+      top: 32%;
+    }
   }
 }
 
@@ -157,6 +236,11 @@
   // width: 100%;
   // max-width: @page_width;
   margin-top: 350px;
+}
+@media (max-width: 1473px) {
+  .content {
+    margin-top: 80px;
+  }
 }
 
 .abstract {
@@ -179,7 +263,7 @@
 
   .value {
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 500;
     margin-top: 10px;
   }
 }
@@ -292,7 +376,7 @@
 }*/
 
 .feature {
-  flex: 1 1 100%;
+  flex: 1 1 calc(33% - 2rem);
   height: 550px;
   box-sizing: border-box;
   font-weight: 500;
@@ -321,16 +405,19 @@
   line-height: 1.8;
 }
 
-/* For screens with a minimum width of 768px */
-@media (min-width: 768px) {
+@media (min-width: 869px) {
   .feature {
     flex: 1 1 calc(50% - 4rem); /* Adjust this value to increase the gap between features */
     max-width: 50%;
   }
 }
+@media (max-width: 868px) {
+  .feature {
+    flex: 1 1 calc(52% - 2rem); /* Adjust this value to increase the gap between features */
+  }
+}
 
-/* For screens with a minimum width of 1024px */
-@media (min-width: 1024px) {
+@media (min-width: 1440px) {
   .feature {
     flex: 1 1 calc(33% - 4rem); /* Adjust this value to increase the gap between features */
     max-width: 33%;
@@ -366,6 +453,10 @@
 }
 
 @media only screen and (max-width: 767.99px) {
+  .container {
+    margin: 0 12%;
+  }
+
   .head {
     height: 60px;
   }
@@ -406,25 +497,37 @@
         font-size: 80px;
       }
     }
+    .main_left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+      .main_title {
+        font-size: 34px;
+        line-height: 40px;
+        font-weight: 500;
+        width: 100%;
+      }
 
-    .main_title {
-      font-size: 34px;
-      line-height: 40px;
-      font-weight: 700;
-    }
+      .main_desc {
+        font-size: 18px;
+        line-height: 25px;
+        width: 100%;
+      }
 
-    .main_desc {
-      font-size: 18px;
-      line-height: 25px;
-    }
-
-    .btns {
-      margin-top: 30px;
-
-      .btn {
-        width: calc(50% - 10px);
-        font-size: 16px;
-        padding: 0 20px;
+      .btns {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        .btn_doc,
+        .btn_start {
+          padding: 14px 30px;
+        }
+        .btn_doc {
+          .btn_doc_arrow {
+            right: 10px;
+          }
+        }
       }
     }
   }

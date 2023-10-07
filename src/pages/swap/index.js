@@ -337,7 +337,6 @@ export default class Swap extends Component {
                 <span>
                   <FormatNumber
                     value={userBalance[origin_token.tokenID || 'MVC'] || 0}
-                    suffix={symbol1}
                   />
                 </span>
               </div>
@@ -364,7 +363,6 @@ export default class Swap extends Component {
                 <span>
                   <FormatNumber
                     value={userBalance[aim_token.tokenID || 'MVC'] || 0}
-                    suffix={symbol2}
                   />
                 </span>
               </div>

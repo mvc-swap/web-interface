@@ -21,6 +21,7 @@ interface CssExports {
   'link': string;
   'main_title': string;
   'name': string;
+  'note': string;
   'pair_box': string;
   'pair_left': string;
   'pair_right': string;

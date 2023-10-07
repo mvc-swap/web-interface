@@ -21,7 +21,7 @@ export const userSignTx = async (
       },
     },
   });
-  console.log(sign_res);
+  // console.log(sign_res);
 
   if (sign_res.msg && !sign_res.sig) {
     return {
@@ -47,7 +47,7 @@ export const userSignTx = async (
     type: apiName,
     payload,
   });
-  console.log(res);
+  // console.log(res);
   if (res.code === 99999) {
     const raw = await ungzip(Buffer.from(res.data.other));
     const newData = JSON.parse(raw.toString());

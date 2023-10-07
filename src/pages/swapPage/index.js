@@ -75,14 +75,8 @@ export default class SwapPage extends Component {
   };
 
   renderContent() {
-    const {
-      loading,
-      token1,
-      token2,
-      pairData,
-      allPairs,
-      currentPair,
-    } = this.props;
+    const { loading, token1, token2, pairData, allPairs, currentPair } =
+      this.props;
     if (loading || !token1.symbol) return <Loading />;
 
     return (
@@ -90,6 +84,8 @@ export default class SwapPage extends Component {
         <Chart
           symbol1={token1.symbol}
           symbol2={token2.symbol}
+          genesisID1={token1.tokenID}
+          genesisID2={token2.tokenID}
           abandoned={allPairs[currentPair].abandoned}
         />
 

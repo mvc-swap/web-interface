@@ -134,7 +134,7 @@ const texts = {
   earned: 'Earned',
 
   launch_app: 'Launch APP',
-  mvcswap: 'Welcome to MVCSwap',
+  mvcswap: 'Welcome To MVCSwap',
   mvcswap_desc:
     'Experience UTXO-based DEX with unmatched Security, Scalability, and Speed',
   documentation: 'Learn More',
