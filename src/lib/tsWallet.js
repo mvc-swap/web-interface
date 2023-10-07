@@ -23,6 +23,7 @@ const getSensibleFtBalance = async () => {
 
 export default {
   info: async () => {
+    debugger;
     let accountInfo = await mvc.getAccount();
     const mvcBalance = await getMvcBalance();
     const userAddress = await mvc.getAddress();

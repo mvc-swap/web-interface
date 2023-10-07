@@ -23,7 +23,9 @@
     "node-gzip": "^1.1.2",
     "qrcode.react": "^1.0.1",
     "querystringify": "^2.2.0",
+    "ramda": "^0.29.0",
     "react-clipboard.js": "^2.0.16",
+    "react-icons": "^4.11.0",
     "umi": "^3.4.6"
   },
   "devDependencies": {

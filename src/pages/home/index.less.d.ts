@@ -3,14 +3,19 @@
 interface CssExports {
   'abs_item': string;
   'abstract': string;
-  'btn': string;
+  'btn_doc': string;
+  'btn_doc_arrow': string;
+  'btn_start': string;
+  'btn_start_arrow': string;
   'btns': string;
   'col_1': string;
   'container': string;
   'content': string;
   'cta': string;
   'feature': string;
+  'feature_content': string;
   'feature_icon': string;
+  'feature_title': string;
   'features': string;
   'gradient': string;
   'green': string;
@@ -27,6 +32,9 @@ interface CssExports {
   'logo': string;
   'main': string;
   'main_desc': string;
+  'main_intro': string;
+  'main_left': string;
+  'main_line': string;
   'main_title': string;
   'red': string;
   'title': string;

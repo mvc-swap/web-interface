@@ -23,7 +23,7 @@ export function Arrow2(props) {
       <div className={styles.icon} onClick={props.onClick}>
         <CustomIcon type="iconswitch" style={{ fontSize: 20 }} />
       </div>
-      <div className={styles.line}></div>
+      {/* <div className={styles.line}></div> */}
     </div>
   );
 }
@@ -100,9 +100,12 @@ export function FoundGenesisIDs() {
 export function CreatePairDocument() {
   return (
     <div className={styles.found_desc}>
-      <a href="https://docs.mvcswap.com/mvcswap/create-token-pair" target="_blank">
+      <a
+        href="https://docs.mvcswap.com/mvcswap/create-token-pair"
+        target="_blank"
+      >
         {_('check_create_doc')}
       </a>{' '}
     </div>
-  )
+  );
 }

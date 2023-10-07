@@ -2,10 +2,10 @@
 
 .container {
   background-color: var(--bg-color);
-  width: 375px;
+  width: 400px;
   border-radius: 12px;
-  -webkit-box-shadow: 0 10px 25px var(--bg-shadow);
-  box-shadow: 0 10px 25px var(--bg-shadow);
+  border: 1px solid var(--border-color);
+  margin-top: 20px;
 }
 
 .head {
@@ -23,7 +23,7 @@
   .menu_item {
     display: inline-block;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 16px;
     padding: 0 15px;
     color: #1d1d1d;
@@ -34,7 +34,7 @@
   }
 
   .menu_item_selected {
-    background-color: #2f80ed;
+    background-color: #1e2bff;
     color: #fff;
   }
 }
@@ -46,7 +46,7 @@
 .title {
   h3 {
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: 0;
   }
 }
@@ -115,7 +115,7 @@
   .name,
   :global(.pair-name) {
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
     white-space: nowrap;
     margin-right: 20px;
     margin-left: 10px;
@@ -142,7 +142,7 @@
   margin-top: 25px;
   cursor: pointer;
   span {
-    color: #2f80ed;
+    color: #1e2bff;
     font-weight: 500;
   }
 }
@@ -156,20 +156,24 @@
   line-height: 25px;
 
   .label {
-    font-weight: 700;
+    font-weight: 500;
     display: flex;
   }
 }
 
-// .btn {
-//   border: none;
-//   height: 60px;
-//   line-height: 52px;
-//   font-weight: 500;
-//   font-size: 18px;
-//   margin-top: 10px;
-//   width: 100%;
-// }
+.btn {
+  border: none;
+  height: 60px;
+  line-height: 52px;
+  border-radius: 8px;
+
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 25px;
+  width: 100%;
+  color: var(--bg-color);
+  background: var(--button-linear);
+}
 
 .my_pair_info {
   border: 1px solid #e8e8e8;
@@ -199,7 +203,7 @@
   }
 
   .info_value {
-    font-weight: 700;
+    font-weight: 500;
   }
 }
 
@@ -211,7 +215,7 @@
 
 .finish_title {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 500;
   margin-top: 8px;
   text-align: center;
   padding-bottom: 20px;
@@ -281,7 +285,7 @@
 }
 
 .done_btn {
-  background-color: #2f80ed;
+  background-color: #1e2bff;
   color: #fff;
   height: 60px;
   line-height: 52px;

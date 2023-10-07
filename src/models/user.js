@@ -27,14 +27,17 @@ export default {
 
   effects: {
     *loadingUserData({ payload }, { call, put, select }) {
+      console.log('runing........');
       let { type } = payload;
       if (!type) {
         type = yield select((state) => state.user.walletType) || 1;
       }
       try {
+        console.log('type', type);
         const _wallet = Wallet({ type });
+        console.log('_wallet', _wallet);
         const accountInfo = yield _wallet.info();
-
+        console.log('accountInfo', accountInfo);
         localStorage.setItem(
           MVCSWAP_NETWORK,
           accountInfo.network || DEFAULT_NET,

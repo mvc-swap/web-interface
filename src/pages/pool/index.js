@@ -65,6 +65,8 @@ export default class Pool extends Component {
           symbol1={token1.symbol}
           symbol2={token2.symbol}
           abandoned={allPairs[currentPair].abandoned}
+          genesisID1={token1.tokenID}
+          genesisID2={token2.tokenID}
         />
         <div className={styles.main_title}>
           <h2>
@@ -95,7 +97,7 @@ export default class Pool extends Component {
           <dd className={styles.desc}>
             <span className={styles.dot}></span> {_('newpair_desc3')}
           </dd>
-          <p>{_('newpair_note1')}</p>
+          <p className={styles.note}>{_('newpair_note1')}</p>
         </dl>
       </div>
     );

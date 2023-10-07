@@ -1,9 +1,11 @@
 .container {
   background-color: var(--bg-color);
-  width: 375px;
+  width: 400px;
   border-radius: 12px;
-  -webkit-box-shadow: 0 10px 25px var(--bg-shadow);
-  box-shadow: 0 10px 25px var(--bg-shadow);
+  border: 1px solid var(--border-color);
+  margin-top:20px
+  // -webkit-box-shadow: 0 10px 25px var(--bg-shadow);
+  // box-shadow: 0 10px 25px var(--bg-shadow);
 }
 
 .head {
@@ -24,7 +26,7 @@
   .menu_item {
     display: inline-block;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 16px;
     padding: 0 20px;
     color: #1d1d1d;
@@ -39,7 +41,7 @@
   }
 
   .menu_item_selected {
-    background-color: #2f80ed;
+    background-color: #1e2bff;
     color: #fff;
   }
 }
@@ -50,7 +52,7 @@
 
 .title {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   display: flex;
   justify-content: space-between;
 
@@ -66,12 +68,13 @@
     line-height: 25px;
     span {
       font-weight: 500;
+      color: var(--blue-color);
     }
   }
   .balance.can_click {
     cursor: pointer;
     span {
-      color: #2f80ed;
+      color: var(--blue-color);
       font-weight: 500;
     }
   }
@@ -82,8 +85,9 @@
 
 .box {
   height: 70px;
-  background-color: #f6f6f9;
-  border-radius: 55px 8px 8px 55px;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   margin-top: 10px;
   display: flex;
   align-items: center;
@@ -99,7 +103,7 @@
   :global(.pair-name),
   .name {
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 500;
     width: 70px;
     // margin-right: 15px;
     margin-left: 10px;
@@ -129,6 +133,9 @@
   justify-content: space-between;
   line-height: 26px;
   align-items: center;
+  :first-child {
+    color: var(--fg-color-light);
+  }
 
   &:not(:last-of-type) {
     margin-bottom: 5px;
@@ -136,13 +143,16 @@
 }
 .tol {
   width: 65px;
-  border-radius: 4px;
-  background-color: var(--bg-color);
+  border-radius: 6px;
+  background-color: var(--bg-color-2nd);
   // :global(.ant-input) {
   //   background-color: #f6f6f6;
   // }
-  border: 0.5px solid var(--border-color-2nd);
+  border: 0.5px solid var(--border-color);
   padding: 4px 8px;
+  .ant-input {
+    background-color: var(--bg-color-2nd) !important;
+  }
 }
 
 .btn,
@@ -154,6 +164,9 @@
   font-size: 18px;
   margin: 15px 0 0;
   width: 100%;
+  border-radius: 8px;
+  color: var(--bg-color);
+  background: var(--button-linear);
 }
 
 .btn_warn,
@@ -182,7 +195,7 @@
   background-color: #f6f6f6;
   position: relative;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   text-align: center;
   margin-top: 40px;
 }
@@ -190,7 +203,7 @@
   position: absolute;
   right: 16px;
   top: 0px;
-  color: #2f80ed;
+  color: #1e2bff;
 }
 .line {
   display: flex;

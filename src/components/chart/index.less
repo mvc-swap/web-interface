@@ -1,5 +1,6 @@
 .chart_container {
-  background-color: var(--bg-color-2nd);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 20px;
   display: flex;
@@ -14,7 +15,9 @@
 .chart_title {
   font-size: 24px;
   cursor: pointer;
-
+  display: flex;
+  align-items: center;
+  gap: 10px;
   span {
     font-weight: 700;
   }
@@ -57,7 +60,7 @@
 
   // .active {
   //   background-color: #fff;
-  //   font-weight: 700;
+  //   font-weight: 500;
   // }
   :global {
     .ant-select:not(.ant-select-customize-input) .ant-select-selector {
@@ -68,7 +71,9 @@
       border-color: transparent;
     }
 
-    .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+    .ant-select-focused:not(.ant-select-disabled).ant-select:not(
+        .ant-select-customize-input
+      )
       .ant-select-selector {
       border-width: 0;
       border-color: transparent;
@@ -140,8 +145,15 @@
 }
 
 .candlestick_chart {
-    flex: 1;  // fill the entire container with the chart
-    align-items: center;
+  flex: 1; // fill the entire container with the chart
+  align-items: center;
+  padding-left: 50px;
+}
+
+@media (max-width: 767.99px) {
+  .candlestick_chart {
+    padding-left: 0px;
+  }
 }
 
 .dot {

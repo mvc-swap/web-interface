@@ -113,9 +113,9 @@ export default class CreatePair extends Component {
           token={token2}
           change={(value) => this.change('token2', value)}
         />
-        <CreatePairDocument />
 
         {this.renderButton()}
+        <CreatePairDocument />
       </div>
     );
   }

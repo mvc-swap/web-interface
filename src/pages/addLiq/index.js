@@ -374,7 +374,6 @@ export default class Liquidity extends Component {
                         ? userBalance.MVC
                         : userBalance[token1.tokenID]) || 0
                     }
-                    suffix={token1.symbol}
                   />
                 </span>
               </div>
@@ -394,7 +393,6 @@ export default class Liquidity extends Component {
                   className={styles.input}
                   onChange={this.changeOriginAmount}
                   min="0"
-                  // formatter={(value) => parseFloat(value || 0)}
                 />
               </FormItem>
             </div>
@@ -406,10 +404,7 @@ export default class Liquidity extends Component {
               <div className={styles.balance} onClick={this.setAimBalance}>
                 {_('balance')}:{' '}
                 <span>
-                  <FormatNumber
-                    value={userBalance[token2.tokenID] || 0}
-                    suffix={token2.symbol}
-                  />
+                  <FormatNumber value={userBalance[token2.tokenID] || 0} />
                 </span>
               </div>
             </div>
@@ -662,14 +657,8 @@ export default class Liquidity extends Component {
   handleSubmit = async (data, _origin_amount, _aim_amount) => {
     if (!_origin_amount) _origin_amount = this.state._origin_amount;
     if (!_aim_amount) _aim_amount = this.state._aim_amount;
-    const {
-      token1,
-      token2,
-      currentPair,
-      dispatch,
-      rabinApis,
-      accountInfo,
-    } = this.props;
+    const { token1, token2, currentPair, dispatch, rabinApis, accountInfo } =
+      this.props;
     const { changeAddress } = accountInfo;
     const { reqSwapData } = this.state;
     const { mvcToAddress, tokenToAddress, requestIndex, txFee } =

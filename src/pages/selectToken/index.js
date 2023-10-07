@@ -12,7 +12,7 @@ export default function SelectToken(props) {
         <div className={styles.back}>
           <ArrowLeftOutlined
             onClick={() => finish()}
-            style={{ fontSize: 16, color: '#2F80ED', fontWeight: 700 }}
+            style={{ fontSize: 16, color: '#1E2BFF', fontWeight: 700 }}
           />
         </div>
         <div className={styles.title}>{_('select_token')}</div>

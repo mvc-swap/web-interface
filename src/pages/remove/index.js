@@ -175,7 +175,7 @@ export default class RemovePage extends Component {
       allPairs,
     } = this.props;
     if (loading || !currentPair) return <Loading />;
-    const { lptoken = {} } = allPairs[currentPair];
+    const { lptoken = {}, token1, token2 } = allPairs[currentPair];
     const LP = accountInfo.userBalance[lptoken.tokenID] || 0;
     const { removeToken1, removeToken2 } = this.calc();
     return (
@@ -186,10 +186,10 @@ export default class RemovePage extends Component {
             changeAmount={this.changeData}
             balance={LP}
             tokenPair={<PairIcon keyword="pair" txt="name1/name2-LP" />}
+            token1={token1}
+            token2={token2}
           />
-
-          <Arrow />
-
+          <Arrow noLine />
           <div className={styles.values}>
             <div className={styles.values_left}>
               <div className={styles.v_item}>
@@ -216,7 +216,6 @@ export default class RemovePage extends Component {
               </div>
             </div>
           </div>
-
           {this.renderButton()}
         </Spin>
       </div>
@@ -361,7 +360,7 @@ export default class RemovePage extends Component {
         <Button
           className={styles.btn}
           type="primary"
-          shape="round"
+          // shape="round"
           onClick={this.handleSubmit}
         >
           {_('remove')}

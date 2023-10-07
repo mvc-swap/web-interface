@@ -4,6 +4,7 @@ import { BtnWait } from 'components/btns';
 import { formatSat } from 'common/utils';
 import { MINAMOUNT } from 'common/config';
 import styles from './index.less';
+import { isNil, isEmpty } from 'ramda';
 import _ from 'i18n';
 
 export default function btn(props) {
@@ -29,7 +30,6 @@ export default function btn(props) {
   const balance = userBalance[origin_token.tokenID || 'MVC'];
 
   // const beyond = parseFloat(slip) > parseFloat(tol);
-
   const conditions = [
     { key: 'login', cond: !isLogin },
     {
@@ -40,6 +40,9 @@ export default function btn(props) {
       key: 'enterAmount',
       cond:
         !lastMod ||
+        origin_amount === '' ||
+        isEmpty(origin_amount) ||
+        isNaN(parseFloat(origin_amount)) ||
         (parseFloat(origin_amount) <= 0 && parseFloat(aim_amount) <= 0),
     },
     {
@@ -62,26 +65,34 @@ export default function btn(props) {
       txtParam: origin_token.symbol,
     },
   ];
-
+  // console.log('props', props);
   let _btn = BtnWait(conditions);
-  if (_btn) {
+
+  console.log(
+    'amount',
+    parseFloat(origin_amount),
+    isNaN(parseFloat(origin_amount)),
+    '_btn',
+    _btn,
+  );
+  if (
+    _btn ||
+    parseFloat(origin_amount) <= 0 ||
+    isEmpty(origin_amount) ||
+    isNaN(parseFloat(origin_amount))
+  ) {
     return _btn;
   }
   if (beyond) {
     // 超出容忍度
     return (
-      <Button className={styles.btn_warn} shape="round" onClick={handleSubmit}>
+      <Button className={styles.btn_warn} onClick={handleSubmit}>
         {_('swap_anyway')}
       </Button>
     );
   } else {
     return (
-      <Button
-        className={styles.btn}
-        type="primary"
-        shape="round"
-        onClick={handleSubmit}
-      >
+      <Button className={styles.btn} type="primary" onClick={handleSubmit}>
         {_('swap')}
       </Button>
     );

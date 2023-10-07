@@ -1,7 +1,8 @@
 .box {
   height: 70px;
-  background-color: var(--bg-color-2nd);
-  border-radius: 55px 8px 8px 55px;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   margin-top: 10px;
   display: flex;
   align-items: center;
@@ -18,7 +19,7 @@
   :global(.pair-name),
   .name {
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 500;
     width: 70px;
     // margin-right: 15px;
     margin-left: 10px;
@@ -30,8 +31,8 @@
 
   .arrow {
     padding: 10px 15px 10px 10px;
-    background-color: var(--bg-color-2nd);
-    box-shadow: 0 0 5px 5px var(--bg-color-2nd);
+    background-color: var(--bg-color);
+    // box-shadow: 0 0 5px 5px var(--bg-color-2nd);
     margin-left: 5px;
 
     :global(.iconfont) {
@@ -40,8 +41,8 @@
   }
 
   .input {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    background-color: var(--bg-color-2nd);
+    border-radius: 6px;
     height: 50px;
     font-size: 18px;
     font-weight: 500;
@@ -50,5 +51,9 @@
     :global(.ant-input-number-handler-wrap) {
       border-radius: 0 8px 8px 0;
     }
+  }
+
+  .input_error {
+    color: var(--red-color);
   }
 }

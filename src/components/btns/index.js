@@ -31,6 +31,7 @@ const datas = {
 
 export function BtnWait(conditions) {
   let result = false;
+
   for (let i = 0; i < conditions.length; i++) {
     let item = conditions[i];
     const { key, txtParam, cond } = item;
@@ -50,7 +51,11 @@ export function BtnWait(conditions) {
 
     if (cond) {
       result = (
-        <Button className={styles.btn_wait} shape="round" onClick={item.evt}>
+        <Button
+          className={key === 'lackBalance' ? styles.btn_lack : styles.btn_wait}
+          onClick={item.evt}
+          // disabled={true}
+        >
           {txt}
         </Button>
       );

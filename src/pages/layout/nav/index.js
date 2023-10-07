@@ -79,7 +79,11 @@ export default class Head extends Component {
             }
             if (item.children) {
               return (
-                <span className={cls} key={item.key}>
+                <span
+                  className={cls}
+                  key={item.key}
+                  onClick={() => this.gotoPage(item.path)}
+                >
                   {item.children}
                 </span>
               );

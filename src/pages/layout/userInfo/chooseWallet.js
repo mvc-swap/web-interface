@@ -1,7 +1,7 @@
 import { Modal } from 'antd';
 import querystring from 'querystringify';
 import metaletIcon from '../../../../public/assets/metalet.png';
-import mswalletIcon from '../../../../public/assets/ms-black.png';
+import mswalletIcon from '../../../../public/assets/ms-black2.png';
 import styles from './index.less';
 import _ from 'i18n';
 
@@ -23,21 +23,21 @@ export default function ChooseWallet(props) {
     >
       <div className={styles.title}>{_('connect_wallet')}</div>
       <ul>
-        {(
+        {
           <>
             <li onClick={() => connectWebWallet(4, 'mainnet')}>
               <div className={styles.sens_icon}>
-                <img src={metaletIcon} style={{height: 30}} />
+                <img src={metaletIcon} style={{ height: 30 }} />
               </div>
               <div className={styles.label}>Metalet</div>
             </li>
           </>
-        )}
-        {(
+        }
+        {
           <>
             <li onClick={() => connectWebWallet(1)} style={{ fontSize: 15 }}>
               <div className={styles.ts_icon}>
-                <img src={mswalletIcon} style={{height: 30}} />
+                <img src={mswalletIcon} style={{ height: 30 }} />
               </div>
               <div className={styles.label}>
                 Web {_('wallet')}
@@ -45,7 +45,7 @@ export default function ChooseWallet(props) {
               </div>
             </li>
           </>
-        )}
+        }
       </ul>
     </Modal>
   );

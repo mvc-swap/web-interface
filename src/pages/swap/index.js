@@ -320,6 +320,9 @@ export default class Swap extends Component {
 
     const beyond = Math.abs(parseFloat(slip)) > parseFloat(tol);
 
+    const balance = userBalance[origin_token.tokenID || 'MVC'];
+    const isLackBalance = parseFloat(origin_amount) > parseFloat(balance || 0);
+
     return (
       <div className={styles.content}>
         <Spin spinning={submiting}>
@@ -334,7 +337,6 @@ export default class Swap extends Component {
                 <span>
                   <FormatNumber
                     value={userBalance[origin_token.tokenID || 'MVC'] || 0}
-                    suffix={symbol1}
                   />
                 </span>
               </div>
@@ -348,6 +350,7 @@ export default class Swap extends Component {
                 }
                 changeAmount={this.changeOriginAmount}
                 formItemName="origin_amount"
+                isLackBalance={isLackBalance}
               />
             }
 
@@ -360,7 +363,6 @@ export default class Swap extends Component {
                 <span>
                   <FormatNumber
                     value={userBalance[aim_token.tokenID || 'MVC'] || 0}
-                    suffix={symbol2}
                   />
                 </span>
               </div>
@@ -375,6 +377,7 @@ export default class Swap extends Component {
                 }
                 changeAmount={this.changeAimAmount}
                 formItemName="aim_amount"
+                isLackBalance={isLackBalance}
               />
             }
 
@@ -401,7 +404,7 @@ export default class Swap extends Component {
                 <div className={styles.key}>{_('price_impact')}</div>
                 <div
                   className={styles.value}
-                  style={beyond ? { color: 'red' } : {}}
+                  style={beyond || isLackBalance ? { color: 'red' } : {}}
                 >
                   {symbol1} {slip || '0%'}, {symbol2} {slip1 || '0%'}
                 </div>
@@ -441,14 +444,8 @@ export default class Swap extends Component {
 
   handleSubmit = async () => {
     const { dirForward, origin_amount } = this.state;
-    const {
-      dispatch,
-      currentPair,
-      token1,
-      token2,
-      rabinApis,
-      accountInfo,
-    } = this.props;
+    const { dispatch, currentPair, token1, token2, rabinApis, accountInfo } =
+      this.props;
     const { userBalance, changeAddress, userAddress } = accountInfo;
 
     const res = await dispatch({
