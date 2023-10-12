@@ -237,13 +237,13 @@ const texts = {
   lp_balance: 'Available to withdraw',
   added: 'Added',
 
-  farm: 'Farm',
+  farm: 'Earn',
   lock_earn: 'Lock and earn',
   depositors: 'Depositors',
-  crop: 'Yield',
-  harvest: 'Harvest',
+  crop: 'Emission',
+  harvest: 'Claim',
   farm_desc:
-    'Provide liquidity and deposit your LP tokens to earn and harvest tokens',
+    'Provide liquidity and deposit your LP tokens to earn and claim rewards',
   last_block_time: 'Latest MVC block time:',
   your_deposited_lp: 'Your deposited LP',
   abandoned_deposited_lp:
