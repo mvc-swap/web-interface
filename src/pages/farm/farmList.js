@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
+import BN from 'bignumber.js';
 import { history } from 'umi';
 import { Tooltip } from 'antd';
 import TokenPair from 'components/tokenPair';
@@ -43,6 +44,7 @@ export default class FarmList extends Component {
       rewardEndTime = 0,
       rewardTokenAmount = 0,
       rewardToken,
+      poolTokenAmount,
       _total = 0,
       _yield = 0,
     } = data;
@@ -50,7 +52,16 @@ export default class FarmList extends Component {
     if (loading || !pairsData[tokenID]) {
       return null;
     }
-    const { token1, token2 } = pairsData[tokenID];
+
+    const {
+      swapToken1Amount,
+      swapToken2Amount,
+      swapLpAmount,
+      lptoken,
+      token1,
+      token2,
+    } = pairsData[tokenID];
+
     const symbol1 = token1.symbol.toUpperCase();
     const symbol2 = token2.symbol.toUpperCase();
     const rewardBeginTimeStr = new Date(rewardBeginTime * 1000).toLocaleString('en-GB'); 
@@ -66,6 +77,22 @@ export default class FarmList extends Component {
       : 0;
 
     const reword_amount = formatSat(rewardAmountPerSecond * 86400, decimal);
+
+    // count token1 and token2 value
+    let rate = 0
+    if (isLogin) {
+      rate = BN(lockedTokenAmount).div(swapLpAmount);
+      if (rate > 1) rate = 1;
+    }
+
+    const token1Amount = formatSat(
+      BN(swapToken1Amount).multipliedBy(rate),
+      token1.decimal,
+    );
+    const token2Amount = formatSat(
+      BN(swapToken2Amount).multipliedBy(rate),
+      token2.decimal,
+    );
 
     let cls = styles.item;
     if (abandoned || symbol === 'TSC/FTT') {
@@ -93,10 +120,9 @@ export default class FarmList extends Component {
             </div>
           </div>
           <div className={styles.lp_amount}>
-            {symbol === 'TSC/FTT' && _('tmp_tips')}
             {abandoned && _('abandoned_deposited_lp')}
-            {symbol !== 'TSC/FTT' && !abandoned && _('your_deposited_lp')}:{' '}
-            <FormatNumber value={_lockedTokenAmount} />
+            {symbol !== 'TSC/FTT' && !abandoned && _('total_deposited_lp')}:{' '}
+            <FormatNumber value={formatSat(poolTokenAmount, token.decimal)} />
           </div>
         </div>
 
@@ -104,7 +130,12 @@ export default class FarmList extends Component {
           <div>
             <div className={styles.label}>{_('tvl')}</div>
             <div className={styles.value}>
-              <FormatNumber value={_total} useAbbr={true} suffix="USDT" />
+              <div>
+                <FormatNumber value={token1Amount} useAbbr={true} /> {token1.symbol.toUpperCase()}
+              </div>
+              <div>
+                <FormatNumber value={token2Amount} useAbbr={true} /> {token2.symbol}
+              </div>
             </div>
           </div>
           <div>

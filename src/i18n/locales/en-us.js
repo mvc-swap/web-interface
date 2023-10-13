@@ -245,7 +245,8 @@ const texts = {
   farm_desc:
     'Provide liquidity and deposit your LP tokens to earn and claim rewards',
   last_block_time: 'Latest MVC block time:',
-  your_deposited_lp: 'Your deposited LP',
+  your_deposited_lp: 'LP Locked',
+  total_deposited_lp: 'Total LP Locked',
   abandoned_deposited_lp:
     'Withdraw all your LP token and yield, deposit LP token to the new contract',
   apy_info:
@@ -260,10 +261,10 @@ const texts = {
   farm_withdraw: 'Withdraw',
   farm_withdraw_success: 'Withdraw successful',
   withdrew: 'Withdrew',
-  tvl: 'TVL',
+  tvl: 'Your Deposited',
   apy: 'APR',
   yield_tips: 'your withdrawable yield: %s',
-  harvest_success: 'Yield Withdrawal successful',
+  harvest_success: 'Claim successful',
   amount: 'Amount',
   payout: 'Reward/Day',
   payout_tips: 'Reward per day',
