@@ -250,7 +250,7 @@ const texts = {
   abandoned_deposited_lp:
     'Withdraw all your LP token and yield, deposit LP token to the new contract',
   apy_info:
-    'APR = rewardTokenAmountPerSecond * 86400 * 365 *  Token price / TVL * 100%',
+    'APR = rewardPerDay * 365 *  Token price / TVL * 100%',
   deposit: 'Deposit',
   earn: 'Earn',
   deposit_success: 'Deposit successful',
@@ -267,7 +267,7 @@ const texts = {
   harvest_success: 'Claim successful',
   amount: 'Amount',
   payout: 'Reward/Day',
-  payout_tips: 'Reward per day',
+  payout_tips: 'Total Reward Per Day',
   deposit_lp: 'Deposit LP',
   withdraw_lp: 'Withdraw LP',
   start_time: 'Reward Start Time',
