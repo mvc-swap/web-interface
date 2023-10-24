@@ -71,7 +71,7 @@ function List(props) {
                 {arr.length - index} {_('from_block')} #{beginBlockTime}{' '}
                 {_('to_block')} #{endBlockTime}.{' '}
                 {endBlockTime > blockTime &&
-                  _('vesting_term', endBlockTime - blockTime)}
+                  _('voting_term', endBlockTime - blockTime)}
               </div>
             </div>
           );

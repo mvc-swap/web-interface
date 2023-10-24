@@ -338,12 +338,12 @@ const texts = {
 
   //stake
   stake: 'Stake',
-  stake_desc: 'Stake %s to earn %1 and voting power',
+  stake_desc: 'Stake %s to get %1',
   your_staked: 'Your staked',
   total_staked: 'Total Staked',
   unstaked: 'Unstaked',
   withdraw_stake: 'Unstaked',
-  vesting_term: 'Vesting term',
+  vesting_term: 'Vesting Time',
   staking_yield: 'Staking Yield',
   unstake: 'Unstake',
   stake_amount: 'Stake amount',
@@ -372,7 +372,7 @@ const texts = {
   payout_per_block: 'Payout per block',
   total_votes: 'Total Votes:',
   min_vote_amount: 'Min Vote Amount:',
-  vesting_term: 'Voting ends: %s blocks later',
+  voting_term: 'Voting ends: %s blocks later',
   from_block: 'from block',
   to_block: 'to block',
 };

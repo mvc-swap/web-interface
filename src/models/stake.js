@@ -94,6 +94,7 @@ export default {
             } else {
               arr.push({
                 left,
+                expired,
                 amount,
                 _amount,
               });
@@ -135,6 +136,8 @@ export default {
       });
     },
     *getVoteInfo({ payload }, { call, put, select }) {
+      // TODO: hide vote info
+      return
       const { currentStakePair, blockTime, currentVoteIndex } = yield select(
         (state) => state.stake,
       );
@@ -246,14 +249,16 @@ export default {
       return res.data;
     },
     *unlock({ payload }, { call, put, select }) {
-      const { requestIndex, data, tokenRemoveAmount } = payload;
+      const { requestIndex, data } = payload;
       const { currentStakePair } = yield select((state) => state.stake);
       let liq_data = {
         symbol: currentStakePair,
         requestIndex: requestIndex,
         mvcRawTx: data[0].txHex,
         mvcOutputIndex: 0,
-        tokenRemoveAmount,
+        tokenRawTx: data[1].txHex,
+        tokenOutputIndex: 0,
+        amountCheckRawTx: data[1].routeCheckTxHex,
       };
       liq_data = JSON.stringify(liq_data);
       liq_data = yield gzip(liq_data);
@@ -264,24 +269,6 @@ export default {
           msg: res.msg,
         };
       }
-      return res.data;
-    },
-    *unlock2({ payload }, { call, put, select }) {
-      const { requestIndex, pubKey, sig } = payload;
-      const { currentStakePair } = yield select((state) => state.stake);
-      let params = {
-        symbol: currentStakePair,
-        requestIndex: requestIndex,
-        pubKey,
-        sig,
-      };
-      const res = yield stakeApi.unlock2.call(stakeApi, params);
-      // console.log(res);
-      // if (res.code) {
-      //     return {
-      //         msg: res.msg
-      //     };
-      // }
       return res.data;
     },
     *withdraw({ payload }, { call, put, select }) {

@@ -14,7 +14,7 @@ function Harvest(props) {
   const { rewardTokenAmount = 0 } = pairData;
   const [submiting, setSubmiting] = useState(false);
   // const { userAddress } = accountInfo;
-  const { rewardToken } = stakePairInfo;
+  const { token: rewardToken } = stakePairInfo;
   const { symbol, decimal } = rewardToken;
 
   const showModal = (amount, txid, blockTime) => {

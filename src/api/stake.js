@@ -5,9 +5,9 @@ import { isTestNet } from 'common/utils';
 class Stake extends BaseAPI {
   _request(api, params = {}, method = 'GET', url = '', catchError) {
     if (isTestNet()) {
-      this.baseUrl = 'https://api.mvcswap.com/stake/test/';
+      this.baseUrl = 'https://api.mvcswap.com/escrow/test/';
     } else {
-      this.baseUrl = 'https://api.mvcswap.com/stake/';
+      this.baseUrl = 'https://api.mvcswap.com/escrow/';
     }
 
     if (url) this.baseUrl = url;
@@ -24,7 +24,7 @@ class Stake extends BaseAPI {
   }
 
   queryStakeInfo(symbol) {
-    return this._request('stakeinfo', { symbol });
+    return this._request('escrowinfo', { symbol });
   }
 
   queryUserInfo(symbol, address) {
@@ -32,7 +32,7 @@ class Stake extends BaseAPI {
   }
 
   reqStake(params) {
-    return this._request('reqstakeargs', params, 'POST');
+    return this._request('reqescrowargs', params, 'POST');
   }
 
   deposit(params) {
@@ -41,10 +41,6 @@ class Stake extends BaseAPI {
 
   unlock(params) {
     return this._request('unlock', params, 'POST');
-  }
-
-  unlock2(params) {
-    return this._request('unlock2', params, 'POST');
   }
 
   withdraw(params) {

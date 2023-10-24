@@ -19,10 +19,15 @@ const menu = [
     label: _('pool'),
     path: 'pool/add',
   },
-  // {
-  //   key: ['stake', 'vote'],
-  //   children: <StakeSubmenu />,
-  // },
+  //{
+  //  key: ['stake', 'vote'],
+  //  children: <StakeSubmenu />,
+  //},
+  {
+    key: 'stake',
+    label: _('stake'),
+    path: 'stake',
+  },
   {
     key: 'farm',
     label: _('farm'),

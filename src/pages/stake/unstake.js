@@ -20,11 +20,13 @@ function Unstake(props) {
       </div>
     );
   }
-  const { token } = stakePairInfo;
-  const { symbol, tokenID, decimal } = token;
-  const { lockedTokenAmount = 0 } = pairData;
+  const { escrowToken } = stakePairInfo;
+  const { symbol, tokenID, decimal } = escrowToken;
+  const { userBalance } = accountInfo;
+  const balance = userBalance[tokenID] || 0;
+  //const { lockedTokenAmount = 0 } = pairData;
   // const { userAddress } = accountInfo;
-  const balance = formatSat(lockedTokenAmount, decimal);
+  //const balance = formatSat(lockedTokenAmount, decimal);
   const [amount, setAmount] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [submiting, setSubmiting] = useState(false);
@@ -103,6 +105,8 @@ function Unstake(props) {
       type: 'user/transferAll2',
       payload: {
         reqData: req_data,
+        tokenData: escrowToken,
+        tokenAmount: token_amount_sat,
         note,
       },
     });
@@ -126,20 +130,8 @@ function Unstake(props) {
       setSubmiting(false);
       return message.error(unlock_res.msg);
     }
-    // const unlock2_res = await unlock2(unlock_res, requestIndex);
-    const unlock2_res = await userSignTx(
-      'stake/unlock2',
-      dispatch,
-      unlock_res,
-      requestIndex,
-    );
 
     setSubmiting(false);
-    if (unlock2_res.msg) {
-      setSubmiting(false);
-      return message.error(unlock2_res.msg);
-    }
-
     message.success('success');
     dispatch({
       type: 'stake/getStakeInfo',

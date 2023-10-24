@@ -13,8 +13,8 @@ function Withdraw(props) {
   const { accountInfo, dispatch, stakePairInfo, left, amount } = props;
   const [submiting, setSubmiting] = useState(false);
   // const { userAddress } = accountInfo;
-  const { rewardToken } = stakePairInfo;
-  const { symbol, decimal } = rewardToken;
+  const { token } = stakePairInfo;
+  const { symbol, decimal } = token;
 
   const showModal = (txid, blockTime) => {
     const _amount = formatSat(amount, decimal);
