@@ -192,8 +192,8 @@ export default class Deposit extends Component {
         noBroadcast: true,
       },
     });
-    if (tx_res.msg) {
-      return message.error(tx_res.msg);
+    if (tx_res.msg || tx_res.status == 'canceled') {
+      return message.error(tx_res.msg || 'canceled');
     }
 
     if (tx_res.list) {

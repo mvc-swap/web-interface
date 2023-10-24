@@ -65,9 +65,9 @@ function Stake(props) {
     });
     // console.log(tx_res);
 
-    if (tx_res.msg) {
+    if (tx_res.msg || tx_res.status == 'canceled') {
       setSubmiting(false);
-      return message.error(tx_res.msg);
+      return message.error(tx_res.msg || 'canceled');
     }
     let stake_res = await dispatch({
       type: 'stake/deposit',

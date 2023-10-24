@@ -246,7 +246,7 @@ export default class RemovePage extends Component {
     });
 
     if (res.code) {
-      return message.error(res.msg);
+      return message.error(tx_res.msg || 'canceled');
     }
 
     const { tokenToAddress, requestIndex, mvcToAddress, txFee } = res.data;
@@ -286,8 +286,8 @@ export default class RemovePage extends Component {
         noBroadcast: true,
       },
     });
-    if (tx_res.msg) {
-      return message.error(tx_res.msg);
+    if (tx_res.msg || tx_res.status == 'canceled') {
+      return message.error(tx_res.msg || 'canceled');
     }
 
     if (tx_res.list) {

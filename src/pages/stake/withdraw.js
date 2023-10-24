@@ -116,9 +116,9 @@ function Withdraw(props) {
         note,
       },
     });
-    if (tx_res.msg) {
+    if (tx_res.msg || tx_res.status == 'canceled') {
       setSubmiting(false);
-      return message.error(tx_res.msg);
+      return message.error(tx_res.msg || 'canceled');
     }
     const { requestIndex } = req_data;
     let withdraw_res = await dispatch({
@@ -129,9 +129,9 @@ function Withdraw(props) {
       },
     });
     // console.log(withdraw_res);
-    if (withdraw_res.msg) {
+    if (withdraw_res.msg || withdraw_res.status == 'canceled') {
       setSubmiting(false);
-      return message.error(withdraw_res.msg);
+      return message.error(withdraw_res.msg || 'canceled');
     }
     // const withdraw2_res = await withdraw2(withdraw_res, requestIndex);
     const withdraw2_res = await userSignTx(

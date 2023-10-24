@@ -492,8 +492,8 @@ export default class Swap extends Component {
           },
         });
 
-        if (ts_res.msg) {
-          return message.error(ts_res.msg);
+        if (ts_res.msg || ts_res.status == 'canceled') {
+          return message.error(ts_res.msg || 'canceled');
         }
         if (_allBalance) {
           amount = amount - BigInt(ts_res.fee || 0);
@@ -535,8 +535,8 @@ export default class Swap extends Component {
         if (!tx_res) {
           return message.error(_('txs_fail'));
         }
-        if (tx_res.msg) {
-          return message.error(tx_res.msg);
+        if (tx_res.msg || tx_res.status == 'canceled') {
+          return message.error(tx_res.msg || 'canceled');
         }
         if (tx_res.list) {
           tx_res = tx_res.list;

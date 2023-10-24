@@ -112,9 +112,9 @@ function Unstake(props) {
     });
     // console.log(tx_res);
 
-    if (tx_res.msg) {
+    if (tx_res.msg || tx_res.status == 'canceled') {
       setSubmiting(false);
-      return message.error(tx_res.msg);
+      return message.error(tx_res.msg || 'canceled');
     }
     const { requestIndex } = req_data;
     let unlock_res = await dispatch({
