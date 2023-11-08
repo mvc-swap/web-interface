@@ -338,7 +338,7 @@ const texts = {
 
   //stake
   stake: 'Stake',
-  stake_desc: 'Stake %s to get %1',
+  stake_desc: 'Stake %s to get %1. And converting veMSP to MSP will require a 15-day unlocking period.',
   your_staked: 'Your staked',
   total_staked: 'Total Staked',
   unstaked: 'Unstaked',
