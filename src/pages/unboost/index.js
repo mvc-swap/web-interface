@@ -16,6 +16,7 @@ import { SuccessResult } from 'components/result';
 import { userSignTx } from 'common/signTx';
 import { Arrow } from 'components/ui';
 import { OP_BOOST_WITHDRAW } from '../../common/const';
+import TokenLogo from 'components/tokenicon';
 
 @connect(({ user, farm, loading }) => {
   const { effects } = loading;
@@ -123,21 +124,54 @@ export default class Unboost extends Component {
           balance={balance}
           tokenPair={<FarmPairIcon keyword="boost" />}
         />
+
+        <br/>
+
+        <div className={styles.title}>Current</div>
+        <div
+          className={styles.pair_box}
+          style={{ paddingLeft: 15, paddingRight: 17 }}
+        >
+          <div className={styles.pair_left}>
+            <div className={styles.icon} style={{ marginRight: 10 }}>
+              <TokenLogo
+                name={rewardToken.symbol}
+                genesisID={rewardToken.tokenID}
+                size={25}
+              />
+            </div>
+            <div className={styles.name} style={{ fontSize: 22 }}>
+              {rewardToken.symbol}
+            </div>
+          </div>
+          <div className={styles.pair_right}>
+            <FormatNumber value={formatAmount(apr * (1 + currentBoostRatio), 2)} />%{' '}
+            {_('apy')}
+          </div>
+        </div>
+
         <Arrow />
 
-        <div className={styles.boost_info}>
-          <h3>{_('current')}</h3>
-          <div className={styles.content}>
-            Boost Amount: <span className={styles.value}>{formatSat(userBoostTokenAmount, boostToken.decimal)} {boostToken.symbol}</span>
-            <br />
-            APR: <span className={styles.apr}>{formatAmount(apr * (1 + currentBoostRatio), 2)}%</span>
+        <div className={styles.title}>New</div>
+        <div
+          className={styles.pair_box}
+          style={{ paddingLeft: 15, paddingRight: 17 }}
+        >
+          <div className={styles.pair_left}>
+            <div className={styles.icon} style={{ marginRight: 10 }}>
+              <TokenLogo
+                name={rewardToken.symbol}
+                genesisID={rewardToken.tokenID}
+                size={25}
+              />
+            </div>
+            <div className={styles.name} style={{ fontSize: 22 }}>
+              {rewardToken.symbol}
+            </div>
           </div>
-
-          <h3>After Unboost</h3>
-          <div className={styles.content}>
-            Boost Amount: <span className={styles.value}>{formatSat(newBoostTokenAmount, boostToken.decimal)} {boostToken.symbol}</span>
-            <br />
-            APR: <span className={styles.apr}>{formatAmount(apr * (1 + newBoostRatio), 2)}%</span>
+          <div className={styles.pair_right}>
+            <FormatNumber value={formatAmount(apr * (1 + newBoostRatio), 2)} />%{' '}
+            {_('apy')}
           </div>
         </div>
 

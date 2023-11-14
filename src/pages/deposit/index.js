@@ -81,6 +81,10 @@ export default class Deposit extends Component {
       rewardToken,
       pairsData,
       allFarmPairs,
+      lockedTokenAmount,
+      userBoostTokenAmount,
+      maxBoostRatio,
+      boostRewardFactor,
     } = this.props;
     if (!currentFarmPair) return null;
     const { tokenID } = lptoken;
@@ -97,6 +101,16 @@ export default class Deposit extends Component {
     const mvc_amount = formatSat(swapToken1Amount, token1.decimal);
     const token_amount = formatSat(swapToken2Amount, token2.decimal);
     const price = formatAmount(token_amount / mvc_amount, token2.decimal);
+
+    let currentBoostRatio = 0;
+    if (lockedTokenAmount > 0) {
+      const maxRatio = maxBoostRatio / 10000;
+      currentBoostRatio = userBoostTokenAmount / (lockedTokenAmount * boostRewardFactor);
+      if (currentBoostRatio > maxRatio) {
+        currentBoostRatio = maxRatio;
+      }
+    }
+    const apr = allFarmPairs[currentFarmPair]._yield;
     return (
       <div className={styles.content}>
         <Rate
@@ -125,7 +139,7 @@ export default class Deposit extends Component {
             </div>
           </div>
           <div className={styles.pair_right}>
-            <FormatNumber value={allFarmPairs[currentFarmPair]._yield} />%{' '}
+            <FormatNumber value={formatAmount(apr * (1 + currentBoostRatio), 2)} />%{' '}
             {_('apy')}
           </div>
         </div>

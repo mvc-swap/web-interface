@@ -45,6 +45,7 @@ export default class FarmList extends Component {
       rewardTokenAmount = 0,
       rewardToken,
       poolTokenAmount,
+      maxBoostRatio,
       _total = 0,
       _yield = 0,
     } = data;
@@ -52,6 +53,14 @@ export default class FarmList extends Component {
     if (loading || !pairsData[tokenID]) {
       return null;
     }
+
+    let apy = _yield;
+    const now = Date.now() / 1000;
+    if (now > rewardEndTime) {
+      apy = 0
+    }
+
+    const maxApy = apy * (1 + maxBoostRatio / 10000)
 
     const {
       swapToken1Amount,
@@ -149,7 +158,8 @@ export default class FarmList extends Component {
               </div>
             </Tooltip>
             <div className={styles.value}>
-              <FormatNumber value={_yield} />%
+              <FormatNumber value={apy} />%~
+              <FormatNumber value={maxApy} />%
             </div>
           </div>
           <div>
