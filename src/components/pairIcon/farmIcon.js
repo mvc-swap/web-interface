@@ -22,6 +22,7 @@ export default class FarmPairIcon extends React.Component {
       currentFarmPair,
       allFarmPairs,
       children,
+      boostToken,
     } = this.props;
     // console.log(lptoken)
     if (!allFarmPairs[currentFarmPair]) return null;
@@ -80,6 +81,24 @@ export default class FarmPairIcon extends React.Component {
           <div className="pair-icon">{token2Logo}</div>
           <div className="pair-name">
             {children} {symbol2}
+          </div>
+        </>
+      );
+    }
+    if (keyword === 'boost') {
+      const boostTokenLogo = (
+        <TokenLogo
+          name={boostToken.symbol}
+          genesisID={boostToken.tokenID || 'mvc'}
+          size={size}
+        />
+      );
+
+      return (
+        <>
+          <div className="pair-icon">{boostTokenLogo}</div>
+          <div className="pair-name">
+            {children} {boostToken.symbol}
           </div>
         </>
       );

@@ -62,6 +62,7 @@ const texts = {
   date: 'Date',
   onchain_tx: 'Onchain Transaction',
   confirmation: 'confirmation',
+  confirm: 'Confirm',
 
   pair_liq_pool: 'Pair Liquidity Pool',
   add_liq: 'Add Liquidity',
@@ -261,6 +262,9 @@ const texts = {
   farm_withdraw: 'Withdraw',
   farm_withdraw_success: 'Withdraw successful',
   withdrew: 'Withdrew',
+  boost: 'Boost',
+  unboost: 'Unboost',
+  current: 'Current',
   tvl: 'Your Deposited',
   apy: 'APR',
   yield_tips: 'your withdrawable yield: %s',

@@ -24,6 +24,7 @@ export const OP_PRE_WITHDRAW = 3
 export const OP_FINISH_WITHDRAW = 4
 export const OP_HARVEST = 5
 export const OP_ADMIN = 6
-export const OP_VOTE = 7
+export const OP_BOOST_DEPOSIT = 7
+export const OP_BOOST_WITHDRAW = 8
 
 export const MVCSWAP_WALLET_URL = 'https://wallet.mvcswap.com/';

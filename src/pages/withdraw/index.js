@@ -115,6 +115,7 @@ export default class Withdraw extends Component {
       currentFarmPair,
       loading,
       lockedTokenAmount,
+      lptoken,
       // submiting,
     } = this.props;
     if (loading || !currentFarmPair) return <Loading />;
@@ -124,7 +125,7 @@ export default class Withdraw extends Component {
         <Rate
           type="farm"
           changeAmount={(value) => this.changeData(value)}
-          balance={lockedTokenAmount}
+          balance={formatSat(lockedTokenAmount, lptoken.decimal)}
           tokenPair={<FarmPairIcon keyword="pair" />}
         />
 

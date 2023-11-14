@@ -15,8 +15,12 @@ export default {
     allFarmPairsArr: [],
     currentFarmPair: '',
     lockedTokenAmount: 0,
+    boostTokenAmount: 0,
+    maxBoostRatio: 0,
+    boostRewardFactor: 0,
     lptoken: {},
     rewardToken: {},
+    boostToken: {},
     pairYields: {},
     pairsData: {},
   },
@@ -135,6 +139,24 @@ export default {
       return res;
     },
 
+    *boostDeposit({ payload }, { call, put }) {
+      const res = yield farmApi.boostDeposit.call(farmApi, payload);
+      log('boostDeposit:', payload, res);
+      return res;
+    },
+
+    *boostWithdraw({ payload }, { call, put }) {
+      const res = yield farmApi.boostWithdraw.call(farmApi, payload);
+      log('boostWithdraw:', payload, res);
+      return res;
+    },
+
+    *boostWithdraw2({ payload }, { call, put }) {
+      const res = yield farmApi.boostWithdraw2.call(farmApi, payload);
+      log('boostWithdraw2:', payload, res);
+      return res;
+    },
+
     *harvest({ payload }, { call, put }) {
       const res = yield farmApi.harvest.call(farmApi, payload);
       log('harvest:', payload, res);
@@ -176,15 +198,25 @@ export default {
       }
       let token = {},
         lockedTokenAmount = 0,
-        rewardToken = {};
+        rewardToken = {},
+        boostTokenAmount = 0,
+        maxBoostRatio = 0,
+        boostRewardFactor = 0,
+        userBoostTokenAmount = 0,
+        boostToken = {};
       if (!allFarmPairs) {
         allFarmPairs = state.allFarmPairs;
       }
       const currentPairObj = allFarmPairs[currentFarmPair];
       if (currentPairObj) {
         token = currentPairObj.token;
-        lockedTokenAmount = currentPairObj.lockedTokenAmount;
+        lockedTokenAmount = Number(currentPairObj.lockedTokenAmount);
         rewardToken = currentPairObj.rewardToken;
+        boostToken = currentPairObj.boostToken;
+        boostTokenAmount = Number(currentPairObj.boostTokenAmount);
+        maxBoostRatio = currentPairObj.maxBoostRatio;
+        boostRewardFactor = currentPairObj.boostRewardFactor;
+        userBoostTokenAmount = Number(currentPairObj.userBoostTokenAmount);
       }
 
       return {
@@ -192,7 +224,12 @@ export default {
         ...action.payload,
         lptoken: token,
         rewardToken,
-        lockedTokenAmount: formatSat(lockedTokenAmount, token.decimal),
+        boostToken,
+        boostTokenAmount,
+        maxBoostRatio,
+        boostRewardFactor,
+        userBoostTokenAmount,
+        lockedTokenAmount,
       };
     },
   },

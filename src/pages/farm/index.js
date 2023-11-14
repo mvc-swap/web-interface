@@ -12,6 +12,8 @@ import Header from '../layout/header';
 import FarmList from './farmList';
 import Deposit from '../deposit';
 import Withdraw from '../withdraw';
+import Boost from '../boost';
+import Unboost from '../unboost';
 // import debug from 'debug';
 import styles from './index.less';
 import _ from 'i18n';
@@ -184,8 +186,8 @@ export default class FarmC extends Component {
                 <>*/}
                 <div className={styles.right_box}>
                   <Menu
-                    menus={['deposit', 'withdraw']}
-                    contents={[<Deposit />, <Withdraw />]}
+                    menus={['deposit', 'withdraw', 'boost', 'unboost']}
+                    contents={[<Deposit />, <Withdraw />, <Boost />, <Unboost />]}
                     currentMenuIndex={currentMenuIndex}
                   />
                 </div>
