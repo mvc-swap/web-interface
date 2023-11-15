@@ -55,12 +55,14 @@ export default class FarmList extends Component {
     }
 
     let apy = _yield;
+    let rewardAmountPerDay = formatSat(rewardAmountPerSecond * 86400, decimal);
     const now = Date.now() / 1000;
     if (now > rewardEndTime) {
       apy = 0
+      rewardAmountPerDay = 0
     }
-
     const maxApy = apy * (1 + maxBoostRatio / 10000)
+    const maxRewardPerDay = rewardAmountPerDay * (1 + maxBoostRatio / 10000)
 
     const {
       swapToken1Amount,
@@ -85,7 +87,6 @@ export default class FarmList extends Component {
       ? formatSat(lockedTokenAmount, token.decimal)
       : 0;
 
-    const reword_amount = formatSat(rewardAmountPerSecond * 86400, decimal);
 
     // count token1 and token2 value
     let rate = 0
@@ -158,8 +159,7 @@ export default class FarmList extends Component {
               </div>
             </Tooltip>
             <div className={styles.value}>
-              <FormatNumber value={apy} />%~
-              <FormatNumber value={maxApy} />%
+              <FormatNumber value={apy} />% ~ <FormatNumber value={maxApy} />%
             </div>
           </div>
           <div>
@@ -170,7 +170,7 @@ export default class FarmList extends Component {
               </div>
             </Tooltip>
             <div className={styles.value}>
-              <FormatNumber value={reword_amount} />
+              <FormatNumber value={rewardAmountPerDay} /> ~ <FormatNumber value={maxRewardPerDay} />
             </div>
           </div>
           <div className={styles.item_detail_line_2}>

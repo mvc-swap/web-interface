@@ -251,7 +251,7 @@ const texts = {
   abandoned_deposited_lp:
     'Withdraw all your LP token and yield, deposit LP token to the new contract',
   apy_info:
-    'APR = rewardPerDay * 365 *  Token price / TVL * 100%',
+    'base APR + boost APR',
   deposit: 'Deposit',
   earn: 'Earn',
   deposit_success: 'Deposit successful',
