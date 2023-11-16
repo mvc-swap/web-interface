@@ -98,6 +98,7 @@ export default class Unboost extends Component {
     let newBoostRatio = 0;
     const { removeToken } = this.state;
     const value = Number(formatTok(removeToken, boostToken.decimal));
+    const apr = allFarmPairs[currentFarmPair]._yield
     if (lockedTokenAmount > 0) {
       const maxRatio = maxBoostRatio / 10000;
       currentBoostRatio = userBoostTokenAmount / (lockedTokenAmount * boostRewardFactor);
@@ -105,8 +106,8 @@ export default class Unboost extends Component {
         currentBoostRatio = maxRatio;
       }
       newBoostRatio = (userBoostTokenAmount - value) / (lockedTokenAmount * boostRewardFactor);
-      if (newBoostRatio > maxRatio) {
-        newBoostRatio = maxRatio;
+      if (newBoostRatio < 0) {
+        newBoostRatio = 0;
       }
     }
     let newBoostTokenAmount = userBoostTokenAmount;
@@ -114,7 +115,6 @@ export default class Unboost extends Component {
       newBoostTokenAmount = userBoostTokenAmount - value;
     }
 
-    const apr = allFarmPairs[currentFarmPair]._yield
 
     return (
       <div className={styles.content}>
@@ -279,15 +279,17 @@ export default class Unboost extends Component {
   };
 
   renderButton() {
-    const { isLogin, lockedTokenAmount } = this.props;
+    const { isLogin, userBoostTokenAmount, boostToken } = this.props;
     const { removeToken } = this.state;
+
+    const removeTokenAmount = formatTok(removeToken, boostToken.decimal);
 
     const conditions = [
       { key: 'login', cond: !isLogin },
       { key: 'enterAmount', cond: parseFloat(removeToken) <= 0 },
       {
         key: 'lackBalance',
-        cond: parseFloat(removeToken) > parseFloat(lockedTokenAmount),
+        cond: parseFloat(removeTokenAmount) > (userBoostTokenAmount || 0),
       },
     ];
 
@@ -300,54 +302,6 @@ export default class Unboost extends Component {
           onClick={this.handleSubmit}
         >
           Confirm
-        </Button>
-      )
-    );
-  }
-
-  renderButton() {
-    const {
-      isLogin,
-      accountInfo,
-      lptoken,
-      allFarmPairs,
-      currentFarmPair,
-    } = this.props;
-
-    const { removeToken } = this.state;
-    const LP = accountInfo.userBalance[lptoken.tokenID];
-
-    const conditions = [
-      { key: 'login', cond: !isLogin },
-      { key: 'enterAmount', cond: parseFloat(removeToken) <= 0 },
-      {
-        key: 'lackBalance',
-        cond: parseFloat(removeToken) > parseFloat(LP),
-      },
-    ];
-
-    if (allFarmPairs[currentFarmPair].abandoned) {
-      return (
-        <Button
-          className={styles.btn}
-          type="primary"
-          shape="round"
-          disabled={true}
-        >
-          {_('confirm')}
-        </Button>
-      );
-    }
-
-    return (
-      BtnWait(conditions) || (
-        <Button
-          className={styles.btn}
-          type="primary"
-          shape="round"
-          onClick={this.handleSubmit}
-        >
-          {_('confirm')}
         </Button>
       )
     );

@@ -276,7 +276,7 @@ export default class Boost extends Component {
     } = this.props;
 
     const { addToken } = this.state;
-    const LP = accountInfo.userBalance[boostToken.tokenID];
+    const LP = accountInfo.userBalance[boostToken.tokenID] || 0;
 
     const conditions = [
       { key: 'login', cond: !isLogin },

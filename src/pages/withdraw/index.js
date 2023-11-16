@@ -307,15 +307,17 @@ export default class Withdraw extends Component {
   };
 
   renderButton() {
-    const { isLogin, lockedTokenAmount } = this.props;
+    const { isLogin, lockedTokenAmount, lptoken } = this.props;
     const { removeLP } = this.state;
+
+    const removeTokenAmount = formatTok(removeLP, lptoken.decimal);
 
     const conditions = [
       { key: 'login', cond: !isLogin },
       { key: 'enterAmount', cond: parseFloat(removeLP) <= 0 },
       {
         key: 'lackBalance',
-        cond: parseFloat(removeLP) > parseFloat(lockedTokenAmount),
+        cond: parseFloat(removeTokenAmount) > parseFloat(lockedTokenAmount),
       },
     ];
 

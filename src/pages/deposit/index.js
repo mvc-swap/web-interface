@@ -256,7 +256,7 @@ export default class Deposit extends Component {
     } = this.props;
 
     const { addLP } = this.state;
-    const LP = accountInfo.userBalance[lptoken.tokenID];
+    const LP = accountInfo.userBalance[lptoken.tokenID] || 0;
 
     const conditions = [
       { key: 'login', cond: !isLogin },
