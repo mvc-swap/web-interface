@@ -177,8 +177,12 @@ export default class Boost extends Component {
 
   handleSubmit = async () => {
     const { addToken } = this.state;
-    const { dispatch, currentFarmPair, boostToken, accountInfo } = this.props;
+    const { dispatch, currentFarmPair, boostToken, accountInfo, lockedTokenAmount } = this.props;
     const { userAddress, userBalance, changeAddress } = accountInfo;
+
+    if (lockedTokenAmount <= 0) {
+      return message.error('You must deposit LP token first');
+    }
 
     let res = await dispatch({
       type: 'farm/reqSwap',
