@@ -7,6 +7,10 @@ const linksData = [
     icon: 'iconTwitter',
   },
   {
+    url: 'https://t.me/mvcswap',
+    icon: 'icontelegram',
+  },
+  {
     url: 'https://discord.com/invite/RGHWazu9eS',
     icon: 'icondiscord',
   },
