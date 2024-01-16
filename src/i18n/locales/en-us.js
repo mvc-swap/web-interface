@@ -283,7 +283,7 @@ const texts = {
   newpair_desc1: 'Agree you’re not a scammer or rug puller',
   newpair_desc2: '5 SPACE to pay for the creating one pair',
   newpair_desc3: 'The SensibleId of the new token',
-  newpair_desc4: 'Tokens to add to the genesis liquidity',
+  newpair_desc4: 'Match the token contract in the latest meta-contract sdk',
   newpair_note1:
     'Note: MVCSwap reserves the right to hide any pairs at any time',
   newpair_note2: 'Learn more about possible reasons for delistings here',
