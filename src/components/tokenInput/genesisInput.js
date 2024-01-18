@@ -31,7 +31,7 @@ export default class GenesisTokenInput extends Component {
     } else {
       if (e.target.value.toUpperCase() === 'SPACE') return;
 
-      if (value.length !== 72) return message.error('Illegal SensibleId');
+      if (value.length !== 72) return message.error('Illegal TokenID');
 
       const res = await dispatch({
         type: 'custom/query',
