@@ -48,7 +48,7 @@ export default class TokenPairList extends React.Component {
           </div>
         </div>
 
-        <div className={styles.genesis_id}>{strAbbreviation(tokenIDs)}</div>
+        <div className={styles.genesis_id}>{strAbbreviation(token2.type.toUpperCase())}</div>
 
         <div className={styles.selected}>
           {currentPair === id && (
