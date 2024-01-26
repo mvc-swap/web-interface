@@ -55,7 +55,7 @@ export default class TokenPairList extends React.Component {
           <div className={styles.name}>{symbol.toUpperCase()}</div>
         </div>
 
-        <div className={styles.genesis_id}>{strAbbreviation(item.type.toUpperCase())}</div>
+        <div className={styles.genesis_id}>{strAbbreviation((item.type || 'unknown').toUpperCase())}</div>
 
         <div className={styles.selected}>
           {(currentToken.toUpperCase() === symbol.toUpperCase() ||
