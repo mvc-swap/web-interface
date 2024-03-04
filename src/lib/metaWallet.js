@@ -37,6 +37,24 @@ const getTokenBalance = async () => {
   return userBalance;
 };
 
+if (window.metaidwallet) {
+  window.metaidwallet.on('disconnect', () => {
+    window.location.reload();
+  });
+
+  window.metaidwallet.on('accountChanged', (newAccount) => {
+    console.log('accountChanged');
+    console.log('new account:', newAccount);
+    window.location.reload();
+  })
+
+  window.metaidwallet.on('networkChanged', (newNetwork) => {
+    console.log('networkChanged');
+    console.log('new network:', newNetwork);
+    window.location.reload();
+  })
+}
+
 export default {
   info: async () => {
     if (checkExtension()) {
