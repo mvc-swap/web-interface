@@ -68,13 +68,13 @@ export default function btn(props) {
   // console.log('props', props);
   let _btn = BtnWait(conditions);
 
-  console.log(
-    'amount',
-    parseFloat(origin_amount),
-    isNaN(parseFloat(origin_amount)),
-    '_btn',
-    _btn,
-  );
+  //console.log(
+  //  'amount',
+  //  parseFloat(origin_amount),
+  //  isNaN(parseFloat(origin_amount)),
+  //  '_btn',
+  //  _btn,
+  //);
   if (
     _btn ||
     parseFloat(origin_amount) <= 0 ||

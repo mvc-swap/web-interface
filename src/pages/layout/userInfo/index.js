@@ -47,6 +47,16 @@ export default class UserInfo extends Component {
     this.polling = false;
   }
 
+  handleAccountChange = async () => {
+    const { dispatch, isLogin } = this.props;
+    console.log('accountChanged');
+    await dispatch({
+      type: 'user/changeAccount',
+      payload: {
+      },
+    });
+  }
+
   accountChanged = async (type) => {
     const { dispatch, isLogin } = this.props;
 
@@ -152,6 +162,7 @@ export default class UserInfo extends Component {
       payload: {
         type,
         network,
+        accountChangeHandler: this.handleAccountChange,
       },
     });
     // console.log('------', con_res);

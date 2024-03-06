@@ -13,7 +13,6 @@ const darkMode = localStorage.getItem(MVCSWAP_DARKMODE);
 
 export default {
   namespace: 'user',
-
   state: {
     isLogin: false,
     accountInfo: {
@@ -56,6 +55,31 @@ export default {
       } catch (error) {
         console.log(error.toString());
         console.log(error.stack);
+        return { msg: error.toString() };
+      }
+
+      return {};
+    },
+
+    *changeAccount({ payload }, { call, put, select }) {
+      const type = yield select((state) => state.user.walletType);
+      try {
+        const _wallet = Wallet({ type });
+        const accountInfo = yield _wallet.info();
+        localStorage.setItem(
+          MVCSWAP_NETWORK,
+          accountInfo.network || DEFAULT_NET,
+        );
+
+        yield put({
+          type: 'save',
+          payload: {
+            accountInfo,
+            // isLogin: true,
+          },
+        });
+      } catch (error) {
+        console.log(error.toString());
         return { msg: error.toString() };
       }
 
@@ -109,12 +133,15 @@ export default {
     },
 
     *connectWebWallet({ payload }, { call, put }) {
-      const { type, network } = payload;
+      const { type, network, accountChangeHandler } = payload;
       let res;
       try {
         const _wallet = Wallet({ type });
         res = yield _wallet.connectAccount(network);
         console.log('connect:', res);
+        if (_wallet.registerEvent) {
+          yield _wallet.registerEvent(accountChangeHandler);
+        }
       } catch (error) {
         console.log(error);
         return { msg: error.message || error.toString() };

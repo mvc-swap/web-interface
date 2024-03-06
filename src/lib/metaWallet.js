@@ -37,38 +37,16 @@ const getTokenBalance = async () => {
   return userBalance;
 };
 
-if (window.metaidwallet) {
-  window.metaidwallet.on('disconnect', () => {
-    window.location.reload();
-  });
-
-  window.metaidwallet.on('accountChanged', (newAccount) => {
-    console.log('accountChanged');
-    console.log('new account:', newAccount);
-    window.location.reload();
-  })
-
-  window.metaidwallet.on('networkChanged', (newNetwork) => {
-    console.log('networkChanged');
-    console.log('new network:', newNetwork);
-    window.location.reload();
-  })
-}
-
 export default {
   info: async () => {
     if (checkExtension()) {
       let accountInfo = {};
       const mvcBalance = await getMvcBalance();
-      console.log('mvc', mvcBalance);
       const userAddress = await window.metaidwallet.getAddress();
-      console.log('uadress', userAddress);
       const network = await window.metaidwallet.getNetwork();
       //const network = 'mainnet';
 
-      console.log('net', network);
       const tokenBalance = await getTokenBalance();
-      console.log('tokenBB', tokenBalance);
       const userBalance = {
         MVC: mvcBalance,
         ...tokenBalance,
@@ -89,6 +67,25 @@ export default {
     if (checkExtension()) {
       return window.metaidwallet.connect();
     }
+  },
+
+  registerEvent: (accountsChangedHandler) => {
+
+    window.metaidwallet.on('disconnect', () => {
+      window.location.reload();
+    });
+
+    window.metaidwallet.on('accountsChanged', async (newAccount) => {
+      console.log('accountsChanged');
+      console.log('new account:', newAccount);
+      accountsChangedHandler();
+    })
+
+    window.metaidwallet.on('networkChanged', (newNetwork) => {
+      console.log('networkChanged');
+      console.log('new network:', newNetwork);
+      window.location.reload();
+    })
   },
 
   exitAccount: () => {
