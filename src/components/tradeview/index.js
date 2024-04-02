@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { createChart, CrosshairMode } from 'lightweight-charts';
 
-const chartUrl = 'https://api.mvcswap.com/chart/chartdata/';
+const chartUrl = 'https://api.mvcswap.com/stats/chartdata/';
 
 const TradingViewChart = (props) => {
   const chartContainerRef = useRef(null);
