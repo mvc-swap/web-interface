@@ -37,6 +37,7 @@ const getIcon = (icons = [], symbol) => {
 export default () => {
     const supplyChartRef = useRef(null);
     const burnChartRef = useRef(null);
+
     const tvRef = useRef(null);
     const chartWrapRef = useRef(null);
     const [tokens, setTokens] = useState([]);
@@ -51,13 +52,13 @@ export default () => {
         if (retIcons.success === true) {
             const { data } = retIcons;
             setIcons(data);
-        } 
+        }
         const ret = await api.queryTokens();
         if (ret.code === 0) {
             const { data } = ret;
             let _tokens = []
             for (let item in data) {
-                _tokens.push({ symbol: item, ...data[item], type: data[item].tokenType, tokenID: item,logo:getIcon(retIcons.data,item) })
+                _tokens.push({ symbol: item, ...data[item], type: data[item].tokenType, tokenID: item, logo: getIcon(retIcons.data, item) })
             }
             setTokens(_tokens);
             if (!curToken) {
@@ -298,9 +299,9 @@ export default () => {
     }, [curInfo])
 
     useEffect(() => {
+
         let chartInstance;
         let burnChartInstance;
-
         if (supplyChartRef.current && burnChartRef.current) {
             chartInstance = echarts.init(supplyChartRef.current);
             burnChartInstance = echarts.init(burnChartRef.current);
@@ -438,7 +439,7 @@ export default () => {
                                 </div>
                                 <TokenList showList={tokens} currentToken={curToken.symbol} handleChange={handleChange} />
                             </div>} open={open} showArrow={true}
-                                onOpenChange={setOpen} placement='bottomLeft'    trigger={['click']}>
+                                onOpenChange={setOpen} placement='bottomLeft' trigger={['click']}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: "#303133", fontWeight: 'bold', fontSize: 24, cursor: 'pointer' }}>
                                     <TokenLogo name={curToken.symbol}
                                         genesisID={''}
@@ -459,7 +460,7 @@ export default () => {
 
                             </div>
                             <div ref={chartWrapRef}>
-                                <div
+                                <div style={{ height: 300 }}
                                     ref={tvRef}
                                 ></div>
                             </div>
