@@ -8,6 +8,7 @@ import * as echarts from 'echarts';
 import api from '../../api/stats'
 import { createChart, CrosshairMode } from 'lightweight-charts';
 import TokenLogo from 'components/tokenicon';
+import TokenList from 'components/tokenList/stats';
 import fdv from '../../assets/fdv.svg'
 import tag from '../../assets/tag.svg'
 import supply from '../../assets/supply.svg'
@@ -17,6 +18,9 @@ import fire2 from '../../assets/fire2.svg'
 import mc from '../../assets/mc.svg'
 import swap from '../../assets/swap.svg'
 import useIntervalAsync from '../../hooks/useIntervalAsync';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import styles from './index.less';
+import _ from 'i18n';
 const colProps = { md: 8, sm: 12, xs: 24 };
 const chartColProps = { md: 12, sm: 12, xs: 24 };
 
@@ -43,12 +47,17 @@ export default () => {
     const [loading, setLoading] = useState(true)
     const [open, setOpen] = useState(false)
     const getTokens = useCallback(async () => {
+        const retIcons = await api.queryIcons();
+        if (retIcons.success === true) {
+            const { data } = retIcons;
+            setIcons(data);
+        } 
         const ret = await api.queryTokens();
         if (ret.code === 0) {
             const { data } = ret;
             let _tokens = []
             for (let item in data) {
-                _tokens.push({ symbol: item, ...data[item] })
+                _tokens.push({ symbol: item, ...data[item], type: data[item].tokenType, tokenID: item,logo:getIcon(retIcons.data,item) })
             }
             setTokens(_tokens);
             if (!curToken) {
@@ -73,14 +82,12 @@ export default () => {
                 data.FDV = price * (maxSupply - burnSupply)
                 data.SupplyRate = currentSupply / maxSupply * 100
                 data.BurnRate = burnSupply / currentSupply * 100;
-                if (data.BurnRate===0) {
+                if (data.BurnRate === 0) {
                     data.BurnRate = 0.001
                 }
                 if (data.SupplyRate === 0) {
                     data.SupplyRate = 0.001
                 }
-
-
                 setCurInfo(data)
                 setLoading(false)
             }
@@ -402,6 +409,14 @@ export default () => {
         return () => window.removeEventListener('resize', resizeChart)
     }, [])
 
+    const handleChange = (tokenID) => {
+        console.log(tokenID, 'handleChange')
+        const token = tokens.find(item => item.tokenID === tokenID);
+        console.log(token, 'handleChange')
+        setCurToken(token)
+        setOpen(false)
+    }
+
     return <Layout>
         <Notice />
         <div className='container' style={{ margin: '0 auto', padding: '0 0 40px', display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh' }}>
@@ -412,25 +427,20 @@ export default () => {
                 {curInfo && <Row gutter={[20, 20]} style={{ width: 1043, maxWidth: '100vw' }}>
                     <Col span={24} >
                         <Card style={{ borderRadius: 12 }}>
-                            <Popover content={<div style={{ padding: 20, width: 300 }}>
-                                {
-                                    tokens.map(item => {
-                                        return <div key={item.symbol} onClick={() => {
-                                            setLoading(true)
-                                            setCurToken(item);
-                                            setOpen(false)
-                                        }} style={{ display: 'flex', alignItems: 'center', gap: 10, color: "#303133", fontWeight: 'bold', fontSize: 24, cursor: 'pointer', padding: '10px 0' }}>
-                                            <TokenLogo name={item.symbol}
-                                                genesisID={''}
-                                                size={32}
-                                                url={getIcon(icons, item.symbol)}
-                                            />
-                                            {item.symbol.toUpperCase()}
-                                        </div>
-                                    })
-                                }
+                            <Popover content={<div className={styles.container}>
+                                <div className={styles.head}>
+                                    <div className={styles.back}>
+                                        <ArrowLeftOutlined
+                                            onClick={() => setOpen(false)}
+                                            style={{ fontSize: 16, color: '#1E2BFF', fontWeight: 700 }}
+                                        />
+                                    </div>
+                                    <div className={styles.title}>{_('select_token')}</div>
+                                    <div className={styles.done}></div>
+                                </div>
+                                <TokenList showList={tokens} currentToken={curToken.symbol} handleChange={handleChange} />
                             </div>} open={open} showArrow={true}
-                                onOpenChange={setOpen} placement="bottomLeft" >
+                                onOpenChange={setOpen} placement='bottomLeft'    trigger={['click']}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: "#303133", fontWeight: 'bold', fontSize: 24, cursor: 'pointer' }}>
                                     <TokenLogo name={curToken.symbol}
                                         genesisID={''}

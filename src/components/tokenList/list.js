@@ -27,7 +27,7 @@ export default class TokenPairList extends React.Component {
   renderItem = (item, props) => {
     const { currentPair, currentToken, changePair } = props;
     // const { token1, token2, id, name, tokenIDs } = item;
-    const { symbol, tokenID } = item;
+    const { symbol, tokenID,logo } = item;
     // console.log(item)
     return (
       <div
@@ -43,6 +43,7 @@ export default class TokenPairList extends React.Component {
               genesisID={tokenID || 'mvc'}
               size={40}
               style={{ zIndex: 1 }}
+              url={logo||''}
             />
             {/*<TokenPair
               symbol1={token1.symbol}

@@ -27,7 +27,7 @@ const searchByKeywords = (keywords, searchArr, type) => {
         keywords == v.token2.tokenID
       );
     }
-    return keywordsExp.test(v.symbol) || keywords == v.tokenID;
+    return keywordsExp.test(v.symbol) || keywords == v.tokenID ||keywords == v.genesis;
   });
 };
 
@@ -39,6 +39,7 @@ const handleChange = (e, props) => {
     return changeShowList(allPairs);
   }
   const searchResultList = searchByKeywords(value, allPairs, type);
+  console.log(searchResultList,'searchResultList')
   changeShowList(searchResultList);
 };
 
