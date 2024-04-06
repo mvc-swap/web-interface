@@ -488,11 +488,11 @@ export default () => {
                             <Statistic
                                 title={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}> <img src={mc}></img> <span>Market Cap</span></div>}
 
-                                value={curInfo.MarketCap} prefix='$' precision={4} valueStyle={{ textAlign: 'center' }} />
+                                value={curInfo.MarketCap} prefix='$' precision={0} valueStyle={{ textAlign: 'center' }} />
                         </Card></Col>
                     <Col {...colProps} >
                         <Card style={{ borderRadius: 12 }}>
-                            <Statistic title={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}> <img src={fdv}></img> <span>Full Dilluted Valuation</span></div>} value={curInfo.FDV} prefix='$' precision={4} valueStyle={{ textAlign: 'center' }} />
+                            <Statistic title={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}> <img src={fdv}></img> <span>Full Dilluted Valuation</span></div>} value={curInfo.FDV} prefix='$' precision={0} valueStyle={{ textAlign: 'center' }} />
                         </Card>
                     </Col>
                     <Col {...chartColProps}>
