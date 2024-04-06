@@ -33,6 +33,11 @@ const menu = [
     label: _('farm'),
     path: 'farm',
   },
+  {
+    key: 'stats',
+    label: _('stats'),
+    path: 'stats',
+  },
   // {
   //     key: 'explore',
   //     label: _('explore')

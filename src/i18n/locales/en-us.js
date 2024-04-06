@@ -379,5 +379,7 @@ const texts = {
   voting_term: 'Voting ends: %s blocks later',
   from_block: 'from block',
   to_block: 'to block',
+  //stats
+  stats:'Stats'
 };
 module.exports = texts;

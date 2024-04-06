@@ -13,4 +13,5 @@ export default [
   { path: '/farm/:id', component: '@/pages/farm' },
   { path: '/stake', component: '@/pages/stake' },
   { path: '/vote', component: '@/pages/vote' },
+  { path: '/stats', component: '@/pages/stats' },
 ];
