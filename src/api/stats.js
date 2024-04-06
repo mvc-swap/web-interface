@@ -12,6 +12,9 @@ class Stats extends BaseAPI {
   queryTokens() {
     return this._request('tokens');
   }
+  async queryIcons() {
+    return (await fetch('https://icons.mvcswap.com/resources/icons.json')).json();
+  }
 
   queryStatInfo(symbol) {
     return this._request('info', { symbol });

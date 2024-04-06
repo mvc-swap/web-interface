@@ -16,9 +16,17 @@ import fire from '../../assets/fire.svg'
 import fire2 from '../../assets/fire2.svg'
 import mc from '../../assets/mc.svg'
 import swap from '../../assets/swap.svg'
+import useIntervalAsync from '../../hooks/useIntervalAsync';
 const colProps = { md: 8, sm: 12, xs: 24 };
 const chartColProps = { md: 12, sm: 12, xs: 24 };
 
+const getIcon = (icons = [], symbol) => {
+    const find = icons.find(item => item.symbol.toUpperCase() === symbol.toUpperCase());
+    if (find) {
+        return `https://icons.mvcswap.com/resources/${find.logo}`
+    }
+    return null
+}
 
 
 
@@ -28,6 +36,7 @@ export default () => {
     const tvRef = useRef(null);
     const chartWrapRef = useRef(null);
     const [tokens, setTokens] = useState([]);
+    const [icons, setIcons] = useState([]);
     const [chartWidth, setChartWidth] = useState(973);
     const [curToken, setCurToken] = useState();
     const [curInfo, setCurInfo] = useState();
@@ -41,6 +50,13 @@ export default () => {
             if (!curToken) {
                 setCurToken(data[0])
             }
+        }
+    }, []);
+    const getIconss = useCallback(async () => {
+        const ret = await api.queryIcons();
+        if (ret.success === true) {
+            const { data } = ret;
+            setIcons(data);
         }
     }, []);
     const getCurInfo = useCallback(async () => {
@@ -60,13 +76,14 @@ export default () => {
         }
     }, [curToken])
 
+    useIntervalAsync(getCurInfo, 10000)
+
 
     useEffect(() => {
         getTokens()
-    }, [getTokens])
-    useEffect(() => {
-        getCurInfo()
-    }, [getCurInfo])
+        getIconss()
+    }, [getTokens, getIconss])
+
 
     const supplyRate = useMemo(() => {
         if (!curInfo) return null
@@ -393,7 +410,9 @@ export default () => {
                                         }} style={{ display: 'flex', alignItems: 'center', gap: 10, color: "#303133", fontWeight: 'bold', fontSize: 24, cursor: 'pointer', padding: '10px 0' }}>
                                             <TokenLogo name={item}
                                                 genesisID={''}
-                                                size={32}  />
+                                                size={32}
+                                                url={getIcon(icons, item)}
+                                            />
                                             {item.toUpperCase()}
                                         </div>
                                     })
@@ -403,7 +422,9 @@ export default () => {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: "#303133", fontWeight: 'bold', fontSize: 24, cursor: 'pointer' }}>
                                     <TokenLogo name={curToken}
                                         genesisID={''}
-                                        size={32} />
+                                        size={32}
+                                        url={getIcon(icons, curToken)}
+                                    />
                                     {curToken.toUpperCase()}
                                     <DownOutlined style={{ fontSize: 15, fontWeight: 'bold' }} />
                                 </div>
