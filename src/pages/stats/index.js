@@ -410,9 +410,7 @@ export default () => {
     }, [])
 
     const handleChange = (tokenID) => {
-        console.log(tokenID, 'handleChange')
         const token = tokens.find(item => item.tokenID === tokenID);
-        console.log(token, 'handleChange')
         setCurToken(token)
         setOpen(false)
     }

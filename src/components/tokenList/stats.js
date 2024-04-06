@@ -49,7 +49,6 @@ export default class PairList extends Component {
     };
 
     changePair = async (tokenID) => {
-        console.log(tokenID, 'tokenID')
         const { handleChange } = this.props
         handleChange && handleChange(tokenID)
     };
