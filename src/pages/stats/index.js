@@ -73,7 +73,7 @@ export default () => {
                 data.FDV = price * (maxSupply - burnSupply)
                 data.SupplyRate = currentSupply / maxSupply * 100
                 data.BurnRate = burnSupply / currentSupply * 100;
-                if (data.BurnRate) {
+                if (data.BurnRate===0) {
                     data.BurnRate = 0.001
                 }
                 if (data.SupplyRate === 0) {
