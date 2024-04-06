@@ -39,7 +39,6 @@ const handleChange = (e, props) => {
     return changeShowList(allPairs);
   }
   const searchResultList = searchByKeywords(value, allPairs, type);
-  console.log(searchResultList,'searchResultList')
   changeShowList(searchResultList);
 };
 
