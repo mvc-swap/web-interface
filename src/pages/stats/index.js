@@ -46,9 +46,13 @@ export default () => {
         const ret = await api.queryTokens();
         if (ret.code === 0) {
             const { data } = ret;
-            setTokens(data);
+            let _tokens = []
+            for (let item in data) {
+                _tokens.push({ symbol: item, ...data[item] })
+            }
+            setTokens(_tokens);
             if (!curToken) {
-                setCurToken(data[0])
+                setCurToken(_tokens[0])
             }
         }
     }, []);
@@ -61,14 +65,21 @@ export default () => {
     }, []);
     const getCurInfo = useCallback(async () => {
         if (curToken) {
-            const ret = await api.queryStatInfo(curToken);
+            const ret = await api.queryStatInfo(curToken.symbol);
             if (ret.code === 0) {
                 const { data } = ret;
                 const { price, currentSupply, burnSupply, maxSupply } = data
                 data.MarketCap = price * currentSupply
                 data.FDV = price * (maxSupply - burnSupply)
                 data.SupplyRate = currentSupply / maxSupply * 100
-                data.BurnRate = burnSupply / currentSupply * 100
+                data.BurnRate = burnSupply / currentSupply * 100;
+                if (data.BurnRate) {
+                    data.BurnRate = 0.000001
+                }
+                if (data.SupplyRate === 0) {
+                    data.SupplyRate = 0.0001
+                }
+
 
                 setCurInfo(data)
                 setLoading(false)
@@ -76,7 +87,7 @@ export default () => {
         }
     }, [curToken])
 
-    useIntervalAsync(getCurInfo, 10000)
+    useIntervalAsync(getCurInfo, 60000)
 
 
     useEffect(() => {
@@ -282,6 +293,7 @@ export default () => {
     useEffect(() => {
         let chartInstance;
         let burnChartInstance;
+
         if (supplyChartRef.current && burnChartRef.current) {
             chartInstance = echarts.init(supplyChartRef.current);
             burnChartInstance = echarts.init(burnChartRef.current);
@@ -408,24 +420,24 @@ export default () => {
                                             setCurToken(item);
                                             setOpen(false)
                                         }} style={{ display: 'flex', alignItems: 'center', gap: 10, color: "#303133", fontWeight: 'bold', fontSize: 24, cursor: 'pointer', padding: '10px 0' }}>
-                                            <TokenLogo name={item}
+                                            <TokenLogo name={item.symbol}
                                                 genesisID={''}
                                                 size={32}
-                                                url={getIcon(icons, item)}
+                                                url={getIcon(icons, item.symbol)}
                                             />
-                                            {item.toUpperCase()}
+                                            {item.symbol.toUpperCase()}
                                         </div>
                                     })
                                 }
                             </div>} open={open} showArrow={true}
                                 onOpenChange={setOpen} placement="bottomLeft" >
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: "#303133", fontWeight: 'bold', fontSize: 24, cursor: 'pointer' }}>
-                                    <TokenLogo name={curToken}
+                                    <TokenLogo name={curToken.symbol}
                                         genesisID={''}
                                         size={32}
-                                        url={getIcon(icons, curToken)}
+                                        url={getIcon(icons, curToken.symbol)}
                                     />
-                                    {curToken.toUpperCase()}
+                                    {curToken.symbol.toUpperCase()}
                                     <DownOutlined style={{ fontSize: 15, fontWeight: 'bold' }} />
                                 </div>
                             </Popover>
