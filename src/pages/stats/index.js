@@ -74,10 +74,10 @@ export default () => {
                 data.SupplyRate = currentSupply / maxSupply * 100
                 data.BurnRate = burnSupply / currentSupply * 100;
                 if (data.BurnRate) {
-                    data.BurnRate = 0.000001
+                    data.BurnRate = 0.001
                 }
                 if (data.SupplyRate === 0) {
-                    data.SupplyRate = 0.0001
+                    data.SupplyRate = 0.001
                 }
 
 
@@ -415,7 +415,7 @@ export default () => {
                             <Popover content={<div style={{ padding: 20, width: 300 }}>
                                 {
                                     tokens.map(item => {
-                                        return <div key={item} onClick={() => {
+                                        return <div key={item.symbol} onClick={() => {
                                             setLoading(true)
                                             setCurToken(item);
                                             setOpen(false)
