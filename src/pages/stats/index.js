@@ -21,6 +21,8 @@ import useIntervalAsync from '../../hooks/useIntervalAsync';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import _ from 'i18n';
+import { useParams, history } from 'umi';
+
 const colProps = { md: 8, sm: 12, xs: 24 };
 const chartColProps = { md: 12, sm: 12, xs: 24 };
 
@@ -37,7 +39,7 @@ const getIcon = (icons = [], symbol) => {
 export default () => {
     const supplyChartRef = useRef(null);
     const burnChartRef = useRef(null);
-
+    const params = useParams();
     const tvRef = useRef(null);
     const chartWrapRef = useRef(null);
     const [tokens, setTokens] = useState([]);
@@ -62,7 +64,16 @@ export default () => {
             }
             setTokens(_tokens);
             if (!curToken) {
+                if (params && params.id) {
+                    const find = _tokens.find(item => item.symbol.toUpperCase() === params.id.toUpperCase());
+                    if (find) {
+                        setCurToken(find);
+                        return
+                    }
+                }
+                history.push(`/stats/${_tokens[0].symbol}`);
                 setCurToken(_tokens[0])
+
             }
         }
     }, []);
@@ -411,7 +422,10 @@ export default () => {
     }, [])
 
     const handleChange = (tokenID) => {
+        setLoading(true)
         const token = tokens.find(item => item.tokenID === tokenID);
+        history.push(`/stats/${token.symbol}`);
+       
         setCurToken(token)
         setOpen(false)
     }
