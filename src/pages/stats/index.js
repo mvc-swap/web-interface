@@ -483,13 +483,13 @@ export default () => {
                     <Col {...colProps} >
                         <Card style={{ borderRadius: 12 }}>
                             <Statistic
-                                title={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}> <img src={supply}></img> <span>Curent Supply</span></div>}
+                                title={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}> <img src={supply}></img> <span>Current Supply</span></div>}
 
                                 value={curInfo.currentSupply} valueStyle={{ textAlign: 'center' }} precision={0} /></Card></Col>
                     <Col {...colProps} >
                         <Card style={{ borderRadius: 12 }}>
                             <Statistic
-                                title={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}> <img src={fire2}></img> <span>Burn Supply</span></div>}
+                                title={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}> <img src={fire2}></img> <span>Burned Supply</span></div>}
 
 
                                 value={curInfo.burnSupply} valueStyle={{ textAlign: 'center' }} precision={0} />
