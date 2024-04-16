@@ -48,7 +48,7 @@ export default function Pair(props) {
         </div>
         <div className={styles.info_item}>
           <div className={styles.info_label}>
-            {_('volume_24h')}
+            {_('volume_24h')} {symbol1}
           </div>
           <div className={styles.info_value}>
             <FormatNumber value={formatSat(totalVolume24h)} />
@@ -56,7 +56,7 @@ export default function Pair(props) {
         </div>
         <div className={styles.info_item}>
           <div className={styles.info_label}>
-            {_('fee_24h')}
+            {_('fee_24h')} {symbol1}
           </div>
           <div className={styles.info_value}>
             <FormatNumber value={formatSat(totalLpFee24h)} />
