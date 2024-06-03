@@ -1,0 +1,67 @@
+.poolV2container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0 0;
+  padding: 0 0px;
+  .wrap{
+    width: 1043px;
+    max-width: 100vw;
+  }
+ 
+  .positionContainer {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .leftPosition {
+      font-size: 24px;
+      font-weight: bold;
+      color: #303133;
+    }
+    .rightPosition {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0px;
+      gap: 8px;
+      font-size: 16px;
+
+      color: #1e2bff;
+      cursor: pointer;
+    }
+  }
+  .no-more {
+    font-size: 14px;
+    color: #999;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .nothing-here {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: #fff;
+    width: 100%; /* Ensure placeholder takes full width */
+    height: 150px; /* Set a fixed height for the placeholder */
+    color: #999;
+  }
+
+  .nothing-here-icon {
+    font-size: 32px; /* Larger icon size */
+  }
+
+  .nothing-here-text {
+    margin-top: 8px;
+    font-size: 16px; /* Larger text size */
+  }
+}

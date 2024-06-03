@@ -15,4 +15,5 @@ export default [
   { path: '/vote', component: '@/pages/vote' },
   { path: '/stats', component: '@/pages/stats' },
   { path: '/stats/:id', component: '@/pages/stats' },
+  { path: '/poolv2', component: '@/pages/poolV2' },
 ];
