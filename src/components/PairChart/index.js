@@ -1,6 +1,8 @@
 import { Card } from 'antd'
-import { useRef, useEffect,useState } from 'react';
-export default ({ children }) => {
+import { useRef, useEffect, useState } from 'react';
+import Chart from 'components/chart/swapChart';
+export default ({ children, curPair }) => {
+
     const [chartWidth, setChartWidth] = useState(973);
     const tvRef = useRef(null);
     const chartWrapRef = useRef(null);
@@ -14,12 +16,12 @@ export default ({ children }) => {
         window.addEventListener('resize', resizeChart)
         return () => window.removeEventListener('resize', resizeChart)
     }, [])
+    if (!curPair) return <></>
     return <Card style={{ borderRadius: 12 }}>
+        
 
-        <div ref={chartWrapRef}>
-            <div style={{ height: 300 }}
-                ref={tvRef}
-            ></div>
+        <div >
+            <Chart symbol1={curPair.token1.symbol} symbol2={curPair.token2.symbol} />
         </div>
         <div className='rightContent'>
             {children}

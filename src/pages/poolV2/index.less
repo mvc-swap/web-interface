@@ -18,6 +18,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
     .leftPosition {
       font-size: 24px;
       font-weight: bold;
@@ -61,7 +62,50 @@
   }
 
   .nothing-here-text {
-    margin-top: 8px;
-    font-size: 16px; /* Larger text size */
+    margin-top: 6px;
+    font-size: 13px; /* Larger text size */
+  }
+  .position-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    border-radius: 12px;
+    border: 1px solid #edeff2;
+    padding: 20px;
+    .cardLeft {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      .titleWrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        .pairName {
+          color: #303133;
+          font-size: 16px;
+          font-weight: bold;
+        }
+        .feeRate {
+          color: #909399;
+          font-size: 14px;
+        }
+      }
+    }
+    .cardRight {
+      text-align: right;
+      .label {
+        color: #909399;
+        font-size: 14px;
+      }
+      .range {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #303133;
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
   }
 }

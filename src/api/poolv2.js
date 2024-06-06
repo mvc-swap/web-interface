@@ -18,6 +18,18 @@ class PoolV2 extends BaseAPI {
     queryUserPositions(address) {
         return this._request('userpositions', { address });
     }
+    queryAllPairs() {
+        return this._request('allpairs', {});
+    }
+    fetchPairInfo(symbol) {
+        return this._request('swapinfo', { symbol });
+    }
+    reqSwapArgs(params) {
+        return this._request('reqswapargs', params, 'POST');
+    }
+    addLiq(params) {
+        return this._request('addliq', params, 'POST');
+    }
 }
 
 export default new PoolV2();
