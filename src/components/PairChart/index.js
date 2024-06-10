@@ -1,6 +1,8 @@
-import { Card } from 'antd'
+import { Card, Row, Col } from 'antd'
 import { useRef, useEffect, useState } from 'react';
 import Chart from 'components/chart/swapChart';
+import BarChart from './barChart';
+import TradingView from './tradview';
 export default ({ children, curPair }) => {
 
     const [chartWidth, setChartWidth] = useState(973);
@@ -18,13 +20,22 @@ export default ({ children, curPair }) => {
     }, [])
     if (!curPair) return <></>
     return <Card style={{ borderRadius: 12 }}>
-        
 
-        <div >
-            <Chart symbol1={curPair.token1.symbol} symbol2={curPair.token2.symbol} />
-        </div>
-        <div className='rightContent'>
-            {children}
-        </div>
+
+        <Row >
+            <Col span={12}>
+                <TradingView symbol1={curPair.token1.symbol} symbol2={curPair.token2.symbol} />
+            </Col>
+            <Col span={12}>
+                <Row>
+                    <BarChart symbol={curPair.pairName} tickSpacing={curPair.tickSpacing} />
+                    <div>{children}</div>
+                </Row>
+
+            </Col>
+
+
+        </Row>
+
     </Card>
 }

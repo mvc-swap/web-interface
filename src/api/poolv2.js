@@ -24,6 +24,9 @@ class PoolV2 extends BaseAPI {
     fetchPairInfo(symbol) {
         return this._request('swapinfo', { symbol });
     }
+    fetchLiquidity(symbol) {
+        return this._request('liquidity', { symbol });
+    }
     reqSwapArgs(params) {
         return this._request('reqswapargs', params, 'POST');
     }
