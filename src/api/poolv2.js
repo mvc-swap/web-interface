@@ -36,6 +36,9 @@ class PoolV2 extends BaseAPI {
     addLiq(params) {
         return this._request('addliq', params, 'POST');
     }
+    removeLiq(params) {
+        return this._request('removeliq', params, 'POST');
+    }
 }
 
 export default new PoolV2();

@@ -26,7 +26,7 @@ export function getAmount0Delta(
         sqrtRatioAX96 = sqrtRatioBX96
         sqrtRatioBX96 = temp
     }
-
+    debugger
     const numerator1 = liquidity << BigInt(96);
     const numerator2 = sqrtRatioBX96 - sqrtRatioAX96;
 
