@@ -1,9 +1,27 @@
+
 import v2API from '../api/poolv2.js';
+const iconBaseUrl = 'https://icons.mvcswap.com/resources';
 export default {
     namespace: 'poolV2',
     state: {
         pairs: [],
-        curPair: undefined
+        curPair: undefined,
+        icons: {}
+    },
+    subscriptions: {
+        setup({ dispatch, history }) {
+            history.listen((location) => {
+                console.log(location, 'location')
+                if (location.pathname.indexOf('/poolv2') > -1) {
+                    dispatch({
+                        type: 'getAllPairs',
+                    });
+                    dispatch({
+                        type: 'fetchIcons',
+                    });
+                }
+            });
+        }
     },
     effects: {
         *getAllPairs({ payload }, { call, put, select }) {
@@ -56,6 +74,26 @@ export default {
                 });
             }
         },
+        *fetchIcons({ payload }, { call, put }) {
+            const ret = yield v2API.queryIcons();
+            console.log(ret, 'icons')
+            const _icons = {}
+            if (ret.success && ret.data) {
+                ret.data.forEach(item => {
+                    console.log(item,item.genesis.toString().toLowerCase(), 'item')
+                    _icons[item.genesis.toString().toLowerCase()] = `${iconBaseUrl}/${item.logo}`;
+                    _icons[item.symbol.toLowerCase()] = `${iconBaseUrl}/${item.logo}`;
+                })
+                _icons.mvc = _icons.space;
+                _icons.MVC = _icons.space;
+            }
+            yield put({
+                type: 'save',
+                payload: {
+                    icons: _icons
+                },
+            });
+        }
     },
     reducers: {
         save(state, action) {

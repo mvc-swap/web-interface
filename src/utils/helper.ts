@@ -24,3 +24,4 @@ export function priceToSqrtX96(price:number) {
     const big1e20 = new BigNumber('1e20');
     return res.multipliedBy(bigTwo.pow(big96)).dividedBy(big1e20);
 }
+
