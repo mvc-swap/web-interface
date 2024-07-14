@@ -17,4 +17,5 @@ export default [
   { path: '/stats/:id', component: '@/pages/stats' },
   { path: '/poolv2', component: '@/pages/poolV2' },
   { path: '/poolv2/create', component: '@/pages/newPositionV2' },
+  { path: '/v2pos/:address/:pair', component: '@/pages/v2Pos' },
 ];

@@ -12,7 +12,7 @@ export default {
         setup({ dispatch, history }) {
             history.listen((location) => {
                 console.log(location, 'location')
-                if (location.pathname.indexOf('/poolv2') > -1) {
+                if (location.pathname.indexOf('/poolv2') > -1||location.pathname.indexOf('/v2pos') > -1) {
                     dispatch({
                         type: 'getAllPairs',
                     });

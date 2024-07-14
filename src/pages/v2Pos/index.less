@@ -1,0 +1,90 @@
+.PositionDetailPage {
+  width: 1043px;
+  max-width: calc(100vw - 24px);
+  .titleWraper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: Montserrat;
+      color: #303133;
+      display: flex;
+      gap: 10px;
+      .pairWrap {
+        display: flex;
+        .token2 {
+          margin-left: -7px;
+        }
+      }
+    }
+    .subfix {
+      font-size: 14px;
+      color: #909399;
+    }
+  }
+  .rangeWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .feeWrap {
+    margin-top: 20px;
+    border-radius: 8px;
+    background: #f5f7fa;
+    padding: 20px;
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+      & + .item {
+        margin-top: 16px;
+      }
+      .token {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .feeAmount {
+        font-size: 14px;
+      }
+    }
+  }
+  .reward {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .value {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      color: #303133;
+      font-weight: 500;
+    }
+  }
+  .linerLineButton {
+    border-radius: 12px;
+    position: relative;
+    height: 60px;
+    padding: 4px;
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 4px solid;
+      border-image: linear-gradient(
+          135deg,
+          rgba(183, 40, 255, 1),
+          rgba(40, 112, 255, 1)
+        )
+        1;
+    }
+  }
+}
