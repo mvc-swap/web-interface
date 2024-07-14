@@ -74,6 +74,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     }, [calcAmount])
 
     const onRemove = async () => {
+        const { tickLower, tickUpper, liquidity: userLiquidity } = position;
         const ret = await api.reqSwapArgs({
             symbol: curPair.pairName,
             address: userAddress,
@@ -111,10 +112,35 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             amountCheckRawTx: "",
             liquidityAmount: position.liquidity,
             mvcRawTx: retData[0].txHex,
+            tickLower,
+            tickUpper,
         }
         console.log(liq_data, 'liq_data')
         const compressData = await gzip(JSON.stringify(liq_data))
         const last = await api.removeLiq({ data: compressData });
+        const { txHex, scriptHex, satoshis, inputIndex } = last.data;
+        let sign_res = await dispatch({
+            type: 'user/signTx',
+            payload: {
+                datas: {
+                    txHex,
+                    scriptHex,
+                    satoshis,
+                    inputIndex,
+                },
+            },
+        });
+        const { publicKey, sig } = sign_res;
+        let payload = {
+            symbol: curPair.pairName,
+            requestIndex,
+            pubKey: publicKey,
+            sig,
+        };
+        console.log(payload, 'payload')
+        const compressData2 = await gzip(JSON.stringify(payload))
+        const res = await api.removeLiq2(payload);
+        console.log(res, 'res')
     }
 
     return <PageContainer>
