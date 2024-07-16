@@ -19,7 +19,7 @@ import { getMaxLiquidityForAmounts, getAmount0ForLiquidity, getAmount1ForLiquidi
 
 
 const PositionDetail = ({ user, poolV2, dispatch }) => {
-    const { pair: pairName } = useParams();
+    const { pair: pairName, index: posIndex } = useParams();
     console.log(pairName)
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const { icons, curPair } = poolV2;
@@ -32,17 +32,17 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 let _positions = [];
                 for (let pairName in res.data) {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
-                    pairPos.forEach((pos) => {
+                    pairPos.forEach((pos, index) => {
                         //TODO USDT 
                         const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
                         const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
                         console.log(minPrice, maxPrice)
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
-                        _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
+                        _positions.push({ index, pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
                     })
 
                 }
-                const find = _positions.find((pos) => pos.pairName === pairName);
+                const find = _positions.find((pos) => pos.pairName === pairName && pos.index == Number(posIndex));
                 console.log(find, 'find')
                 if (find) {
                     setPosition(find)
@@ -56,10 +56,92 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     useEffect(() => { getUserPoolV2s() }, [getUserPoolV2s])
 
     const collectFee = async () => {
+        try {
+            const ret = await api.reqSwapArgs({
+                symbol: curPair.pairName,
+                address: userAddress,
+                op: 2,
+                source: 'mvcswap.io'
+            });
+            if (ret.code !== 0) {
+                throw new Error(ret.msg);
+            }
+            const { mvcToAddress, tokenToAddress, changeAddress, rabinApis, txFee, requestIndex } = ret.data;
+            let tx_res = await dispatch({
+                type: 'user/transferAll',
+                payload: {
+                    datas: [
+                        {
+                            type: 'mvc',
+                            address: mvcToAddress,
+                            amount: (BigInt(txFee)).toString(),
+                            changeAddress,
+                            note: 'mvcswap.com(remove liquidity)',
+                        },
+                    ],
+                    noBroadcast: true,
+                },
+            });
+            if (tx_res.msg || tx_res.status == 'canceled') {
+                throw new Error(tx_res.msg || 'canceled');
+            }
+            if (tx_res.list) {
+                tx_res = tx_res.list;
+            }
+            if (!tx_res[0] || !tx_res[0].txHex) {
+                throw new Error(_('txs_fail'));
+            }
+            const liq_data = {
+                symbol: curPair.pairName,
+                requestIndex,
+                mvcOutputIndex: 0,
+                amountCheckRawTx: "",
+                liquidityAmount: 0,
+                mvcRawTx: tx_res[0].txHex,
+                tickLower: position.tickLower,
+                tickUpper: position.tickUpper,
+            }
+            console.log(liq_data, 'liq_data')
+            const compressData = await gzip(JSON.stringify(liq_data))
+            const remove1 = await api.removeLiq({ data: compressData });
+            if (remove1.code !== 0) {
+                throw new Error(remove1.msg);
+            }
+            const { txHex, scriptHex, satoshis, inputIndex } = remove1.data;
+            let sign_res = await dispatch({
+                type: 'user/signTx',
+                payload: {
+                    datas: {
+                        txHex,
+                        scriptHex,
+                        satoshis,
+                        inputIndex,
+                    },
+                },
+            });
+            const { publicKey, sig } = sign_res;
+            let payload = {
+                symbol: curPair.pairName,
+                requestIndex,
+                pubKey: publicKey,
+                sig,
+            };
+            console.log(payload, 'payload')
+
+            const remove2 = await api.removeLiq2(payload);
+            if (remove2.code !== 0) {
+                throw new Error(remove2.msg);
+            }
+            console.log(remove2, 'remove2');
+            message.success('Collect fee success');
+        } catch (err) {
+            console.error(err);
+            message.error(err.message || 'Collect fee failed');
+        }
 
     }
 
-    return <PageContainer>
+    return <PageContainer spining={loading}>
         <div className="PositionDetailPage">
             <div className="titleWraper">
                 <div className="actions" onClick={() => { history.goBack() }}><LeftOutlined style={{ color: '#909399' }} /> Back </div>
@@ -94,13 +176,13 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                         <PairChart curPair={poolV2.curPair}>
                             <div className="inputWrap">
                                 <div className="label">
-                                    high
+                                    high:{position.maxPrice}
                                 </div>
 
                             </div>
                             <div className="inputWrap">
                                 <div className="label">
-                                    low
+                                    low:{position.minPrice}
                                 </div>
 
                             </div>
@@ -121,7 +203,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                         <div>{pairName.split('-')[0].toUpperCase()}</div>
                                     </div>
 
-                                    <div className="feeAmount">{'--'} </div>
+                                    <div className="feeAmount">{curPair.token1Amount} </div>
                                 </div>
                                 <div className="item">
                                     <div className="token">
@@ -134,7 +216,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                         <div>{pairName.split('-')[1].toUpperCase()}</div>
                                     </div>
 
-                                    <div className="feeAmount">{'--'} </div>
+                                    <div className="feeAmount">{curPair.token2Amount} </div>
                                 </div>
 
 
@@ -144,7 +226,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     </Col>
                     <Col xs={24} md={12}>
                         <Card style={{ borderRadius: 12 }}>
-                            <Statistic title="Unclaimed fees" value={112893} />
+                            <Statistic title="Unclaimed fees" value={'--'} />
                             <div className="feeWrap">
                                 <div className="item">
                                     <div className="token">
@@ -185,7 +267,6 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                 <div className="value">
                                     {position.rewardAmount} SPACE  <TokenLogo
                                         name={'space'}
-
                                         url={icons['mvc'] || ''}
                                         size={32}
                                     />
@@ -199,7 +280,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                 <Button block className="linerLineButton" onClick={collectFee}>Collect Fee</Button>
                             </Col>
                             <Col xs={24} md={8}>
-                                <Button block className="linerLineButton">Remove liquidity</Button>
+                                <Button block className="linerLineButton" onClick={() => { history.push(`/v2pos/remove/${pairName}/${posIndex}`) }}>Remove liquidity</Button>
                             </Col>
                             <Col xs={24} md={8}>
                                 <Button type="primary" block size='large' style={{ border: 'none', borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(93deg, #72F5F6 4%, #171AFF 94%)' }}>Increase liquidity</Button>

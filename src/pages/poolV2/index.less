@@ -9,7 +9,8 @@
   padding: 0 0px;
   .wrap {
     width: 1043px;
-    max-width: 100vw;
+    max-width: calc(100vw - 24px);
+    margin-bottom: 40px;
   }
 
   .positionContainer {
@@ -73,6 +74,10 @@
     border-radius: 12px;
     border: 1px solid #edeff2;
     padding: 20px;
+    cursor: pointer;
+    &.position-card {
+      margin-top: 20px;
+    }
     .cardLeft {
       display: flex;
       align-items: center;
@@ -105,6 +110,92 @@
         color: #303133;
         font-size: 14px;
         font-weight: 600;
+      }
+    }
+  }
+  .poolCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    cursor: pointer;
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-family: Montserrat;
+      font-size: 16px;
+      font-weight: bold;
+      color: #303133;
+    }
+    .rewardInfo {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      .rewardInfoItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .label {
+          font-size: 14px;
+          font-weight: normal;
+          color: #909399;
+        }
+        .value {
+          font-family: Montserrat;
+          font-size: 14px;
+          font-weight: 600;
+          color: #303133;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .poolV2container {
+    .position-card {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      .cardLeft {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        .info{
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+        }
+      }
+      .cardRight {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        width: 100%;
+      }
+    }
+    .poolCard {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      .title {
+        justify-content: center;
+      }
+      .rewardInfo {
+        margin-top: 20px;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        .rewardInfoItem {
+          width: 100%;
+          flex-direction: row;
+          justify-content: space-between;
+        }
       }
     }
   }

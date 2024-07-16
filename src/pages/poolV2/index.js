@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import Notice from 'components/notice';
-import { Tag,Spin } from "antd";
+import { Tag, Spin, Card } from "antd";
 import {
     FileTextOutlined
 } from '@ant-design/icons';
@@ -9,18 +9,23 @@ import Layout from '../layout';
 import Header from '../layout/header';
 import './index.less'
 import { connect } from 'dva';
-import {history} from 'umi'
+import { history } from 'umi'
 import api from '../../api/poolv2';
 import TokenPair from 'components/tokenPair';
 import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
 import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
 import arrow from '../../assets/arrow.svg'
-const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice }) => (
-    <div className="position-card">
+const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, index,icons }) => (
+    <div className="position-card" onClick={() => { history.push(`/v2pos/detail/${pairName}/${index}`) }}>
         <div className='cardLeft'>
             <TokenPair
                 symbol1={pairName.split('-')[0]}
-                symbol2={pairName.split('-')[1]} size={25}
+                genesisID1={pairName.split('-')[0]}
+                url1={icons[pairName.split('-')[0]] || ''}
+                url2={icons[pairName.split('-')[1]] || ''}
+                symbol2={pairName.split('-')[1]}
+                genesisID2={pairName.split('-')[1]}
+                size={48}
             />
             <div className='info'>
                 <div className='titleWrap'>
@@ -44,8 +49,9 @@ const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice }) => (
         </div>
     </div>
 );
-const PoolV2 = ({ user }) => {
+const PoolV2 = ({ user, poolV2 }) => {
     console.log(user)
+    const { pairs, icons } = poolV2
     const [positions, setPositions] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const getUserPoolV2s = useCallback(async () => {
@@ -73,8 +79,21 @@ const PoolV2 = ({ user }) => {
         setLoading(false)
     }, [user])
 
+    const [rewardingPool, setRewardingPool] = React.useState([]);
+
     useEffect(() => { getUserPoolV2s() },
         [getUserPoolV2s])
+
+    useEffect(() => {
+        const now = new Date().getTime() / 1000;
+        if (pairs) {
+            const _rewardingPool = pairs.filter(pair => {
+                return pair.reward.rewardStartTime < now && now < pair.reward.rewardEndTime && pair.reward.rewardAmountPerSecond > 0
+            })
+            console.log(_rewardingPool, pairs, 'rewardingPool')
+            setRewardingPool(_rewardingPool)
+        }
+    }, [pairs])
 
     return (
         <Layout>
@@ -84,12 +103,12 @@ const PoolV2 = ({ user }) => {
                 <div className='wrap'>
                     <div className="positionContainer">
                         <div className="leftPosition">Your Positions</div>
-                        <div className="rightPosition" onClick={()=>{history.push('/poolv2/create')}}><PlusCircleFilled style={{ color: '#1e2bff' }} /> New Position</div>
+                        <div className="rightPosition" onClick={() => { history.push('/v2pos/create') }}><PlusCircleFilled style={{ color: '#1e2bff' }} /> New Position</div>
                     </div>
                     <Spin spinning={loading}>
                         <div className="positions-list">
-                            {positions.map((position) => (
-                                <PositionCard key={position.id} {...position} />
+                            {positions.map((position, index) => (
+                                <PositionCard key={position.id} index={index} icons={icons} {...position} />
                             ))}
                             {!loading && positions.length > 0 && <div className="no-more">No More</div>}
 
@@ -101,15 +120,66 @@ const PoolV2 = ({ user }) => {
                     </Spin>
 
                 </div>
+                {rewardingPool.length > 0 && <div className='wrap'>
+                    <div className="positionContainer">
+                        <div className="leftPosition">Rewarding Pool</div>
+
+
+                    </div>
+                    <div>
+                        <div className="positions-list">
+                            {rewardingPool.map((pool, index) => (
+                                <Card key={pool.pairName} style={{ borderRadius: 12 }} onClick={() => { history.push('/v2pos/create') }}>
+                                    <div className='poolCard'>
+
+
+                                        <div className="title">
+                                            <TokenPair
+                                                symbol1={pool.pairName.split('-')[0]}
+                                                genesisID1={pool.pairName.split('-')[0]}
+                                                url1={icons[pool.pairName.split('-')[0]] || ''}
+                                                url2={icons[pool.pairName.split('-')[1]] || ''}
+                                                symbol2={pool.pairName.split('-')[1]}
+                                                genesisID2={pool.pairName.split('-')[1]}
+                                                size={48}
+                                            />
+
+                                            {pool.pairName.toUpperCase().replace('-', '/')}
+                                        </div>
+                                        <div className='rewardInfo'>
+
+                                            <div className='rewardInfoItem'>
+                                                <div className='label'>Start Time</div>
+                                                <div className='value'>{new Date(pool.reward.rewardStartTime * 1000).toLocaleString()}</div>
+                                            </div>
+                                            <div className='rewardInfoItem'>
+                                                <div className='label'>End Time</div>
+                                                <div className='value'>{new Date(pool.reward.rewardEndTime * 1000).toLocaleString()}</div>
+                                            </div>
+                                            <div className='rewardInfoItem'>
+                                                <div className='label'>Rewad Per Day</div>
+                                                <div className='value'>{Number(pool.reward.rewardAmountPerSecond) * 86400} </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
+
+
+                </div>}
+
 
             </div>
         </Layout>
     );
 };
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, poolV2 }) => {
     return {
         user,
+        poolV2
     };
 };
 

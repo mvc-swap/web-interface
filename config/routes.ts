@@ -15,8 +15,8 @@ export default [
   { path: '/vote', component: '@/pages/vote' },
   { path: '/stats', component: '@/pages/stats' },
   { path: '/stats/:id', component: '@/pages/stats' },
-  { path: '/poolv2', component: '@/pages/poolV2' },
-  { path: '/poolv2/create', component: '@/pages/newPositionV2' },
-  { path: '/v2pos/detail/:pair', component: '@/pages/v2Pos' },
-  { path: '/v2pos/remove/:pair', component: '@/pages/v2PosRemove' },
+  { path: '/v2pos', component: '@/pages/poolV2' },
+  { path: '/v2pos/create', component: '@/pages/newPositionV2' },
+  { path: '/v2pos/detail/:pair/:index', component: '@/pages/v2Pos' },
+  { path: '/v2pos/remove/:pair/:index', component: '@/pages/v2PosRemove' },
 ];

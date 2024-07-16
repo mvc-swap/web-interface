@@ -19,7 +19,7 @@ import { getMaxLiquidityForAmounts, getAmount0ForLiquidity, getAmount1ForLiquidi
 
 
 const PositionDetail = ({ user, poolV2, dispatch }) => {
-    const { pair: pairName } = useParams();
+    const { pair: pairName, index: posIndex } = useParams();
     console.log(pairName)
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const { icons, curPair } = poolV2;
@@ -36,17 +36,17 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 let _positions = [];
                 for (let pairName in res.data) {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
-                    pairPos.forEach((pos) => {
+                    pairPos.forEach((pos,index) => {
                         //TODO USDT 
                         const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
                         const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
                         console.log(minPrice, maxPrice)
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
-                        _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
+                        _positions.push({index, pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
                     })
 
                 }
-                const find = _positions.find((pos) => pos.pairName === pairName);
+                const find = _positions.find((pos) => pos.pairName === pairName && pos.index == Number(posIndex));
                 console.log(find, 'find')
                 if (find) {
                     setPosition(find)
@@ -64,7 +64,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
         const { tickLower, tickUpper, liquidity: userLiquidity } = position;
         const { tick, sqrtPriceX96, liquidity, token1: { decimal }, token2: { decimal: decimal2 } } = curPair;
         console.log(tick, sqrtPriceX96, liquidity, userLiquidity, 'calcAmount')
-        const swapRes = mint(Number(tick), BigInt(sqrtPriceX96), BigInt(liquidity), tickLower, tickUpper, BigInt(userLiquidity));
+        const swapRes = mint(Number(tick), BigInt(sqrtPriceX96), BigInt(userLiquidity), tickLower, tickUpper, BigInt(userLiquidity));
         setToken1(formatSat(swapRes.amount0, decimal))
         setToken2(formatSat(swapRes.amount1, decimal2))
     }, [position, curPair])
@@ -110,7 +110,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             requestIndex,
             mvcOutputIndex: 0,
             amountCheckRawTx: "",
-            liquidityAmount: position.liquidity,
+            liquidityAmount: Math.floor(position.liquidity ),
             mvcRawTx: retData[0].txHex,
             tickLower,
             tickUpper,
@@ -157,17 +157,20 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             {position && poolV2.curPair && <div className="content" style={{ padding: '20px 0' }}>
 
                 <Card style={{ borderRadius: 12 }} className="actionBar">
-                    <TokenPair
-                        symbol1={pairName.split('-')[0]}
-                        genesisID1={pairName.split('-')[0]}
-                        url1={icons[pairName.split('-')[0]] || ''}
-                        url2={icons[pairName.split('-')[1]] || ''}
-                        symbol2={pairName.split('-')[1]}
-                        genesisID2={pairName.split('-')[1]}
-                        size={32}
-                    />
+                    <div className="pairName">
+                        <TokenPair
+                            symbol1={pairName.split('-')[0]}
+                            genesisID1={pairName.split('-')[0]}
+                            url1={icons[pairName.split('-')[0]] || ''}
+                            url2={icons[pairName.split('-')[1]] || ''}
+                            symbol2={pairName.split('-')[1]}
+                            genesisID2={pairName.split('-')[1]}
+                            size={32}
+                        />
 
-                    {pairName.toUpperCase().replace('-', '/')}
+                        {pairName.toUpperCase().replace('-', '/')}
+                    </div>
+
                     {token1} {pairName.split('-')[0]} + {token2} {pairName.split('-')[1]}
                     <Button type="primary" onClick={onRemove} block size='large' style={{ border: 'none', borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(93deg, #72F5F6 4%, #171AFF 94%)' }}>Remove liquidity</Button>
                 </Card>

@@ -49,7 +49,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
 
     const handleToken1Change = (value) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing)) return;
-        const { sqrtPriceX96, liquidity, tick, token1: { decimal },token2: { decimal: decimal2} } = poolV2.curPair
+        const { sqrtPriceX96, liquidity, tick, token1: { decimal }, token2: { decimal: decimal2 } } = poolV2.curPair
         const sqrtPrice1 = getSqrtRatioAtTick(tickLower)
         const sqrtPrice2 = getSqrtRatioAtTick(tickUpper)
         const liquidityAmount = getMaxLiquidityForAmounts(BigInt(sqrtPriceX96), sqrtPrice1, sqrtPrice2, BigInt(value * 10 ** decimal), TwoPower64)
@@ -61,7 +61,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     }
     const handleToken2Change = (value) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing)) return;
-        const { sqrtPriceX96, liquidity, tick, token1: { decimal },token2: { decimal: decimal2} } = poolV2.curPair
+        const { sqrtPriceX96, liquidity, tick, token1: { decimal }, token2: { decimal: decimal2 } } = poolV2.curPair
         // setToken2(value)
         const sqrtPrice1 = getSqrtRatioAtTick(tickLower)
         const sqrtPrice2 = getSqrtRatioAtTick(tickUpper)
@@ -90,6 +90,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         _lowTick = Math.floor(_lowTick / tickSpacing) * tickSpacing;
         setTickLower(_lowTick);
         setMinPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
+        handleToken1Change(token1)
     }
 
     const calcMaxPrice = (_price) => {
@@ -100,6 +101,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         _highTick = Math.ceil(_highTick / tickSpacing) * tickSpacing;
         setTickUpper(_highTick);
         setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
+        handleToken1Change(token1)
     }
     useEffect(() => {
         if (!poolV2.curPair) return;
@@ -128,70 +130,81 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         if (!poolV2.curPair.sqrtPriceX96) return;
         const { isLogin, accountInfo: { userAddress, userBalance } } = user;
         if (!isLogin || !userAddress) return;
-        const ret = await api.reqSwapArgs({
-            symbol: curPair.pairName,
-            address: userAddress,
-            op: 1,
-            source: 'mvcswap.io'
-        });
-        if (ret.code !== 0) {
-            return;
-        }
-        const { mvcToAddress, tokenToAddress, changeAddress, rabinApis, txFee, requestIndex } = ret.data;
-        const token1AddAmount = formatTok(token1, curPair.token1.decimal)
-        const token2AddAmount = formatTok(token2, curPair.token2.decimal)
-        console.log(token1AddAmount, token2AddAmount, 'token1AddAmount')
-        let tx_res = await dispatch({
-            type: 'user/transferAll',
-            payload: {
-                datas: [
-                    {
-                        type: 'mvc',
-                        address: mvcToAddress,
-                        amount: (BigInt(token1AddAmount) + BigInt(txFee)).toString(),
-                        changeAddress,
-                        note: 'mvcswap.com(add liquidity)',
-                    },
-                    {
-                        type: 'sensibleFt',
-                        address: tokenToAddress,
-                        amount: token2AddAmount.toString(),
-                        changeAddress,
-                        codehash: curPair.token2.codeHash,
-                        genesis: curPair.token2.tokenID,
-                        rabinApis,
-                        note: 'mvcswap.com(add liquidity)',
-                    },
-                ],
-                noBroadcast: true,
-            },
-        });
-        if (tx_res.msg || tx_res.status == 'canceled') {
-            return message.error(tx_res.msg || 'canceled');
-        }
-        if (tx_res.list) {
-            tx_res = tx_res.list;
-        }
-        if (!tx_res[0] || !tx_res[0].txHex || !tx_res[1] || !tx_res[1].txHex) {
-            return message.error(_('txs_fail'));
-        }
+        try {
 
-        const liq_data = {
-            symbol: curPair.pairName,
-            requestIndex: requestIndex,
-            mvcRawTx: tx_res[0].txHex,
-            mvcOutputIndex: 0,
-            token2RawTx: tx_res[1].txHex,
-            token2OutputIndex: 0,
-            token1AddAmount: token1AddAmount.toString(),
-            amountCheckRawTx: tx_res[1].routeCheckTxHex,
-            liquidityAmount: liquidityAmount.toString(),
-            tickLower: tickLower,
-            tickUpper: tickUpper,
-        };
-        console.log(liq_data, 'liq_data')
-        const compressData = await gzip(JSON.stringify(liq_data))
-        const last = await api.addLiq({ data: compressData });
+
+            const ret = await api.reqSwapArgs({
+                symbol: curPair.pairName,
+                address: userAddress,
+                op: 1,
+                source: 'mvcswap.io'
+            });
+            if (ret.code !== 0) {
+                throw new Error(ret.msg)
+            }
+            const { mvcToAddress, tokenToAddress, changeAddress, rabinApis, txFee, requestIndex } = ret.data;
+            const token1AddAmount = formatTok(token1, curPair.token1.decimal)
+            const token2AddAmount = formatTok(token2, curPair.token2.decimal)
+            let tx_res = await dispatch({
+                type: 'user/transferAll',
+                payload: {
+                    datas: [
+                        {
+                            type: 'mvc',
+                            address: mvcToAddress,
+                            amount: (BigInt(token1AddAmount) + BigInt(txFee)).toString(),
+                            changeAddress,
+                            note: 'mvcswap.com(add liquidity)',
+                        },
+                        {
+                            type: 'sensibleFt',
+                            address: tokenToAddress,
+                            amount: token2AddAmount.toString(),
+                            changeAddress,
+                            codehash: curPair.token2.codeHash,
+                            genesis: curPair.token2.tokenID,
+                            rabinApis,
+                            note: 'mvcswap.com(add liquidity)',
+                        },
+                    ],
+                    noBroadcast: true,
+                },
+            });
+            if (tx_res.msg || tx_res.status == 'canceled') {
+                throw new Error(tx_res.msg || 'canceled');
+            }
+            if (tx_res.list) {
+                tx_res = tx_res.list;
+            }
+            if (!tx_res[0] || !tx_res[0].txHex || !tx_res[1] || !tx_res[1].txHex) {
+                throw new Error(_('txs_fail'));
+            }
+
+            const liq_data = {
+                symbol: curPair.pairName,
+                requestIndex: requestIndex,
+                mvcRawTx: tx_res[0].txHex,
+                mvcOutputIndex: 0,
+                token2RawTx: tx_res[1].txHex,
+                token2OutputIndex: 0,
+                token1AddAmount: token1AddAmount.toString(),
+                amountCheckRawTx: tx_res[1].routeCheckTxHex,
+                liquidityAmount: liquidityAmount.toString(),
+                tickLower: tickLower,
+                tickUpper: tickUpper,
+            };
+            console.log(liq_data, 'liq_data')
+            const compressData = await gzip(JSON.stringify(liq_data))
+            const addLiqRet = await api.addLiq({ data: compressData });
+            if (addLiqRet.code !== 0) {
+                throw new Error(addLiqRet.msg)
+            }
+            message.success('Success')
+            history.push('/v2pos')
+        } catch (error) {
+            console.log(error)
+            message.error(error.message)
+        }
 
     }
 
