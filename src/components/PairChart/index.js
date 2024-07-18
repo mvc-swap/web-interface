@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from 'react';
 import Chart from 'components/chart/swapChart';
 import BarChart from './barChart';
 import TradingView from './tradview';
+import './index.less'
 export default ({ children, curPair }) => {
 
     const [chartWidth, setChartWidth] = useState(973);
@@ -19,7 +20,7 @@ export default ({ children, curPair }) => {
         return () => window.removeEventListener('resize', resizeChart)
     }, [])
     if (!curPair) return <></>
-    return <Card style={{ borderRadius: 12 }}>
+    return <Card style={{ borderRadius: 12 }} className='chartCard'>
 
 
         <Row >
@@ -27,10 +28,14 @@ export default ({ children, curPair }) => {
                 <TradingView symbol1={curPair.token1.symbol} symbol2={curPair.token2.symbol} />
             </Col>
             <Col span={12}>
-                <Row>
+
+
+                <div className='barChartWrap'>
                     <BarChart symbol={curPair.pairName} tickSpacing={curPair.tickSpacing} />
-                    <div>{children}</div>
-                </Row>
+                    {children}
+                </div>
+
+
 
             </Col>
 

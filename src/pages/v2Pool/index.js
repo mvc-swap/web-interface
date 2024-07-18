@@ -15,8 +15,8 @@ import TokenPair from 'components/tokenPair';
 import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
 import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
 import arrow from '../../assets/arrow.svg'
-const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, index,icons }) => (
-    <div className="position-card" onClick={() => { history.push(`/v2pos/detail/${pairName}/${index}`) }}>
+const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, tickLower, tickUpper, icons }) => (
+    <div className="position-card" onClick={() => { history.push(`/v2pool/pos/${pairName}?tickLower=${tickLower}&tickUpper=${tickUpper}`) }}>
         <div className='cardLeft'>
             <TokenPair
                 symbol1={pairName.split('-')[0]}
@@ -51,7 +51,7 @@ const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, index,ic
 );
 const PoolV2 = ({ user, poolV2 }) => {
     console.log(user)
-    const { pairs, icons } = poolV2
+    const { pairs, icons, curPair } = poolV2
     const [positions, setPositions] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const getUserPoolV2s = useCallback(async () => {
@@ -103,7 +103,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                 <div className='wrap'>
                     <div className="positionContainer">
                         <div className="leftPosition">Your Positions</div>
-                        <div className="rightPosition" onClick={() => { history.push('/v2pos/create') }}><PlusCircleFilled style={{ color: '#1e2bff' }} /> New Position</div>
+                        <div className="rightPosition" onClick={() => { history.push(`/v2pool/add/${curPair.pairName}`) }}><PlusCircleFilled style={{ color: '#1e2bff' }} /> New Position</div>
                     </div>
                     <Spin spinning={loading}>
                         <div className="positions-list">
@@ -129,7 +129,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                     <div>
                         <div className="positions-list">
                             {rewardingPool.map((pool, index) => (
-                                <Card key={pool.pairName} style={{ borderRadius: 12 }} onClick={() => { history.push('/v2pos/create') }}>
+                                <Card key={pool.pairName} style={{ borderRadius: 12 }} onClick={() => { history.push(`/v2pool/add/${pool.pairName}`) }}>
                                     <div className='poolCard'>
 
 
@@ -143,8 +143,13 @@ const PoolV2 = ({ user, poolV2 }) => {
                                                 genesisID2={pool.pairName.split('-')[1]}
                                                 size={48}
                                             />
+                                            <div className='titleWrap'>
+                                                <div className='pairName'>{pool.pairName.toUpperCase().replace('-', '/')}</div>
+                                                <div className='feeRate'>{pool.feeRate}% Spread Factor</div>
+                                            </div>
 
-                                            {pool.pairName.toUpperCase().replace('-', '/')}
+
+
                                         </div>
                                         <div className='rewardInfo'>
 

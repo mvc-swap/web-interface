@@ -1,7 +1,7 @@
 import PageContainer from "../../components/PageContainer"
 import { LeftOutlined, QuestionCircleFilled } from '@ant-design/icons';
 import { Card, Statistic, Tooltip, Button, message, Row, Col, Tag } from "antd";
-import { history, useLocation, useParams } from 'umi'
+import { history, useLocation, useParams, useSearchParams } from 'umi'
 import { connect } from 'dva';
 import { gzip } from 'node-gzip';
 import TokenLogo from 'components/tokenicon';
@@ -19,30 +19,32 @@ import { getMaxLiquidityForAmounts, getAmount0ForLiquidity, getAmount1ForLiquidi
 
 
 const PositionDetail = ({ user, poolV2, dispatch }) => {
-    const { pair: pairName, index: posIndex } = useParams();
-    console.log(pairName)
+    const { query } = useLocation();
+    const { pair: pairName } = useParams();
+
+    const tickLower = query['tickLower'];
+    const tickUpper = query['tickUpper'];
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const { icons, curPair } = poolV2;
     const [position, setPosition] = useState();
     const [loading, setLoading] = useState(true);
     const getUserPoolV2s = useCallback(async () => {
-        if (user && user.isLogin && user.accountInfo && user.accountInfo.userAddress) {
-            const res = await api.queryUserPositions(user.accountInfo.userAddress);
+        if (userAddress) {
+            const res = await api.queryUserPositions(userAddress);
             if (res && res.data) {
                 let _positions = [];
                 for (let pairName in res.data) {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
-                    pairPos.forEach((pos, index) => {
+                    pairPos.forEach((pos) => {
                         //TODO USDT 
                         const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
                         const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
                         console.log(minPrice, maxPrice)
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
-                        _positions.push({ index, pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
+                        _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
                     })
-
                 }
-                const find = _positions.find((pos) => pos.pairName === pairName && pos.index == Number(posIndex));
+                const find = _positions.find((pos) => pos.pairName === pairName && pos.tickUpper == Number(tickUpper) && pos.tickLower == Number(tickLower));
                 console.log(find, 'find')
                 if (find) {
                     setPosition(find)
@@ -51,9 +53,23 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             console.log(res)
         }
         setLoading(false)
-    }, [user])
+    }, [userAddress, tickLower, tickUpper])
 
     useEffect(() => { getUserPoolV2s() }, [getUserPoolV2s])
+
+    useEffect(() => {
+        if (curPair && curPair.pairName !== pairName) {
+            console.log(curPair, 'curPair', pairName)
+            dispatch({
+                type: 'poolV2/fetchPairInfo',
+                payload: {
+                    pairName
+                }
+            })
+        }
+    }, [pairName, dispatch, curPair])
+
+
 
     const collectFee = async () => {
         try {
@@ -174,18 +190,28 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 <Row gutter={[20, 20]}>
                     <Col span={24}>
                         <PairChart curPair={poolV2.curPair}>
-                            <div className="inputWrap">
-                                <div className="label">
-                                    high:{position.maxPrice}
-                                </div>
+                            <div className="infoShow">
 
-                            </div>
-                            <div className="inputWrap">
-                                <div className="label">
-                                    low:{position.minPrice}
-                                </div>
+                                <div className="inputWrap">
+                                    <div className="label">
+                                        high:{position.maxPrice}
+                                    </div>
+                                    <div className="value">
+                                        {position.maxPrice}
+                                    </div>
 
+                                </div>
+                                <div className="inputWrap">
+                                    <div className="label">
+                                        low
+                                    </div>
+                                    <div className="value">
+                                        {position.minPrice}
+                                    </div>
+
+                                </div>
                             </div>
+
                         </PairChart>
                     </Col>
                     <Col xs={24} md={12}>
