@@ -1,7 +1,7 @@
 import PageContainer from "../../components/PageContainer"
 import { LeftOutlined } from '@ant-design/icons';
 import { Divider, InputNumber, Button, message, Row, Col, Card } from "antd";
-import { history } from 'umi'
+import { history, useParams, useLocation } from 'umi'
 import { connect } from 'dva';
 import { gzip } from 'node-gzip';
 import TokenLogo from 'components/tokenicon';
@@ -35,14 +35,21 @@ const TwoPower64 = BigInt(18446744073709551616)
 
 const NewPosition = ({ user, poolV2, dispatch }) => {
     console.log(user)
+    const { query } = useLocation();
+
+
+    const _tickLower = query['tickLower'];
+    const _tickUpper = query['tickUpper'];
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const { icons, curPair } = poolV2;
     console.log(curPair, 'curPair')
 
+    const { pair: pairName } = useParams();
+
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
-    const [tickLower, setTickLower] = useState(0);
-    const [tickUpper, setTickUpper] = useState(0);
+    const [tickLower, setTickLower] = useState(Number(_tickLower) || 0);
+    const [tickUpper, setTickUpper] = useState(Number(_tickUpper) || 0);
     const [token1, setToken1] = useState(0);
     const [token2, setToken2] = useState(0);
     const [liquidityAmount, setLiquidityAmount] = useState(0);
@@ -106,6 +113,15 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     useEffect(() => {
         if (!poolV2.curPair) return;
         if (!poolV2.curPair.sqrtPriceX96) return;
+        if (_tickLower && _tickUpper) {
+            const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(_tickLower))).toFixed(4);
+            const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(_tickUpper)).toFixed(4);
+            setTickUpper(_tickUpper);
+            setTickLower(_tickLower);
+            setMinPrice(minPrice);
+            setMaxPrice(maxPrice);
+            return
+        }
         const { sqrtPriceX96, tickSpacing } = poolV2.curPair;
         const price = sqrtX96ToPrice(
             BigInt(sqrtPriceX96)
@@ -122,16 +138,19 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         setTickLower(_lowTick);
         setMinPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
         setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
-    }, [poolV2.curPair])
+    }, [poolV2.curPair, _tickLower, _tickUpper])
 
     const handleCreatePosition = async () => {
-        const { curPair } = poolV2;
-        if (!curPair) return;
-        if (!poolV2.curPair.sqrtPriceX96) return;
-        const { isLogin, accountInfo: { userAddress, userBalance } } = user;
-        if (!isLogin || !userAddress) return;
-        try {
 
+
+
+
+        try {
+            const { curPair } = poolV2;
+            if (!curPair) throw new Error('pair not found');
+            if (!poolV2.curPair.sqrtPriceX96) throw new Error('pair not found');
+            const { isLogin, accountInfo: { userAddress, userBalance } } = user;
+            if (!isLogin || !userAddress) throw new Error('please login');
 
             const ret = await api.reqSwapArgs({
                 symbol: curPair.pairName,
@@ -200,13 +219,25 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                 throw new Error(addLiqRet.msg)
             }
             message.success('Success')
-            history.push('/v2pos')
+            history.push('/v2pool')
         } catch (error) {
             console.log(error)
             message.error(error.message)
         }
 
     }
+
+    useEffect(() => {
+        if (curPair && curPair.pairName !== pairName) {
+            console.log(curPair, 'curPair', pairName)
+            dispatch({
+                type: 'poolV2/fetchPairInfo',
+                payload: {
+                    pairName
+                }
+            })
+        }
+    }, [pairName, dispatch, curPair])
 
     return <PageContainer>
         <div className="newPositionPage">
@@ -218,18 +249,44 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             <Divider />
             <div className="FormItemTitle">Price range</div>
             <PairChart curPair={poolV2.curPair}>
-                <div className="inputWrap">
-                    <div className="label">
-                        high
+                {
+                    (_tickLower && _tickLower) ? <div className="infoShow">
+
+                        <div className="inputWrap">
+                            <div className="label">
+                                high:
+                            </div>
+                            <div className="value">
+                                {maxPrice}
+                            </div>
+
+                        </div>
+                        <div className="inputWrap">
+                            <div className="label">
+                                low
+                            </div>
+                            <div className="value">
+                                {minPrice}
+                            </div>
+
+                        </div>
+                    </div> : <div className="editPrice">
+                        <div className="inputWrapper">
+                            <div className="label">
+                                high
+                            </div>
+                            <InputNumber onBlur={(e) => { calcMaxPrice(e.target.value) }} value={maxPrice} bordered={false} controls={false} style={{ textAlign: 'right' }}></InputNumber>
+                        </div>
+                        <div className="inputWrapper">
+                            <div className="label">
+                                low
+                            </div>
+                            <InputNumber onBlur={(e) => { calcMinPrice(e.target.value) }} value={minPrice} bordered={false} controls={false}></InputNumber>
+                        </div>
                     </div>
-                    <InputNumber onBlur={(e) => { calcMaxPrice(e.target.value) }} value={maxPrice} bordered={false} controls={false} style={{ textAlign: 'right' }}></InputNumber>
-                </div>
-                <div className="inputWrap">
-                    <div className="label">
-                        low
-                    </div>
-                    <InputNumber onBlur={(e) => { calcMinPrice(e.target.value) }} value={minPrice} bordered={false} controls={false}></InputNumber>
-                </div>
+                }
+
+
             </PairChart>
             <div className="FormItemTitle" style={{ marginTop: 40 }}>Amount to deposit</div>
             <Row gutter={[20, 20]} style={{ marginTop: 20 }}>

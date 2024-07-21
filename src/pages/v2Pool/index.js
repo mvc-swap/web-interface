@@ -12,8 +12,9 @@ import { connect } from 'dva';
 import { history } from 'umi'
 import api from '../../api/poolv2';
 import TokenPair from 'components/tokenPair';
-import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
-import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
+import { sqrtX96ToPrice } from '../../utils/helper';
+import { getSqrtRatioAtTick } from '../../utils/tickMath';
+import { formatSat } from 'common/utils';
 import arrow from '../../assets/arrow.svg'
 const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, tickLower, tickUpper, icons }) => (
     <div className="position-card" onClick={() => { history.push(`/v2pool/pos/${pairName}?tickLower=${tickLower}&tickUpper=${tickUpper}`) }}>
@@ -90,7 +91,6 @@ const PoolV2 = ({ user, poolV2 }) => {
             const _rewardingPool = pairs.filter(pair => {
                 return pair.reward.rewardStartTime < now && now < pair.reward.rewardEndTime && pair.reward.rewardAmountPerSecond > 0
             })
-            console.log(_rewardingPool, pairs, 'rewardingPool')
             setRewardingPool(_rewardingPool)
         }
     }, [pairs])
@@ -163,7 +163,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                                             </div>
                                             <div className='rewardInfoItem'>
                                                 <div className='label'>Rewad Per Day</div>
-                                                <div className='value'>{Number(pool.reward.rewardAmountPerSecond) * 86400} </div>
+                                                <div className='value'>{formatSat(Number(pool.reward.rewardAmountPerSecond) * 86400, pool.reward.token.decimal)} </div>
                                             </div>
                                         </div>
                                     </div>
@@ -171,11 +171,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                             ))}
                         </div>
                     </div>
-
-
                 </div>}
-
-
             </div>
         </Layout>
     );

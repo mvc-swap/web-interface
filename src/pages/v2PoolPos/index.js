@@ -291,7 +291,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                             <div className="reward">
                                 <div>Reward MSP <Tooltip title="The trading pairs added to the liquidity pool will generate reward benefits after 7 days."><QuestionCircleFilled /></Tooltip></div>
                                 <div className="value">
-                                    {position.rewardAmount} SPACE  <TokenLogo
+                                    {formatSat(position.rewardAmount)} SPACE  <TokenLogo
                                         name={'space'}
                                         url={icons['mvc'] || ''}
                                         size={32}
@@ -303,13 +303,13 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     <Col span={24}>
                         <Row gutter={[20, 20]}>
                             <Col xs={24} md={8}>
-                                <Button block className="linerLineButton" onClick={collectFee}>Collect Fee</Button>
+                                <Button block className="linerLineButton" disabled={!(Number(position.token1Fee) || Number(position.token2Fee))} onClick={collectFee}>Collect Fee</Button>
                             </Col>
                             <Col xs={24} md={8}>
-                                <Button block className="linerLineButton" onClick={() => { history.push(`/v2pos/remove/${pairName}/${posIndex}`) }}>Remove liquidity</Button>
+                                <Button block disabled={!(Number(position.liquidity))} className="linerLineButton" onClick={() => { history.push(`/v2pool/remove/${pairName}?tickLower=${position.tickLower}&tickUpper=${position.tickUpper}`) }}>Remove liquidity</Button>
                             </Col>
                             <Col xs={24} md={8}>
-                                <Button type="primary" block size='large' style={{ border: 'none', borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(93deg, #72F5F6 4%, #171AFF 94%)' }}>Increase liquidity</Button>
+                                <Button type="primary" onClick={() => { history.push(`/v2pool/add/${pairName}?tickLower=${position.tickLower}&tickUpper=${position.tickUpper}`) }} block size='large' style={{ border: 'none', borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(93deg, #72F5F6 4%, #171AFF 94%)' }}>Increase liquidity</Button>
                             </Col>
                         </Row>
                     </Col>
