@@ -1,13 +1,15 @@
 import { Card, Row, Col, Popover } from 'antd'
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import TokenPair from 'components/tokenPair';
 import BarChart from './barChart';
 import TradingView from './tradview';
 import { DownOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import _ from 'i18n';
 import TokenList from 'components/tokenList/poolv2';
+import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
+import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
 import './index.less'
-export default ({ children, curPair, icons = {}, pairs = [] }) => {
+export default ({ children, curPair, icons = {}, pairs = [], tickLower, tickUpper }) => {
     const [open, setOpen] = useState(false)
     const [chartWidth, setChartWidth] = useState(973);
     const tvRef = useRef(null);
@@ -22,7 +24,20 @@ export default ({ children, curPair, icons = {}, pairs = [] }) => {
         window.addEventListener('resize', resizeChart)
         return () => window.removeEventListener('resize', resizeChart)
     }, [])
+    const priceTicker = useMemo(() => {
+        if (curPair) {
+            const { sqrtPriceX96, tickSpacing } = curPair;
+            const price = sqrtX96ToPrice(
+                BigInt(sqrtPriceX96)
+            );
+            const _priceSX96 = priceToSqrtX96(Number(price));
+            let _priceTick = getTickAtSqrtRatio(BigInt(_priceSX96.toFixed(0)));
+            _priceTick = Math.floor(_priceTick / tickSpacing) * tickSpacing;
+            return _priceTick
+        }
+    }, [curPair])
     if (!curPair) return <></>
+
     return <Card style={{ borderRadius: 12 }} className='chartCard'>
         {
             pairs.length > 0 && <Popover content={<div className='chartContainer'>
@@ -69,15 +84,10 @@ export default ({ children, curPair, icons = {}, pairs = [] }) => {
                 <TradingView symbol1={curPair.token1.symbol} symbol2={curPair.token2.symbol} />
             </Col>
             <Col xs={24} md={12}>
-
-
                 <div className='barChartWrap'>
-                    {/* <BarChart symbol={curPair.pairName} tickSpacing={curPair.tickSpacing} /> */}
+                    <BarChart symbol={curPair.pairName} tickSpacing={curPair.tickSpacing} tickLower={tickLower} tickUpper={tickUpper} priceTick={priceTicker} />
                     {children}
                 </div>
-
-
-
             </Col>
 
 

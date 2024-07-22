@@ -189,7 +189,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             {position && poolV2.curPair && <div className="content" style={{ padding: '20px 0' }}>
                 <Row gutter={[20, 20]}>
                     <Col span={24}>
-                        <PairChart curPair={poolV2.curPair}>
+                        <PairChart curPair={poolV2.curPair} tickLower={position.tickLower} tickUpper={position.tickUpper}>
                             <div className="infoShow">
 
                                 <div className="inputWrap">

@@ -42,6 +42,14 @@ class PoolV2 extends BaseAPI {
     removeLiq2(params) {
         return this._request('removeliq2', params, 'POST');
     }
+
+    calcRoute(params) {
+        const url = isTestNet() ? 'https://api.mvcswap.com/router/test/' : 'https://api.mvcswap.com/router/';
+        return this._request('route', params, 'GET', url);
+    }
+    token1totoken2(params) {
+        return this._request('token1totoken2', params, 'POST');
+    }
 }
 
 export default new PoolV2();

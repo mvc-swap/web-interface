@@ -19,6 +19,7 @@ import SwapResult from './result';
 import Btn from './btn';
 import styles from './index.less';
 import _ from 'i18n';
+import api from '../../api/poolv2';
 
 const log = debug('swap');
 const { slippage_tolerance_value, defaultSlipValue } = slippage_data;
@@ -58,6 +59,7 @@ export default class Swap extends Component {
         defaultSlipValue,
     };
     this.formRef = React.createRef();
+    this.requestCounter = 0;
   }
 
   switch = async () => {
@@ -135,6 +137,77 @@ export default class Swap extends Component {
     });
   };
 
+  handleInputChange = async (token1Amount) => {
+    const { token1, token2, pairData } = this.props;
+    const currentRequestCount = ++this.requestCounter;
+    try {
+      const params = {
+        tokenIn: token1.symbol,
+        tokenOut: token2.symbol,
+        amount: formatTok(token1Amount, token1.decimal)
+      }
+      const response = await api.calcRoute(params);
+      if (currentRequestCount === this.requestCounter && response.data) {
+        console.log(response, currentRequestCount, this.requestCounter, 'response')
+        const amountOut = formatSat(response.data.amountOut, token2.decimal)
+        this.formRef.current.setFieldsValue({
+          origin_amount: token1Amount,
+          aim_amount: amountOut,
+        });
+        this.setState({
+          origin_amount: token1Amount,
+          aim_amount: amountOut,
+        })
+
+      }
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  handelSubmitV2 = async () => {
+    const { dispatch, currentPair, token1, token2, rabinApis, accountInfo } =
+      this.props;
+    const { dirForward, origin_amount } = this.state;
+    const { userBalance, changeAddress, userAddress } = accountInfo;
+    const amount=formatTok(origin_amount, token1.decimal)
+    const ret = await api.reqSwapArgs({
+      symbol: currentPair,
+      address: userAddress,
+      op: 3,
+      source: 'mvcswap.io',
+      amountIn: amount
+    });
+    if (ret.code !== 0) {
+      throw new Error(ret.msg)
+    }
+    const { mvcToAddress, tokenToAddress, txFee, requestIndex } = ret.data;
+    const ts_res = await dispatch({
+      type: 'user/transferMvc',
+      payload: {
+        address: mvcToAddress,
+        amount: (BigInt(amount) + BigInt(txFee)).toString(),
+        changeAddress,
+        note: 'mvcswap.com(swap)',
+        noBroadcast: true,
+      },
+    });
+    const payload = {
+      symbol: currentPair,
+      requestIndex: requestIndex,
+      mvcOutputIndex: 0,
+      mvcRawTx: ts_res.list ? ts_res.list[0].txHex : ts_res.txHex,
+    };
+    let swap_data = JSON.stringify(payload);
+
+    swap_data = await gzip(swap_data);
+
+    const ret2 = await api.token1totoken2(swap_data);
+  }
+
+
+
   changeOriginAmount = (e) => {
     let value = e.target.value;
     const { token1, token2, pairData } = this.props;
@@ -159,16 +232,19 @@ export default class Swap extends Component {
         aimAddAmount: 0,
         pairData,
       });
+      console.log(obj, 'obj')
       newAimAddAmount = obj.newAimAddAmount;
       slip = obj.slip;
       slip1 = obj.slip1;
+
+
     } else {
       newAimAddAmount = 0;
       fee = 0;
       slip = 0;
       slip1 = 0;
     }
-
+    this.handleInputChange(value)
     this.formRef.current.setFieldsValue({
       origin_amount: newOriginAddAmount,
       aim_amount: newAimAddAmount,
@@ -443,6 +519,8 @@ export default class Swap extends Component {
   };
 
   handleSubmit = async () => {
+    this.handelSubmitV2()
+    return  
     const { dirForward, origin_amount } = this.state;
     const { dispatch, currentPair, token1, token2, rabinApis, accountInfo } =
       this.props;

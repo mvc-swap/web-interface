@@ -2,27 +2,31 @@ import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import { Spin } from 'antd';
 import { Bar } from '@ant-design/plots';
 import api from '../../api/poolv2';
-const BarChart = ({ symbol, tickSpacing }) => {
-    const [data, setData] = useState([]);;
+const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
+    console.log(symbol, tickSpacing, tickLower, tickUpper, priceTick, 'symbol, tickSpacing, tickLower, tickUpper, priceTick')
     const [loading, setLoading] = useState(true);
     const [distribution, setDistribution] = useState({});
     const fetchData = useCallback(async () => {
         if (symbol && tickSpacing) {
             const res = await api.fetchLiquidity(symbol);
+
             if (res && res.data) {
                 const _distribution = {};
                 for (const item of res.data) {
                     const n = (item.tickUpper - item.tickLower) / tickSpacing;
-                    console.log(item, 'item', n)
-                    const unit = item.liquidity / n
-                    for (let i = 0; i < n; i++) {
-                        const key = item.tickLower + i * tickSpacing
+
+                    const unit = item.liquidity / n;
+                    if (Number(unit) === 0) continue;
+                    for (let i = 0; i <= n; i++) {
+                        const key = item.tickLower + i * tickSpacing;
                         if (!_distribution[key]) {
                             _distribution[key] = 0
                         }
+
                         _distribution[item.tickLower + i * tickSpacing] += unit
                     }
                 };
+
                 setDistribution(_distribution)
             }
         }
@@ -37,8 +41,45 @@ const BarChart = ({ symbol, tickSpacing }) => {
         for (const key in distribution) {
             data.push({ tick: key, value: distribution[key] })
         }
+        let _tickLowerIndex, _tickUpperIndex, _priceTickIndex;
+        const _data = data.filter((item) => Number(item.tick) % (10 * tickSpacing) === 0).sort((a, b) => a.tick - b.tick)
+        console.log(_data, '_data')
+        if (priceTick !== undefined && tickLower !== undefined && tickUpper !== undefined) {
+            _data.forEach((item, index) => {
+                if (_tickLowerIndex === undefined) {
+                    if (Number(item.tick) >= tickLower) {
+                        _tickLowerIndex = {
+                            index,
+                            value: item.tick,
+                            percent: (index / _data.length) * 100
+                        }
+                    }
+                }
+                if (_tickUpperIndex === undefined) {
+                    if (Number(item.tick) >= tickUpper) {
+                        _tickUpperIndex = {
+                            index,
+                            value: item.tick,
+                            percent: (index / _data.length) * 100
+                        }
+                    }
+                }
+                if (_priceTickIndex === undefined) {
+                    if (Number(item.tick) >= priceTick) {
+                        _priceTickIndex = {
+                            index,
+                            value: item.tick,
+                            percent: (index / _data.length) * 100
+                        }
+                    }
+                }
+            });
+        }
+        console.log(_tickLowerIndex, _tickUpperIndex, _priceTickIndex, '_tickLowerIndex, _tickUpperIndex, _priceTickIndex')
+
+
         const _config = {
-            data: data.sort((a, b) => a.tick - b.tick),
+            data: _data,
             titleSpacing: 0,
             xField: 'tick',
             yField: 'value',
@@ -61,7 +102,7 @@ const BarChart = ({ symbol, tickSpacing }) => {
             style: {
                 fill: '#DDDFFF',
             },
-            interaction: { tooltip: false },
+            interaction: { tooltip: true },
             slider: { y: false, x: false },
             axis: {
                 x: {
@@ -74,47 +115,136 @@ const BarChart = ({ symbol, tickSpacing }) => {
                     label: false
                 },
             },
-
         }
-        _config.annotations = [
-            {
-                type: 'lineX',
-                xField: '-1000',
-                style: {
-                    arrow: false,
-                    stroke: '#FF4D4D',
-                    lineDash: [0, 0],
-                    lineWidth: 2,
+        if (_tickLowerIndex && _tickUpperIndex && _priceTickIndex) {
+            _config.annotations = [
+                {
+                    type: 'lineX',
+                    xField: _tickLowerIndex.value,
+                    style: {
+                        stroke: '#FF4D4D',
+                        lineWidth: 1,
+                    },
+                },
+                {
+                    type: 'shape',
+                    style: {
+                        x: '100%',
+                        y: _tickLowerIndex.percent + '%',
+                        render: ({ x, y }, context, d) => {
+                            const { document } = context;
+                            const g = document.createElement('g', {});
+                            const c1 = document.createElement('circle', {
+                                style: {
+                                    cx: x,
+                                    cy: y,
+                                    lineWidth: 1,
+                                    r: 4,
+                                    stroke: '#FF4D4D',
+                                    opacity: 0.3,
+                                },
+                            });
+                            const c2 = document.createElement('circle', {
+                                style: {
+                                    cx: x,
+                                    cy: y,
+                                    lineWidth: 3,
+                                    r: 1.5,
+                                    stroke: '#FF4D4D',
+                                    opacity: 1,
+                                },
+                            });
 
+                            g.appendChild(c1);
+                            g.appendChild(c2);
+
+                            return g;
+                        },
+                    },
                 },
-                label: {
-                    text: '-',
-                    position: 'right',
-                    dx: -10,
-                    style: { textBaseline: 'bottom' },
+                {
+                    type: 'lineX',
+                    xField: _priceTickIndex.value,
+                    style: {
+                        stroke: '#1E2BFF',
+                        lineWidth: 1
+                    },
                 },
-            },
-            {
-                type: 'lineX',
-                xField: '7000',
-                style: {
-                    arrow: false,
-                    stroke: '#259F2F',
-                    lineDash: [0, 0],
-                    lineWidth: 2
+                {
+                    type: 'shape',
+                    style: {
+                        x: '100%',
+                        y: _priceTickIndex.percent + '%',
+                        render: ({ x, y }, context, d) => {
+                            const { document } = context;
+                            const g = document.createElement('g', {});
+                            const c2 = document.createElement('circle', {
+                                style: {
+                                    cx: x,
+                                    cy: y,
+                                    lineWidth: 3,
+                                    r: 1.5,
+                                    stroke: '#1E2BFF',
+                                    opacity: 1,
+                                },
+                            });
+                            g.appendChild(c2);
+                            return g;
+                        },
+                    },
                 },
-                label: {
-                    text: '-',
-                    position: 'right',
-                    dx: -10,
-                    style: { textBaseline: 'bottom' },
+                {
+                    type: 'lineX',
+                    xField: _tickUpperIndex.value,
+                    style: {
+                        stroke: '#259F2F',
+                        lineWidth: 1
+                    },
+                },
+                {
+                    type: 'shape',
+                    style: {
+                        x: '100%',
+                        y: _tickUpperIndex.percent + '%',
+                        render: ({ x, y }, context, d) => {
+                            const { document } = context;
+                            const g = document.createElement('g', {});
+                            const c1 = document.createElement('circle', {
+                                style: {
+                                    cx: x,
+                                    cy: y,
+                                    lineWidth: 1,
+                                    r: 4,
+                                    stroke: '#259F2F',
+                                    opacity: 0.3,
+                                },
+                            });
+                            const c2 = document.createElement('circle', {
+                                style: {
+                                    cx: x,
+                                    cy: y,
+                                    lineWidth: 3,
+                                    r: 1.5,
+                                    stroke: '#259F2F',
+                                    opacity: 1,
+                                },
+                            });
+
+                            g.appendChild(c1);
+                            g.appendChild(c2);
+
+                            return g;
+                        },
+                    },
                 },
 
-            },
-        ]
+
+            ]
+        }
+
 
         return _config
-    }, [distribution]);
+    }, [distribution, tickLower, tickUpper, priceTick]);
     return <Spin spinning={loading}>
         <div style={{ width: '150px', height: '224px' }}>
 

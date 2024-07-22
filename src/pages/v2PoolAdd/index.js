@@ -136,11 +136,8 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
     }, [poolV2.curPair, _tickLower, _tickUpper])
 
+
     const handleCreatePosition = async () => {
-
-
-
-
         try {
             const { curPair } = poolV2;
             if (!curPair) throw new Error('pair not found');
@@ -244,7 +241,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             </div>
             <Divider className="Divider" />
             <div className="FormItemTitle">Price range</div>
-            <PairChart curPair={poolV2.curPair} icons={icons} pairs={pairs}>
+            <PairChart curPair={poolV2.curPair} icons={icons} pairs={pairs} tickLower={tickLower} tickUpper={tickUpper}>
                 {
                     (_tickLower && _tickLower) ? <div className="infoShow">
 
