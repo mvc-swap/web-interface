@@ -16,7 +16,6 @@ import { mint } from '../../utils/swapAlgoV3';
 import { getMaxLiquidityForAmounts, getAmount0ForLiquidity, getAmount1ForLiquidity, getLiquidityForAmount0, getLiquidityForAmount1 } from '../../utils/liquidityAmounts'
 
 const TokenWrap = ({ icon, symbol, rate }) => {
-    console.log(icon, symbol, rate, 'icon')
     return <div className="tokenWrap">
         <TokenLogo
             name={symbol}
@@ -34,14 +33,11 @@ const TokenWrap = ({ icon, symbol, rate }) => {
 const TwoPower64 = BigInt(18446744073709551616)
 
 const NewPosition = ({ user, poolV2, dispatch }) => {
-    console.log(user)
     const { query } = useLocation();
-
-
     const _tickLower = query['tickLower'];
     const _tickUpper = query['tickUpper'];
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
-    const { icons, curPair } = poolV2;
+    const { icons, curPair, pairs } = poolV2;
     console.log(curPair, 'curPair')
 
     const { pair: pairName } = useParams();
@@ -246,9 +242,9 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                 <div className="title"> New Position</div>
                 <div className="subfix"></div>
             </div>
-            <Divider />
+            <Divider className="Divider" />
             <div className="FormItemTitle">Price range</div>
-            <PairChart curPair={poolV2.curPair}>
+            <PairChart curPair={poolV2.curPair} icons={icons} pairs={pairs}>
                 {
                     (_tickLower && _tickLower) ? <div className="infoShow">
 
@@ -288,8 +284,8 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
 
 
             </PairChart>
-            <div className="FormItemTitle" style={{ marginTop: 40 }}>Amount to deposit</div>
-            <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
+            <div className="FormItemTitle" >Amount to deposit</div>
+            <Row gutter={[20, 20]} >
                 <Col xs={24} md={12}>
                     <Card style={{ borderRadius: 12 }} >
                         <div className="tokenCard">
@@ -320,7 +316,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             </Row>
 
 
-            <Button onClick={handleCreatePosition} block size='large' style={{ border: 'none', marginTop: 20, borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(93deg, #72F5F6 4%, #171AFF 94%)' }}>Add Liquidity</Button>
+            <Button onClick={handleCreatePosition} block size='large' style={{ border: 'none', marginTop: 20, marginBottom: 20, borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(93deg, #72F5F6 4%, #171AFF 94%)' }}>Add Liquidity</Button>
 
         </div>
     </PageContainer>

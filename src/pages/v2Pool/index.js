@@ -34,9 +34,9 @@ const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, tickLowe
                     <div className='feeRate'>{feeRate}% Spread Factor</div>
                 </div>
                 <div>
-                    {!inRange ? <Tag bordered={false} color="#FFEED9" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    {!inRange ? <Tag  color="#FFEED9" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                         <span style={{ display: 'block', width: 6, height: 6, background: '#FF8F1F', borderRadius: '50%' }}></span> OUT OF RANGE
-                    </Tag> : <Tag bordered={false} color="#DEF9F0" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    </Tag> : <Tag  color="#DEF9F0" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                         <span style={{ display: 'block', width: 6, height: 6, background: '#00B578', borderRadius: '50%' }}></span> IN RANGE
                     </Tag>}
                 </div>
@@ -51,7 +51,6 @@ const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, tickLowe
     </div>
 );
 const PoolV2 = ({ user, poolV2 }) => {
-    console.log(user)
     const { pairs, icons, curPair } = poolV2
     const [positions, setPositions] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
@@ -108,7 +107,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                     <Spin spinning={loading}>
                         <div className="positions-list">
                             {positions.map((position, index) => (
-                                <PositionCard key={position.id} index={index} icons={icons} {...position} />
+                                <PositionCard key={String(position.tickLower) + String(position.tickUpper) + position.pairName} index={index} icons={icons} {...position} />
                             ))}
                             {!loading && positions.length > 0 && <div className="no-more">No More</div>}
 

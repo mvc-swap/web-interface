@@ -11,13 +11,18 @@ export default {
     subscriptions: {
         setup({ dispatch, history }) {
             history.listen((location) => {
-                console.log(location, 'location')
                 if (location.pathname.indexOf('/v2pool') > -1) {
                     dispatch({
                         type: 'getAllPairs',
+                        payload: {
+                            type: 'init'
+                        }
                     });
                     dispatch({
                         type: 'fetchIcons',
+                        payload: {
+                            type: 'init'
+                        }
                     });
                 }
             });
@@ -25,7 +30,15 @@ export default {
     },
     effects: {
         *getAllPairs({ payload = {} }, { call, put, select }) {
-            const { pairName } = payload
+            const { pairName, type } = payload;
+
+            if (type === 'init') {
+                let _pairs = yield select((state) => state.poolV2.pairs);
+                if (_pairs.length > 0) {
+                    return
+                }
+            }
+
             let ret = yield v2API.queryAllPairs();
             if (ret.code !== 0) {
                 console.log(res.msg);
@@ -47,6 +60,7 @@ export default {
                     pairs: _pairs,
                 },
             });
+            console.log('ddddddd')
             yield put({
                 type: 'fetchPairInfo',
                 payload: {
@@ -78,13 +92,19 @@ export default {
                 });
             }
         },
-        *fetchIcons({ payload }, { call, put }) {
+        *fetchIcons({ payload }, { call, put, select }) {
+            const { type } = payload;
+            if (type === 'init') {
+                const icons = yield select((state) => state.poolV2.icons);
+                if (Object.keys(icons).length > 0) {
+                    return
+                }
+            }
             const ret = yield v2API.queryIcons();
-            console.log(ret, 'icons')
             const _icons = {}
             if (ret.success && ret.data) {
                 ret.data.forEach(item => {
-                   
+
                     _icons[item.genesis.toString().toLowerCase()] = `${iconBaseUrl}/${item.logo}`;
                     _icons[item.symbol.toLowerCase()] = `${iconBaseUrl}/${item.logo}`;
                 })

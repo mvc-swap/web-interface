@@ -10,7 +10,7 @@ const TradingView = ({ symbol1, symbol2 }) => {
         if (!tvRef.current) return
         const chart = createChart(tvRef.current, {
             width: chartWidth,
-            height: 300,
+            height: 270,
             autoSize: true,
             layout: {
                 backgroundColor: '#FFFFFF',
@@ -83,12 +83,12 @@ const TradingView = ({ symbol1, symbol2 }) => {
             fetch(uri) // Replace with your data source or API endpoint
                 .then((res) => res.json())
                 .then((data) => {
-
                     const items = data.data;
                     items.sort((a, b) => {
                         return a.time - b.time;
                     });
-                    candlestickSeries.setData(items);
+                    const dataTest = [{ open: 10, high: 10.63, low: 9.49, close: 9.55, time: 1642427876 }, { open: 9.55, high: 10.30, low: 9.42, close: 9.94, time: 1642514276 }, { open: 9.94, high: 10.17, low: 9.92, close: 9.78, time: 1642600676 }, { open: 9.78, high: 10.59, low: 9.18, close: 9.51, time: 1642687076 }, { open: 9.51, high: 10.46, low: 9.10, close: 10.17, time: 1642773476 }, { open: 10.17, high: 10.96, low: 10.16, close: 10.47, time: 1642859876 }, { open: 10.47, high: 11.39, low: 10.40, close: 10.81, time: 1642946276 }, { open: 10.81, high: 11.60, low: 10.30, close: 10.75, time: 1643032676 }, { open: 10.75, high: 11.60, low: 10.49, close: 10.93, time: 1643119076 }, { open: 10.93, high: 11.53, low: 10.76, close: 10.96, time: 1643205476 }]
+                    candlestickSeries.setData(dataTest);
                 })
                 .catch((err) => console.log(err));
 
@@ -112,7 +112,7 @@ const TradingView = ({ symbol1, symbol2 }) => {
         return () => window.removeEventListener('resize', resizeChart)
     }, [])
     return <div ref={chartWrapRef}>
-        <div style={{ height: 300 }}
+        <div style={{ height: 270 }}
             ref={tvRef}
         ></div>
     </div>

@@ -6,7 +6,9 @@ import styles from './index.less';
 import _ from 'i18n';
 import { Link, history } from 'umi';
 import StakeSubmenu from './stakeSubmenu';
+import PoolSubmenu from './poolSubmenu';
 import spaceIcon from '../../../../public/assets/space.png';
+import { has } from 'ramda';
 
 const menu = [
   {
@@ -15,14 +17,14 @@ const menu = [
     path: 'swap',
   },
   {
-    key: 'pool',
-    label: _('pool'),
-    path: 'pool/add',
+    key: ['v1Pool', 'v2Pool'],
+    childrenKeys: ['pool', 'v2pool'],
+    children: <PoolSubmenu />,
   },
-  //{
+  // {
   //  key: ['stake', 'vote'],
   //  children: <StakeSubmenu />,
-  //},
+  // },
   {
     key: 'stake',
     label: _('stake'),
@@ -53,10 +55,11 @@ export default class Head extends Component {
 
     let currentMenu = '';
     menu.forEach((item) => {
-      if (item.key.indexOf(hash) > -1) {
+      if (item.key.indexOf(hash) > -1 || (item.childrenKeys && item.childrenKeys.indexOf(hash) > -1)) {
         currentMenu = hash;
       }
     });
+    console.log(hash, currentMenu)
     this.state = {
       currentMenu,
     };
@@ -80,7 +83,7 @@ export default class Head extends Component {
         <div className={styles.menu}>
           {menu.map((item) => {
             let cls = jc(styles.menu_item, styles[`menu_item_${item.key}`]);
-            if (currentMenu && item.key.indexOf(currentMenu) > -1) {
+            if ((currentMenu && item.key.indexOf(currentMenu) > -1) || (item.childrenKeys && item.childrenKeys.indexOf(currentMenu) > -1)) {
               cls = jc(
                 styles.menu_item,
                 styles.menu_item_selected,
@@ -92,7 +95,7 @@ export default class Head extends Component {
                 <span
                   className={cls}
                   key={item.key}
-                  onClick={() => this.gotoPage(item.path)}
+                  onClick={(e) => { e.preventDefault(); }}
                 >
                   {item.children}
                 </span>
