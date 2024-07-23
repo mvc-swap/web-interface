@@ -30,6 +30,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     console.log(curPair, 'curPair')
     const [position, setPosition] = useState();
     const [loading, setLoading] = useState(true);
+    const [submiting, setSubmiting] = useState(false);
     const getUserPoolV2s = useCallback(async () => {
         if (userAddress) {
             const res = await api.queryUserPositions(userAddress);
@@ -74,6 +75,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
 
     const collectFee = async () => {
+        setSubmiting(true);
         try {
             const ret = await api.reqSwapArgs({
                 symbol: curPair.pairName,
@@ -152,10 +154,13 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             }
             console.log(remove2, 'remove2');
             message.success('Collect fee success');
+            setLoading(true);
+            await getUserPoolV2s();
         } catch (err) {
             console.error(err);
             message.error(err.message || 'Collect fee failed');
         }
+        setSubmiting(false);
 
     }
 
@@ -268,7 +273,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
                                 <div className="inputWrap">
                                     <div className="label">
-                                        high:{position.maxPrice}
+                                        Max price
                                     </div>
                                     <div className="value">
                                         {position.maxPrice}
@@ -277,7 +282,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                 </div>
                                 <div className="inputWrap">
                                     <div className="label">
-                                        low
+                                        Min price
                                     </div>
                                     <div className="value">
                                         {position.minPrice}
@@ -311,7 +316,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                             <NumberFormat precision={2} value={CurrentAmount.token1Precent} suffix="%" />
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <div className="item">
                                     <div className="token">
@@ -406,7 +411,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     <Col span={24}>
                         <Row gutter={[20, 20]}>
                             <Col xs={24} md={8}>
-                                <Button block className="linerLineButton" disabled={!(Number(position.token1Fee) || Number(position.token2Fee))} onClick={collectFee}>Collect Fee</Button>
+                                <Button loading={submiting} block className="linerLineButton" disabled={!(Number(position.token1Fee) || Number(position.token2Fee))} onClick={collectFee}>Collect Fee</Button>
                             </Col>
                             <Col xs={24} md={8}>
                                 <Button block disabled={!(Number(position.liquidity))} className="linerLineButton" onClick={() => { history.push(`/v2pool/remove/${pairName}?tickLower=${position.tickLower}&tickUpper=${position.tickUpper}`) }}>Remove liquidity</Button>

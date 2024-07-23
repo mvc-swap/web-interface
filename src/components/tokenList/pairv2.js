@@ -17,7 +17,7 @@ export default class TokenPairList extends React.Component {
   changeCurrentTokenPair = (currentPair) => {
     const { hash } = location;
     if (hash.indexOf('add') > -1) {
-      history.push(`/v2pool/add/${currentPair}`);
+      history.replace(`/v2pool/add/${currentPair}`);
       this.setState({
         defaultPair: currentPair,
       });

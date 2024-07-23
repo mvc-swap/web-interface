@@ -140,6 +140,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 tickLower,
                 tickUpper,
             }
+            console.log(liq_data, 'liq_data')
             const compressData = await gzip(JSON.stringify(liq_data))
             const last = await api.removeLiq({ data: compressData });
             const { txHex, scriptHex, satoshis, inputIndex } = last.data;

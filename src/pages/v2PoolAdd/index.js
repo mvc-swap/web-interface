@@ -294,7 +294,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
 
                             <div className="inputWrap">
                                 <div className="label">
-                                    high:
+                                    Max price
                                 </div>
                                 <div className="value">
                                     {maxPrice}
@@ -303,7 +303,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                             </div>
                             <div className="inputWrap">
                                 <div className="label">
-                                    low
+                                    Min price
                                 </div>
                                 <div className="value">
                                     {minPrice}
@@ -379,7 +379,13 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                                 <TokenWrap icon={icons[curPair && curPair.token2.genesisHash] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.precent} />
                                 <div className="tokenInputWrap">
                                     <div className="bal">{userBalance[curPair && curPair.token2.tokenID] || 0} {curPair && curPair.token2.symbol}</div>
-                                    <InputNumber className="inputNumber" value={token2} bordered={false} controls={false} onChange={handleToken2Change} precision={curPair && curPair.token2.decimal}></InputNumber>
+                                    <div className="inputNumber">
+                                        <InputNumber value={token2} bordered={false} controls={false} onChange={handleToken2Change} precision={curPair && curPair.token2.decimal}></InputNumber>
+                                        <div className="usd">
+                                            <NumberFormat value={Number(token2) * curPair.token2.price} precision={2} prefix="~$" decimal={curPair && curPair.token2.decimal} />
+                                        </div>
+                                    </div>
+
                                 </div>
 
                             </div>
