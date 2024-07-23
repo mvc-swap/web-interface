@@ -6,6 +6,7 @@ import { connect } from 'dva';
 import { gzip } from 'node-gzip';
 import TokenLogo from 'components/tokenicon';
 import TokenPair from 'components/tokenPair';
+import NumberFormat from 'components/NumberFormat';
 import './index.less'
 import PairChart from "../../components/PairChart";
 import { useEffect, useMemo, useState, useCallback } from "react";
@@ -26,6 +27,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     const tickUpper = query['tickUpper'];
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const { icons, curPair } = poolV2;
+    console.log(curPair, 'curPair')
     const [position, setPosition] = useState();
     const [loading, setLoading] = useState(true);
     const getUserPoolV2s = useCallback(async () => {
@@ -157,6 +159,78 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
     }
 
+    const UnclaimedFee = useMemo(() => {
+        if (!position) {
+            return {
+                feeUsd: 0,
+                token1Fee: 0,
+                token2Fee: 0,
+                token1Precent: 0,
+                token2Precent: 0
+            }
+        } else {
+            const token1FeeAmount = formatSat(position.token1Fee, curPair.token1.decimal)
+            const token2FeeAmount = formatSat(position.token2Fee, curPair.token2.decimal)
+            const token1Fee = Number(token1FeeAmount) * curPair.token1.price;
+            const token2Fee = Number(token2FeeAmount) * curPair.token2.price;
+            const totalFee = token1Fee + token2Fee;
+            if (totalFee === 0) {
+                return {
+                    token1Fee: token1FeeAmount,
+                    token2Fee: token2FeeAmount,
+                    token1Precent: 0,
+                    token2Precent: 0,
+                    feeUsd: 0
+                }
+            }
+            const token1Precent = (token1Fee / totalFee) * 100;
+            const token2Precent = (token2Fee / totalFee) * 100;
+            return {
+                token1Fee: position.token1Fee,
+                token2Fee: position.token2Fee,
+                token1Precent,
+                token2Precent,
+                feeUsd: totalFee
+            }
+        }
+    }, [position, curPair])
+
+    const CurrentAmount = useMemo(() => {
+        if (!curPair) {
+            return {
+                feeUsd: 0,
+                token1Fee: 0,
+                token2Fee: 0,
+                token1Precent: 0,
+                token2Precent: 0
+            }
+        } else {
+            const token1FeeAmount = formatSat(curPair.token1Amount, curPair.token1.decimal)
+            const token2FeeAmount = formatSat(curPair.token2Amount, curPair.token2.decimal)
+            const token1Fee = Number(token1FeeAmount) * curPair.token1.price;
+            const token2Fee = Number(token2FeeAmount) * curPair.token2.price;
+            const totalFee = token1Fee + token2Fee;
+            if (totalFee === 0) {
+                return {
+                    token1Fee: token1FeeAmount,
+                    token2Fee: token2FeeAmount,
+                    token1Precent: 0,
+                    token2Precent: 0,
+                    feeUsd: 0
+                }
+            }
+            const token1Precent = (token1Fee / totalFee) * 100;
+            const token2Precent = (token2Fee / totalFee) * 100;
+            return {
+                token1Fee: curPair.token1Amount,
+                token2Fee: curPair.token2Amount,
+                token1Precent,
+                token2Precent,
+                feeUsd: totalFee
+            }
+        }
+    }, [curPair])
+
     return <PageContainer spining={loading}>
         <div className="PositionDetailPage">
             <div className="titleWraper">
@@ -216,7 +290,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     </Col>
                     <Col xs={24} md={12}>
                         <Card style={{ borderRadius: 12 }}>
-                            <Statistic title="Current amount" value={112893} />
+                            <Statistic title="Current amount" value={CurrentAmount.feeUsd} precision={2} prefix='$' />
                             <div className="feeWrap">
                                 <div className="item">
                                     <div className="token">
@@ -229,7 +303,15 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                         <div>{pairName.split('-')[0].toUpperCase()}</div>
                                     </div>
 
-                                    <div className="feeAmount">{curPair.token1Amount} </div>
+                                    <div className="feeAmountWrap">
+                                        <div className="feeAmount">
+                                            <NumberFormat value={CurrentAmount.token1Fee} isBig decimal={curPair.token1.decimal} />
+                                        </div>
+                                        <div className="feeRate">
+                                            <NumberFormat precision={2} value={CurrentAmount.token1Precent} suffix="%" />
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                                 <div className="item">
                                     <div className="token">
@@ -242,7 +324,14 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                         <div>{pairName.split('-')[1].toUpperCase()}</div>
                                     </div>
 
-                                    <div className="feeAmount">{curPair.token2Amount} </div>
+                                    <div className="feeAmountWrap">
+                                        <div className="feeAmount">
+                                            <NumberFormat value={CurrentAmount.token2Fee} isBig decimal={curPair.token2.decimal} />
+                                        </div>
+                                        <div className="feeRate">
+                                            <NumberFormat precision={2} value={CurrentAmount.token2Precent} suffix="%" />
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -252,7 +341,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     </Col>
                     <Col xs={24} md={12}>
                         <Card style={{ borderRadius: 12 }}>
-                            <Statistic title="Unclaimed fees" value={'--'} />
+                            <Statistic title="Unclaimed fees" prefix='$' value={UnclaimedFee.feeUsd} precision={2} />
                             <div className="feeWrap">
                                 <div className="item">
                                     <div className="token">
@@ -265,7 +354,14 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                         <div>{pairName.split('-')[0].toUpperCase()}</div>
                                     </div>
 
-                                    <div className="feeAmount">{position.token1Fee} </div>
+                                    <div className="feeAmountWrap">
+                                        <div className="feeAmount">
+                                            <NumberFormat value={UnclaimedFee.token1Fee} isBig decimal={curPair.token1.decimal} />
+                                        </div>
+                                        <div className="feeRate">
+                                            <NumberFormat precision={2} value={UnclaimedFee.token1Precent} suffix="%" />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="item">
                                     <div className="token">
@@ -278,7 +374,14 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                                         <div>{pairName.split('-')[1].toUpperCase()}</div>
                                     </div>
 
-                                    <div className="feeAmount">{position.token2Fee} </div>
+                                    <div className="feeAmountWrap">
+                                        <div className="feeAmount">
+                                            <NumberFormat value={UnclaimedFee.token2Fee} isBig decimal={curPair.token2.decimal} />
+                                        </div>
+                                        <div className="feeRate">
+                                            <NumberFormat precision={2} value={UnclaimedFee.token2Precent} suffix="%" />
+                                        </div>
+                                    </div>
                                 </div>
 
 

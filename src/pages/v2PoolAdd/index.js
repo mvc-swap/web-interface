@@ -5,6 +5,7 @@ import { history, useParams, useLocation } from 'umi'
 import { connect } from 'dva';
 import { gzip } from 'node-gzip';
 import TokenLogo from 'components/tokenicon';
+import NumberFormat from 'components/NumberFormat';
 import './index.less'
 import PairChart from "../../components/PairChart";
 import { useEffect, useMemo, useState } from "react";
@@ -13,7 +14,9 @@ import { formatAmount, formatSat, formatTok } from 'common/utils';
 import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
 import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
 import { mint } from '../../utils/swapAlgoV3';
+import EventBus from 'common/eventBus';
 import { getMaxLiquidityForAmounts, getAmount0ForLiquidity, getAmount1ForLiquidity, getLiquidityForAmount0, getLiquidityForAmount1 } from '../../utils/liquidityAmounts'
+import { type } from "ramda";
 
 const TokenWrap = ({ icon, symbol, rate }) => {
     return <div className="tokenWrap">
@@ -24,8 +27,9 @@ const TokenWrap = ({ icon, symbol, rate }) => {
             url={icon}
         />
         <div className="info">
-            <div className="symbol">{symbol}</div>
-            <div className="rate">{ }%</div>
+            <div className="symbol">{symbol.toUpperCase()}</div>
+            {rate && <div className="rate"><NumberFormat value={rate} suffix='%' precision={0} /></div>}
+
         </div>
     </div>
 }
@@ -39,7 +43,6 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const { icons, curPair, pairs } = poolV2;
     console.log(curPair, 'curPair')
-
     const { pair: pairName } = useParams();
 
     const [minPrice, setMinPrice] = useState(0);
@@ -86,25 +89,34 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     // }, [])
 
     const calcMinPrice = (_price) => {
-        if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !_price) return;
-        const { tickSpacing } = poolV2.curPair;
-        const _lowSX96 = priceToSqrtX96(_price);
-        let _lowTick = getTickAtSqrtRatio(BigInt(_lowSX96.toFixed(0)));
-        _lowTick = Math.floor(_lowTick / tickSpacing) * tickSpacing;
-        setTickLower(_lowTick);
-        setMinPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
-        handleToken1Change(token1)
+        if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) > Number(maxPrice)) return;
+        try {
+            const { tickSpacing } = poolV2.curPair;
+            const _lowSX96 = priceToSqrtX96(_price);
+            let _lowTick = getTickAtSqrtRatio(BigInt(_lowSX96.toFixed(0)));
+            _lowTick = Math.floor(_lowTick / tickSpacing) * tickSpacing;
+            setTickLower(_lowTick);
+            setMinPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
+            handleToken1Change(token1)
+        } catch (err) {
+            message.error(err.message || 'Invalid price')
+        }
+
     }
 
     const calcMaxPrice = (_price) => {
-        if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !_price) return;
-        const { tickSpacing } = poolV2.curPair;
-        const _highSX96 = priceToSqrtX96(_price);
-        let _highTick = getTickAtSqrtRatio(BigInt(_highSX96.toFixed(0)));
-        _highTick = Math.ceil(_highTick / tickSpacing) * tickSpacing;
-        setTickUpper(_highTick);
-        setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
-        handleToken1Change(token1)
+        if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) < Number(minPrice)) return;
+        try {
+            const { tickSpacing } = poolV2.curPair;
+            const _highSX96 = priceToSqrtX96(_price);
+            let _highTick = getTickAtSqrtRatio(BigInt(_highSX96.toFixed(0)));
+            _highTick = Math.ceil(_highTick / tickSpacing) * tickSpacing;
+            setTickUpper(_highTick);
+            setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
+            handleToken1Change(token1)
+        } catch (err) {
+            message.error(err.message || 'Invalid price')
+        }
     }
     useEffect(() => {
         if (!poolV2.curPair) return;
@@ -232,6 +244,38 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         }
     }, [pairName, dispatch, curPair])
 
+    const buttonInfo = useMemo(() => {
+        if (!isLogin) return {
+            text: 'Connect Wallet',
+            type: 'primary',
+        }
+        if (!curPair) return {
+            text: 'Loading...',
+            type: 'primary',
+        }
+        if (!curPair.sqrtPriceX96) return {
+            text: 'Loading...',
+            type: 'primary',
+        }
+        if (!token1 || !token2) return {
+            text: 'Entry an amount',
+            type: 'primary',
+        }
+        if (token1 > userBalance[curPair.token1.tokenID || 'MVC']) return {
+            text: `Insufficient ${curPair.token1.symbol}  balance`,
+            type: 'danger',
+        }
+        if (token2 > userBalance[curPair.token2.tokenID || 'MVC']) return {
+            text: `Insufficient ${curPair.token2.symbol}  balance`,
+            type: 'danger',
+        }
+        return {
+            text: 'Add Liquidity',
+            type: 'primary',
+        }
+
+    }, [userBalance, token1, token2, isLogin, curPair])
+
     return <PageContainer>
         <div className="newPositionPage">
             <div className="titleWraper">
@@ -240,80 +284,121 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                 <div className="subfix"></div>
             </div>
             <Divider className="Divider" />
-            <div className="FormItemTitle">Price range</div>
-            <PairChart curPair={poolV2.curPair} icons={icons} pairs={pairs} tickLower={tickLower} tickUpper={tickUpper}>
+            {curPair && <>
+
+
+                <div className="FormItemTitle">Price range</div>
+                <PairChart curPair={poolV2.curPair} icons={icons} pairs={pairs} tickLower={tickLower} tickUpper={tickUpper}>
+                    {
+                        (_tickLower && _tickLower) ? <div className="infoShow">
+
+                            <div className="inputWrap">
+                                <div className="label">
+                                    high:
+                                </div>
+                                <div className="value">
+                                    {maxPrice}
+                                </div>
+
+                            </div>
+                            <div className="inputWrap">
+                                <div className="label">
+                                    low
+                                </div>
+                                <div className="value">
+                                    {minPrice}
+                                </div>
+
+                            </div>
+                        </div> : <div className="editPrice">
+                            <div className="inputWrapper">
+                                <div className="label">
+                                    high
+                                </div>
+                                <InputNumber min={minPrice} onBlur={(e) => { calcMaxPrice(e.target.value) }} value={maxPrice} bordered={false} controls={false} style={{ textAlign: 'right' }}></InputNumber>
+                            </div>
+                            <div className="inputWrapper">
+                                <div className="label">
+                                    low
+                                </div>
+                                <InputNumber min={0} max={maxPrice} onBlur={(e) => { calcMinPrice(e.target.value) }} value={minPrice} bordered={false} controls={false}></InputNumber>
+                            </div>
+                        </div>
+                    }
+
+
+                </PairChart>
                 {
-                    (_tickLower && _tickLower) ? <div className="infoShow">
+                    _tickLower && _tickUpper && <>
+                        <div className="FormItemTitle" >Current amount</div>
+                        <Row gutter={[20, 20]} >
+                            <Col xs={24} md={12}>
+                                <Card style={{ borderRadius: 12 }} >
+                                    <div className="tokenCard">
+                                        <TokenWrap icon={icons[curPair && curPair.token1.genesisHash] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.rate} />
+                                        <div className="poolAmount">
+                                            <NumberFormat value={curPair.token1Amount} isBig decimal={curPair.token1.decimal} />
+                                        </div>
 
-                        <div className="inputWrap">
-                            <div className="label">
-                                high:
+                                    </div>
+
+                                </Card>
+                            </Col>
+                            <Col xs={24} md={12}>
+                                <Card style={{ borderRadius: 12 }}>
+
+                                    <div className="tokenCard">
+                                        <TokenWrap icon={icons[curPair && curPair.token2.genesisHash] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.rate} />
+                                        <div className="poolAmount">
+                                            <NumberFormat value={curPair.token2Amount} isBig decimal={curPair.token2.decimal} />
+                                        </div>
+                                    </div>
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </>
+                }
+                <div className="FormItemTitle" >Amount to deposit</div>
+                <Row gutter={[20, 20]} >
+                    <Col xs={24} md={12}>
+                        <Card style={{ borderRadius: 12 }} >
+                            <div className="tokenCard">
+                                <TokenWrap icon={icons[curPair && curPair.token1.genesisHash] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.precent} />
+                                <div className="tokenInputWrap">
+                                    <div className="bal">{curPair && userBalance[curPair && curPair.token1.tokenID || 'MVC'] || 0} {curPair && curPair.token1.symbol}</div>
+                                    <InputNumber className="inputNumber" onBlur={(e) => { handleToken1Change(e.target.value) }} value={token1} bordered={false} controls={false} precision={curPair && curPair.token1.decimal}></InputNumber>
+                                </div>
                             </div>
-                            <div className="value">
-                                {maxPrice}
+                        </Card>
+                    </Col>
+                    <Col xs={24} md={12}>
+                        <Card style={{ borderRadius: 12 }}>
+
+                            <div className="tokenCard">
+                                <TokenWrap icon={icons[curPair && curPair.token2.genesisHash] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.precent} />
+                                <div className="tokenInputWrap">
+                                    <div className="bal">{userBalance[curPair && curPair.token2.tokenID] || 0} {curPair && curPair.token2.symbol}</div>
+                                    <InputNumber className="inputNumber" value={token2} bordered={false} controls={false} onChange={handleToken2Change} precision={curPair && curPair.token2.decimal}></InputNumber>
+                                </div>
+
                             </div>
 
-                        </div>
-                        <div className="inputWrap">
-                            <div className="label">
-                                low
-                            </div>
-                            <div className="value">
-                                {minPrice}
-                            </div>
-
-                        </div>
-                    </div> : <div className="editPrice">
-                        <div className="inputWrapper">
-                            <div className="label">
-                                high
-                            </div>
-                            <InputNumber onBlur={(e) => { calcMaxPrice(e.target.value) }} value={maxPrice} bordered={false} controls={false} style={{ textAlign: 'right' }}></InputNumber>
-                        </div>
-                        <div className="inputWrapper">
-                            <div className="label">
-                                low
-                            </div>
-                            <InputNumber onBlur={(e) => { calcMinPrice(e.target.value) }} value={minPrice} bordered={false} controls={false}></InputNumber>
-                        </div>
-                    </div>
+                        </Card>
+                    </Col>
+                </Row>
+                {
+                    isLogin ? <Button onClick={handleCreatePosition} block size='large' className={`button ${buttonInfo.type}`}>
+                        {buttonInfo.text}
+                    </Button> : <Button onClick={() => {
+                        EventBus.emit('login');
+                    }} block size='large' className="button primary">
+                        Connect Wallet
+                    </Button>
                 }
 
 
-            </PairChart>
-            <div className="FormItemTitle" >Amount to deposit</div>
-            <Row gutter={[20, 20]} >
-                <Col xs={24} md={12}>
-                    <Card style={{ borderRadius: 12 }} >
-                        <div className="tokenCard">
-                            <TokenWrap icon={icons[curPair && curPair.token1.genesisHash] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.rate} />
-                            <div className="tokenInputWrap">
-                                <div className="bal">{curPair && curPair.token1.symbol === 'space' && userBalance['MVC']}{curPair && curPair.token1.symbol}</div>
-                                <InputNumber className="inputNumber" onBlur={(e) => { handleToken1Change(e.target.value) }} value={token1} bordered={false} controls={false} precision={curPair && curPair.token1.decimal}></InputNumber>
-                            </div>
-
-                        </div>
-
-                    </Card>
-                </Col>
-                <Col xs={24} md={12}>
-                    <Card style={{ borderRadius: 12 }}>
-
-                        <div className="tokenCard">
-                            <TokenWrap icon={icons[curPair && curPair.token2.genesisHash] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.rate} />
-                            <div className="tokenInputWrap">
-                                <div className="bal">{userBalance[curPair && curPair.token2.tokenID]}{curPair && curPair.token2.symbol}</div>
-                                <InputNumber className="inputNumber" value={token2} bordered={false} controls={false} onChange={handleToken2Change} precision={curPair && curPair.token2.decimal}></InputNumber>
-                            </div>
-
-                        </div>
-
-                    </Card>
-                </Col>
-            </Row>
-
-
-            <Button onClick={handleCreatePosition} block size='large' style={{ border: 'none', marginTop: 20, marginBottom: 20, borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(93deg, #72F5F6 4%, #171AFF 94%)' }}>Add Liquidity</Button>
+            </>}
 
         </div>
     </PageContainer>

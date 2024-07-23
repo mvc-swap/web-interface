@@ -44,9 +44,25 @@ export default {
                 console.log(res.msg);
                 return res;
             }
+            let priceRet = yield v2API.queryTokenPrices();
+            console.log(priceRet, 'priceRet')
+            let prices = {}
+            if (priceRet.code === 0) {
+                prices = { ...priceRet.data }
+            }
             let _pairs = []
             for (let pairName in ret.data) {
-                _pairs.push({ pairName, ...ret.data[pairName] })
+
+                _pairs.push({
+                    pairName, ...ret.data[pairName], token1: {
+                        price: prices[ret.data[pairName].token1.symbol] || 0,
+                        ...ret.data[pairName].token1,
+                    },
+                    token2: {
+                        price: prices[ret.data[pairName].token2.symbol] || 0,
+                        ...ret.data[pairName].token2,
+                    }
+                })
             }
 
             let _curPair = yield select((state) => state.poolV2.curPair);
@@ -84,10 +100,32 @@ export default {
                     })
                     return
                 }
+        
+                const token1MarketCap = find.token1.price * Number(find.token1Amount) / Math.pow(10, find.token1.decimal);
+                const token2MarketCap = find.token2.price * Number(find.token2Amount) / Math.pow(10, find.token2.decimal);
+                const pairMarketCap = token1MarketCap + token2MarketCap;
+                const token1Precent = token1MarketCap / pairMarketCap*100;
+                const token2Precent = token2MarketCap / pairMarketCap*100;
                 yield put({
                     type: 'save',
                     payload: {
-                        curPair: { ...find, ...ret.data, }
+                        curPair: {
+                            ...find,
+                            ...ret.data,
+                            marketCap: pairMarketCap,
+                            token1: {
+                                marketCap: token1MarketCap,
+                                precent: token1Precent,
+                                ...find.token1,
+                                ...ret.data.token1,
+                            },
+                            token2: {
+                                marketCap: token2MarketCap,
+                                precent: token2Precent,
+                                ...find.token2,
+                                ...ret.data.token2,
+                            }
+                        }
                     },
                 });
             }

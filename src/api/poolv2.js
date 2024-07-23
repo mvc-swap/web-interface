@@ -21,6 +21,9 @@ class PoolV2 extends BaseAPI {
     queryAllPairs() {
         return this._request('allpairs', {});
     }
+    queryTokenPrices() {
+        return this._request('tokenprice', {});
+    }
     async queryIcons() {
         return (await fetch('https://icons.mvcswap.com/resources/icons.json')).json();
     }
