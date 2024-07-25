@@ -57,7 +57,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         const { sqrtPriceX96, liquidity, tick, token1: { decimal }, token2: { decimal: decimal2 } } = poolV2.curPair
         const sqrtPrice1 = getSqrtRatioAtTick(tickLower)
         const sqrtPrice2 = getSqrtRatioAtTick(tickUpper)
-        const liquidityAmount = getMaxLiquidityForAmounts(BigInt(sqrtPriceX96), sqrtPrice1, sqrtPrice2, BigInt(value * 10 ** decimal), TwoPower64)
+        const liquidityAmount = getMaxLiquidityForAmounts(BigInt(sqrtPriceX96), sqrtPrice1, sqrtPrice2, BigInt(formatTok(value,decimal)), TwoPower64)
         const swapRes = mint(Number(tick), BigInt(sqrtPriceX96), BigInt(liquidity), tickLower, tickUpper, liquidityAmount);
         setLiquidityAmount(liquidityAmount)
         console.log(liquidityAmount, swapRes)
@@ -70,7 +70,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         // setToken2(value)
         const sqrtPrice1 = getSqrtRatioAtTick(tickLower)
         const sqrtPrice2 = getSqrtRatioAtTick(tickUpper)
-        const liquidityAmount = getMaxLiquidityForAmounts(BigInt(sqrtPriceX96), sqrtPrice1, sqrtPrice2, TwoPower64, BigInt(value * 10 ** decimal2),)
+        const liquidityAmount = getMaxLiquidityForAmounts(BigInt(sqrtPriceX96), sqrtPrice1, sqrtPrice2, TwoPower64, BigInt(formatTok(value,decimal2)),)
         const swapRes = mint(Number(tick), BigInt(sqrtPriceX96), BigInt(liquidity), tickLower, tickUpper, liquidityAmount);
         setLiquidityAmount(liquidityAmount)
         setToken1(formatSat(swapRes.amount0, decimal))
