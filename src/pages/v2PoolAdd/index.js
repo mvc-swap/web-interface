@@ -89,7 +89,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     // }, [])
 
     const calcMinPrice = (_price) => {
-        if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) > Number(maxPrice)) return;
+        if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) >= Number(maxPrice)) return;
         try {
             const { tickSpacing } = poolV2.curPair;
             const _lowSX96 = priceToSqrtX96(_price);
@@ -109,7 +109,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     }
 
     const calcMaxPrice = (_price) => {
-        if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) < Number(minPrice)) return;
+        if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) <= Number(minPrice)) return;
         try {
             const { tickSpacing } = poolV2.curPair;
             const _highSX96 = priceToSqrtX96(_price);
