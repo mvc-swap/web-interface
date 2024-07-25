@@ -34,9 +34,9 @@ const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, tickLowe
                     <div className='feeRate'>{feeRate}% Spread Factor</div>
                 </div>
                 <div>
-                    {!inRange ? <Tag  color="#FFEED9" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    {!inRange ? <Tag color="#FFEED9" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                         <span style={{ display: 'block', width: 6, height: 6, background: '#FF8F1F', borderRadius: '50%' }}></span> OUT OF RANGE
-                    </Tag> : <Tag  color="#DEF9F0" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    </Tag> : <Tag color="#DEF9F0" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                         <span style={{ display: 'block', width: 6, height: 6, background: '#00B578', borderRadius: '50%' }}></span> IN RANGE
                     </Tag>}
                 </div>
@@ -54,9 +54,10 @@ const PoolV2 = ({ user, poolV2 }) => {
     const { pairs, icons, curPair } = poolV2
     const [positions, setPositions] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
+    const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const getUserPoolV2s = useCallback(async () => {
-        if (user && user.isLogin && user.accountInfo && user.accountInfo.userAddress) {
-            const res = await api.queryUserPositions(user.accountInfo.userAddress);
+        if (userAddress) {
+            const res = await api.queryUserPositions(userAddress);
             if (res && res.data) {
                 let _positions = [];
                 for (let pairName in res.data) {
@@ -65,19 +66,19 @@ const PoolV2 = ({ user, poolV2 }) => {
                         //TODO USDT 
                         const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
                         const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
-                        console.log(minPrice, maxPrice)
+
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
                         _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
                     })
 
                 }
-                console.log(_positions)
                 setPositions(_positions);
             }
-            console.log(res)
+        } else {
+            setPositions([])
         }
         setLoading(false)
-    }, [user])
+    }, [userAddress])
 
     const [rewardingPool, setRewardingPool] = React.useState([]);
 
