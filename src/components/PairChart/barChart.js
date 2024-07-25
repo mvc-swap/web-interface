@@ -74,7 +74,6 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
                 }
             });
         }
-        
 
 
         const _config = {

@@ -13,7 +13,7 @@ export default function ChooseWallet(props) {
   return (
     <Modal
       title=""
-      visible={true}
+      open={true}
       footer={null}
       getContainer="#J_Page"
       className={styles.chooseLogin_dialog}
