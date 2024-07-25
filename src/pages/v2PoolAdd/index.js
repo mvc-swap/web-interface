@@ -54,6 +54,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
 
     const handleToken1Change = (value) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing)) return;
+        console.log(value,tickLower,tickUpper)
         const { sqrtPriceX96, liquidity, tick, token1: { decimal }, token2: { decimal: decimal2 } } = poolV2.curPair
         const sqrtPrice1 = getSqrtRatioAtTick(tickLower)
         const sqrtPrice2 = getSqrtRatioAtTick(tickUpper)
@@ -95,8 +96,12 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             let _lowTick = getTickAtSqrtRatio(BigInt(_lowSX96.toFixed(0)));
             _lowTick = Math.floor(_lowTick / tickSpacing) * tickSpacing;
             setTickLower(_lowTick);
+           
             setMinPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
-            handleToken1Change(token1)
+            setTimeout(()=>{
+                handleToken1Change(token1)
+            },100)
+           
         } catch (err) {
             message.error(err.message || 'Invalid price')
         }
@@ -112,7 +117,8 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             _highTick = Math.ceil(_highTick / tickSpacing) * tickSpacing;
             setTickUpper(_highTick);
             setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
-            handleToken1Change(token1)
+            setTimeout(()=>{ handleToken1Change(token1)},100)
+           
         } catch (err) {
             message.error(err.message || 'Invalid price')
         }
