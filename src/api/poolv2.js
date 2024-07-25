@@ -53,6 +53,9 @@ class PoolV2 extends BaseAPI {
     token1totoken2(params) {
         return this._request('token1totoken2', params, 'POST');
     }
+    token2totoken1(params) {
+        return this._request('token2totoken1', params, 'POST');
+    }
 }
 
 export default new PoolV2();

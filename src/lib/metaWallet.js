@@ -144,7 +144,8 @@ export default {
 
   signTx: async (params) => {
     const res = await window.metaidwallet.signTransaction({ transaction: params });
-    //console.log(res); //debugger
+    // console.log(res,'debugger'); //debugger
+    if (res.status === "canceled") throw new Error("canceled");
     return res.signature;
   },
 };

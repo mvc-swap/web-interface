@@ -59,7 +59,6 @@ export default class Head extends Component {
         currentMenu = hash;
       }
     });
-    console.log(hash, currentMenu)
     this.state = {
       currentMenu,
     };

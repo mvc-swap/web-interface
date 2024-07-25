@@ -54,6 +54,7 @@ export default class Swap extends Component {
       lastMod: '',
       dirForward: true, //交易对方向，true正向 false反向
       modalVisible: false,
+      routeVersion: '',
       tol:
         window.localStorage.getItem(slippage_tolerance_value) ||
         defaultSlipValue,
@@ -74,58 +75,78 @@ export default class Swap extends Component {
           'aim_amount',
         ]);
         const { lastMod, dirForward } = this.state;
-        const { token1, token2, pairData } = this.props;
-        const decimal = dirForward ? token1.decimal : token2.decimal;
-        let newOriginAddAmount, newAimAddAmount, fee, slip, slip1;
-        if (lastMod === 'origin') {
-          const obj = calcAmount({
-            token1,
-            token2,
-            dirForward,
-            originAddAmount: 0,
-            aimAddAmount: origin_amount,
-            pairData,
-          });
-          newAimAddAmount = origin_amount;
-          newOriginAddAmount = obj.newOriginAddAmount;
-          fee = formatAmount(
-            BigNumber(newOriginAddAmount)
-              .multipliedBy(pairData.swapFeeRate)
-              .div(10000),
-            decimal,
-          );
-          slip = obj.slip;
-          slip1 = obj.slip1;
-        } else if (lastMod === 'aim') {
-          fee = formatAmount(
-            BigNumber(aim_amount).multipliedBy(pairData.swapFeeRate).div(10000),
-            decimal,
-          );
-          const obj = calcAmount({
-            token1,
-            token2,
-            dirForward,
-            originAddAmount: aim_amount,
-            aimAddAmount: 0,
-            pairData,
-          });
-          newOriginAddAmount = aim_amount;
-          newAimAddAmount = obj.newAimAddAmount;
-          slip = obj.slip;
-          slip1 = obj.slip1;
+        console.log(lastMod, origin_amount, aim_amount, dirForward)
+        if (dirForward) {
+          if (lastMod === 'origin') {
+            this.changeAimAmount({ target: { value: origin_amount } })
+          } else {
+            this.changeOriginAmount({ target: { value: aim_amount } })
+          }
+        } else {
+          if (lastMod === 'origin') {
+            console.log('origindddd', origin_amount)
+            this.changeAimAmount({ target: { value: origin_amount } })
+          } else {
+            this.changeOriginAmount({ target: { value: aim_amount } })
+          }
         }
-        current.setFieldsValue({
-          origin_amount: newOriginAddAmount,
-          aim_amount: newAimAddAmount,
-        });
-        this.setState({
-          lastMod: lastMod === 'origin' ? 'aim' : 'origin',
-          aim_amount: newAimAddAmount,
-          origin_amount: newOriginAddAmount,
-          fee,
-          slip,
-          slip1,
-        });
+        // if (!dirForward && lastMod === 'origin') {
+        //   this.changeOriginAmount({ target: { value: origin_amount } })
+        // } else {
+        //   this.changeOriginAmount({ target: { value: aim_amount } })
+        // }
+        // const { token1, token2, pairData } = this.props;
+        // const decimal = dirForward ? token1.decimal : token2.decimal;
+        // let newOriginAddAmount, newAimAddAmount, fee, slip, slip1;
+        // if (lastMod === 'origin') {
+        //   const obj = calcAmount({
+        //     token1,
+        //     token2,
+        //     dirForward,
+        //     originAddAmount: 0,
+        //     aimAddAmount: origin_amount,
+        //     pairData,
+        //   });
+        //   newAimAddAmount = origin_amount;
+        //   newOriginAddAmount = obj.newOriginAddAmount;
+        //   fee = formatAmount(
+        //     BigNumber(newOriginAddAmount)
+        //       .multipliedBy(pairData.swapFeeRate)
+        //       .div(10000),
+        //     decimal,
+        //   );
+        //   slip = obj.slip;
+        //   slip1 = obj.slip1;
+        // } else if (lastMod === 'aim') {
+        //   fee = formatAmount(
+        //     BigNumber(aim_amount).multipliedBy(pairData.swapFeeRate).div(10000),
+        //     decimal,
+        //   );
+        //   const obj = calcAmount({
+        //     token1,
+        //     token2,
+        //     dirForward,
+        //     originAddAmount: aim_amount,
+        //     aimAddAmount: 0,
+        //     pairData,
+        //   });
+        //   newOriginAddAmount = aim_amount;
+        //   newAimAddAmount = obj.newAimAddAmount;
+        //   slip = obj.slip;
+        //   slip1 = obj.slip1;
+        // }
+        // current.setFieldsValue({
+        //   origin_amount: newOriginAddAmount,
+        //   aim_amount: newAimAddAmount,
+        // });
+        // this.setState({
+        //   lastMod: lastMod === 'origin' ? 'aim' : 'origin',
+        //   aim_amount: newAimAddAmount,
+        //   origin_amount: newOriginAddAmount,
+        //   fee,
+        //   slip,
+        //   slip1,
+        // });
       },
     );
   };
@@ -137,28 +158,68 @@ export default class Swap extends Component {
     });
   };
 
-  handleInputChange = async (token1Amount) => {
+  handleToken1InputChange = async (token1Amount, slip, slip1, fee, dirForward) => {
     const { token1, token2, pairData } = this.props;
     const currentRequestCount = ++this.requestCounter;
     try {
       const params = {
-        tokenIn: token1.symbol,
-        tokenOut: token2.symbol,
-        amount: formatTok(token1Amount, token1.decimal)
+        tokenIn: dirForward ? token1.symbol : token2.symbol,
+        tokenOut: dirForward ? token2.symbol : token1.symbol,
+        amount: `${dirForward ? '' : '-'}${formatTok(token1Amount, token1.decimal)}`
       }
       const response = await api.calcRoute(params);
       if (currentRequestCount === this.requestCounter && response.data) {
-        console.log(response, currentRequestCount, this.requestCounter, 'response')
-        const amountOut = formatSat(response.data.amountOut, token2.decimal)
+        const { amountOut: _amountOut, path, amountIn: _amountIn } = response.data;
+        const amountOut = formatSat(_amountOut, dirForward ? token2.decimal : token1.decimal)
+        const amountIn = formatSat(_amountIn, dirForward ? token1.decimal : token2.decimal)
+        console.log('amountOutddd', amountOut, amountIn)
         this.formRef.current.setFieldsValue({
-          origin_amount: token1Amount,
+          origin_amount: amountIn,
           aim_amount: amountOut,
         });
         this.setState({
-          origin_amount: token1Amount,
+          origin_amount: amountIn,
           aim_amount: amountOut,
+          lastMod: dirForward ? 'origin' : 'aim',
+          routeVersion: path,
+          slip,
+          slip1,
+          fee
         })
+      }
 
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  handleToken2InputChange = async (token2Amount, slip, slip1, fee, dirForward) => {
+    const { token1, token2, pairData } = this.props;
+    const currentRequestCount = ++this.requestCounter;
+    try {
+      const params = {
+        tokenIn: dirForward ? token1.symbol : token2.symbol,
+        tokenOut: dirForward ? token2.symbol : token1.symbol,
+        amount: `${dirForward ? '-' : ''}${formatTok(token2Amount, token2.decimal)}`
+      }
+      const response = await api.calcRoute(params);
+      if (currentRequestCount === this.requestCounter && response.data) {
+        const { amountOut: _amountOut, path, amountIn: _amountIn } = response.data;
+        const amountOut = formatSat(_amountOut, dirForward ? token2.decimal : token1.decimal)
+        const amountIn = formatSat(_amountIn, dirForward ? token1.decimal : token2.decimal)
+        this.formRef.current.setFieldsValue({
+          origin_amount: amountIn,
+          aim_amount: amountOut,
+        });
+        this.setState({
+          origin_amount: amountIn,
+          aim_amount: amountOut,
+          lastMod: dirForward ? 'aim' : 'origin',
+          routeVersion: path,
+          slip,
+          slip1,
+          fee
+        })
       }
 
     } catch (err) {
@@ -167,43 +228,179 @@ export default class Swap extends Component {
   }
 
   handelSubmitV2 = async () => {
-    const { dispatch, currentPair, token1, token2, rabinApis, accountInfo } =
-      this.props;
-    const { dirForward, origin_amount } = this.state;
-    const { userBalance, changeAddress, userAddress } = accountInfo;
-    const amount=formatTok(origin_amount, token1.decimal)
-    const ret = await api.reqSwapArgs({
-      symbol: currentPair,
-      address: userAddress,
-      op: 3,
-      source: 'mvcswap.io',
-      amountIn: amount
-    });
-    if (ret.code !== 0) {
-      throw new Error(ret.msg)
+    try {
+
+
+      const { dispatch, currentPair, token1, token2, rabinApis, accountInfo } =
+        this.props;
+      const { dirForward, origin_amount } = this.state;
+      const { userBalance, changeAddress, userAddress } = accountInfo;
+      const amount = formatTok(origin_amount, dirForward ? token1.decimal : token2.decimal)
+      const ret = await api.reqSwapArgs({
+        symbol: currentPair,
+        address: userAddress,
+        op: dirForward ? 3 : 4,
+        source: 'mvcswap.io',
+        amountIn: amount
+      });
+      if (ret.code !== 0) {
+        throw new Error(ret.msg)
+      }
+      const { mvcToAddress, tokenToAddress, txFee, requestIndex } = ret.data;
+
+      let payload = {
+        symbol: currentPair,
+        requestIndex: requestIndex,
+        op: dirForward ? 3 : 4,
+      };
+      if (dirForward) {
+        if (token1.isMvc) {
+          const transferMVCAmount = BigInt(amount) + BigInt(txFee);
+          const ts_res = await dispatch({
+            type: 'user/transferMvc',
+            payload: {
+              address: mvcToAddress,
+              amount: (BigInt(amount) + BigInt(txFee)).toString(),
+              changeAddress,
+              note: 'mvcswap.com(swap)',
+              noBroadcast: true,
+            },
+          });
+          if (ts_res.msg || ts_res.status == 'canceled') {
+            throw new Error(ts_res.msg || 'canceled')
+          }
+          payload = {
+            ...payload,
+            mvcOutputIndex: 0,
+            mvcRawTx: ts_res.list ? ts_res.list[0].txHex : ts_res.txHex,
+          };
+        } else {
+          let tx_res = await dispatch({
+            type: 'user/transferAll',
+            payload: {
+              datas: [
+                {
+                  type: 'mvc',
+                  address: mvcToAddress,
+                  amount: txFee,
+                  changeAddress,
+                  note: 'mvcswap.com(swap)',
+                },
+                {
+                  type: 'sensibleFt',
+                  address: tokenToAddress,
+                  amount,
+                  changeAddress,
+                  codehash: token1.codeHash,
+                  genesis: token1.tokenID,
+                  rabinApis,
+                  note: 'mvcswap.com(swap)',
+                },
+              ],
+              noBroadcast: true,
+            },
+          });
+          if (!tx_res) {
+            throw new Error(_('txs_fail'))
+          }
+          if (tx_res.msg || tx_res.status == 'canceled') {
+            throw new Error(tx_res.msg || 'canceled')
+          }
+          if (tx_res.list) {
+            tx_res = tx_res.list;
+          }
+          if (!tx_res[0] || !tx_res[0].txHex || !tx_res[1] || !tx_res[1].txHex) {
+            throw new Error(_('txs_fail'))
+          }
+          payload = {
+            ...payload,
+            mvcRawTx: tx_res[0].txHex,
+            mvcOutputIndex: 0,
+            amountCheckRawTx: tx_res[1].routeCheckTxHex,
+            token1RawTx: tx_res[1].txHex,
+            token1OutputIndex: 0,
+          }
+        }
+
+      } else {
+        let tx_res = await dispatch({
+          type: 'user/transferAll',
+          payload: {
+            datas: [
+              {
+                type: 'mvc',
+                address: mvcToAddress,
+                amount: txFee,
+                changeAddress,
+                note: 'mvcswap.com(swap)',
+              },
+              {
+                type: 'sensibleFt',
+                address: tokenToAddress,
+                amount,
+                changeAddress,
+                codehash: token2.codeHash,
+                genesis: token2.tokenID,
+                rabinApis,
+                note: 'mvcswap.com(swap)',
+              },
+            ],
+            noBroadcast: true,
+          },
+        });
+        if (!tx_res) {
+          throw new Error(_('txs_fail'))
+        }
+        if (tx_res.msg || tx_res.status == 'canceled') {
+          throw new Error(tx_res.msg || 'canceled')
+        }
+        if (tx_res.list) {
+          tx_res = tx_res.list;
+        }
+        if (!tx_res[0] || !tx_res[0].txHex || !tx_res[1] || !tx_res[1].txHex) {
+          throw new Error(_('txs_fail'))
+        }
+        payload = {
+          ...payload,
+          mvcRawTx: tx_res[0].txHex,
+          mvcOutputIndex: 0,
+          amountCheckRawTx: tx_res[1].routeCheckTxHex,
+          token2RawTx: tx_res[1].txHex,
+          token2OutputIndex: 0,
+        }
+      }
+
+
+
+      let swap_data = JSON.stringify(payload);
+
+      swap_data = await gzip(swap_data);
+      let swap_res = {}
+      if (dirForward) {
+        swap_res = await api.token1totoken2(swap_data);
+      } else {
+        swap_res = await api.token2totoken1(swap_data);
+      }
+      if (swap_res.code !== 0) {
+        throw new Error(swap_res.msg)
+      }
+      message.success('success');
+      this.updateData();
+      this.setState({
+        formFinish: true,
+        txid: swap_res.data.txid,
+        txFee: txFee,
+        realSwapAmount: dirForward
+          ? formatSat(swap_res.data.token2Amount, token2.decimal)
+          : formatSat(swap_res.data.token1Amount, token1.decimal),
+      });
+    } catch (err) {
+      message.error(err.message)
     }
-    const { mvcToAddress, tokenToAddress, txFee, requestIndex } = ret.data;
-    const ts_res = await dispatch({
-      type: 'user/transferMvc',
-      payload: {
-        address: mvcToAddress,
-        amount: (BigInt(amount) + BigInt(txFee)).toString(),
-        changeAddress,
-        note: 'mvcswap.com(swap)',
-        noBroadcast: true,
-      },
-    });
-    const payload = {
-      symbol: currentPair,
-      requestIndex: requestIndex,
-      mvcOutputIndex: 0,
-      mvcRawTx: ts_res.list ? ts_res.list[0].txHex : ts_res.txHex,
-    };
-    let swap_data = JSON.stringify(payload);
 
-    swap_data = await gzip(swap_data);
 
-    const ret2 = await api.token1totoken2(swap_data);
+
+
   }
 
 
@@ -232,7 +429,6 @@ export default class Swap extends Component {
         aimAddAmount: 0,
         pairData,
       });
-      console.log(obj, 'obj')
       newAimAddAmount = obj.newAimAddAmount;
       slip = obj.slip;
       slip1 = obj.slip1;
@@ -244,19 +440,24 @@ export default class Swap extends Component {
       slip = 0;
       slip1 = 0;
     }
-    this.handleInputChange(value)
-    this.formRef.current.setFieldsValue({
-      origin_amount: newOriginAddAmount,
-      aim_amount: newAimAddAmount,
-    });
-    this.setState({
-      origin_amount: newOriginAddAmount,
-      aim_amount: newAimAddAmount,
-      fee,
-      slip,
-      slip1,
-      lastMod: 'origin',
-    });
+    if (dirForward) {
+      this.handleToken1InputChange(value, slip, slip1, fee, dirForward)
+    } else {
+      this.handleToken2InputChange(value, slip, slip1, fee, dirForward)
+    }
+
+    // this.formRef.current.setFieldsValue({
+    //   origin_amount: newOriginAddAmount,
+    //   aim_amount: newAimAddAmount,
+    // });
+    // this.setState({
+    //   origin_amount: newOriginAddAmount,
+    //   aim_amount: newAimAddAmount,
+    //   fee,
+    //   slip,
+    //   slip1,
+    //   lastMod: 'origin',
+    // });
   };
 
   changeAimAmount = (e) => {
@@ -289,19 +490,25 @@ export default class Swap extends Component {
       slip = 0;
       slip1 = 0;
     }
+    if (dirForward) {
+      this.handleToken2InputChange(value, slip, slip1, fee, dirForward)
+    } else {
+      this.handleToken1InputChange(value, slip, slip1, fee, dirForward)
+    }
 
-    this.formRef.current.setFieldsValue({
-      origin_amount: newOriginAddAmount,
-      aim_amount: newAimAddAmount,
-    });
-    this.setState({
-      origin_amount: newOriginAddAmount,
-      aim_amount: newAimAddAmount,
-      fee,
-      slip,
-      slip1,
-      lastMod: 'aim',
-    });
+
+    // this.formRef.current.setFieldsValue({
+    //   origin_amount: newOriginAddAmount,
+    //   aim_amount: newAimAddAmount,
+    // });
+    // this.setState({
+    //   origin_amount: newOriginAddAmount,
+    //   aim_amount: newAimAddAmount,
+    //   fee,
+    //   slip,
+    //   slip1,
+    //   lastMod: 'aim',
+    // });
   };
 
   setOriginBalance = () => {
@@ -519,9 +726,10 @@ export default class Swap extends Component {
   };
 
   handleSubmit = async () => {
-    this.handelSubmitV2()
-    return  
-    const { dirForward, origin_amount } = this.state;
+    const { dirForward, origin_amount, routeVersion } = this.state;
+    if (routeVersion === 'v2') {
+      return this.handelSubmitV2()
+    }
     const { dispatch, currentPair, token1, token2, rabinApis, accountInfo } =
       this.props;
     const { userBalance, changeAddress, userAddress } = accountInfo;

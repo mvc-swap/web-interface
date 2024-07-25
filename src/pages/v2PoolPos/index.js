@@ -1,6 +1,6 @@
 import PageContainer from "../../components/PageContainer"
 import { LeftOutlined, QuestionCircleFilled } from '@ant-design/icons';
-import { Card, Statistic, Tooltip, Button, message, Row, Col, Tag } from "antd";
+import { Card, Statistic, Tooltip, Button, message, Row, Col, Tag, Empty } from "antd";
 import { history, useLocation, useParams, useSearchParams } from 'umi'
 import { connect } from 'dva';
 import { gzip } from 'node-gzip';
@@ -27,7 +27,6 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     const tickUpper = query['tickUpper'];
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const { icons, curPair } = poolV2;
-    console.log(curPair, 'curPair')
     const [position, setPosition] = useState();
     const [loading, setLoading] = useState(true);
     const [submiting, setSubmiting] = useState(false);
@@ -51,9 +50,13 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 console.log(find, 'find')
                 if (find) {
                     setPosition(find)
+                } else {
+                    setPosition(undefined)
                 }
             }
             console.log(res)
+        } else {
+            setPosition(undefined)
         }
         setLoading(false)
     }, [userAddress, tickLower, tickUpper])
@@ -62,7 +65,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
     useEffect(() => {
         if (curPair && curPair.pairName !== pairName) {
-            console.log(curPair, 'curPair', pairName)
+           
             dispatch({
                 type: 'poolV2/fetchPairInfo',
                 payload: {
@@ -139,7 +142,10 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     },
                 },
             });
-            const { publicKey, sig } = sign_res;
+            const { publicKey, sig, msg } = sign_res;
+            if (msg) {
+                throw new Error(msg)
+            }
             let payload = {
                 symbol: curPair.pairName,
                 requestIndex,
@@ -253,7 +259,8 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
                     {pairName.toUpperCase().replace('-', '/')}
                 </div>
-                <div className="subfix">{position && position.feeRate || '--'}% Spread Factor</div>
+                <div className="subfix">{position ? position.feeRate + '% Spread Factor' : ''}</div>
+
 
             </div>
             {
@@ -424,6 +431,9 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
                 </Row>
             </div>}
+            {!loading && !position && <Empty style={{ marginTop: 20, color: 'rgb(191, 194, 204)' }} description="Nothing Here..." >
+                <Button type="primary" onClick={()=>{ history.push(`/v2pool/add/${pairName}`)}} style={{ border: 'none', borderRadius: 8, color: '#fff', background: 'linear-gradient(102deg, #72F5F6 4%, #171AFF 94%)' }}> New Position</Button>
+            </Empty>}
 
 
 

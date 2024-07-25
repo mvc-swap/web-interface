@@ -18,7 +18,7 @@ export function sqrtX96ToPrice(sqrtPriceX96: bigint) {
 
 export function priceToSqrtX96(price:number) {
     const res = new BigNumber(Math.sqrt(price)).multipliedBy(new BigNumber('1e20'));
-    console.log(res.toString())
+    // console.log(res.toString())
     const bigTwo = new BigNumber(2);
     const big96 = new BigNumber(96);
     const big1e20 = new BigNumber('1e20');

@@ -1,6 +1,6 @@
 import PageContainer from "../../components/PageContainer"
 import { LeftOutlined, QuestionCircleFilled } from '@ant-design/icons';
-import { Card, Divider, Tooltip, Button, message, Spin, Col, Tag } from "antd";
+import { Card, Divider, Tooltip, Button, message, Spin, Empty, Tag } from "antd";
 import { history, useLocation, useParams } from 'umi'
 import { connect } from 'dva';
 import { gzip } from 'node-gzip';
@@ -51,13 +51,14 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     })
                 }
                 const find = _positions.find((pos) => pos.pairName === pairName && pos.tickUpper == Number(tickUpper) && pos.tickLower == Number(tickLower));
-                console.log(find, 'find')
                 if (find) {
                     setPosition(find)
                 } else {
                     setPosition(undefined)
                 }
             }
+        }else{
+            setPosition(undefined)
         }
         setLoading(false)
     }, [userAddress, tickLower, tickUpper])
@@ -143,6 +144,9 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             console.log(liq_data, 'liq_data')
             const compressData = await gzip(JSON.stringify(liq_data))
             const last = await api.removeLiq({ data: compressData });
+            if (last.code !== 0) {
+                throw new Error(last.msg)
+            }
             const { txHex, scriptHex, satoshis, inputIndex } = last.data;
             let sign_res = await dispatch({
                 type: 'user/signTx',
@@ -155,7 +159,11 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     },
                 },
             });
-            const { publicKey, sig } = sign_res;
+            console.log(sign_res, 'sign_res')
+            const { publicKey, sig, msg } = sign_res;
+            if (msg) {
+                throw new Error(msg)
+            }
             let payload = {
                 symbol: curPair.pairName,
                 requestIndex,
@@ -173,7 +181,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     }
     useEffect(() => {
         if (curPair && curPair.pairName !== pairName) {
-            console.log(curPair, 'curPair', pairName)
+           
             dispatch({
                 type: 'poolV2/fetchPairInfo',
                 payload: {
@@ -200,7 +208,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
         />
     }
 
-    return <PageContainer>
+    return <PageContainer >
         <div className="PositionRemovePage">
             <div className="titleWraper">
                 <div className="actions" onClick={() => { history.goBack() }}><LeftOutlined style={{ color: '#909399' }} /> Back </div>
@@ -283,14 +291,17 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                         </div>
 
 
-                        <Button type="primary" loading={loading} disabled={!position} onClick={onRemove} block size='large' style={{ marginTop: 20, border: 'none', borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(97deg, #72F5F6 4%, #171AFF 94%)' }}>Remove</Button>
+                        <Button type="primary" loading={submitting} disabled={!position} onClick={onRemove} block size='large' style={{ marginTop: 20, border: 'none', borderRadius: 12, color: '#fff', height: 60, background: 'linear-gradient(97deg, #72F5F6 4%, #171AFF 94%)' }}>Remove</Button>
                     </Card>
 
 
 
 
                 </div>}
-                {!position && !loading && <div style={{ textAlign: 'center', padding: 20 }}>No position found</div>}
+                {!loading && !position && <Empty style={{ marginTop: 20, color: 'rgb(191, 194, 204)' }} description="Nothing Here..." >
+                <Button onClick={()=>{ history.push(`/v2pool/add/${pairName}`)}} type="primary" style={{ border: 'none', borderRadius: 8, color: '#fff', background: 'linear-gradient(102deg, #72F5F6 4%, #171AFF 94%)' }}> New Position</Button>
+            </Empty>}
+               
             </Spin>
 
 

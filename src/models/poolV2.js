@@ -45,7 +45,6 @@ export default {
                 return res;
             }
             let priceRet = yield v2API.queryTokenPrices();
-            console.log(priceRet, 'priceRet')
             let prices = {}
             if (priceRet.code === 0) {
                 prices = { ...priceRet.data }
@@ -76,7 +75,6 @@ export default {
                     pairs: _pairs,
                 },
             });
-            console.log('ddddddd')
             yield put({
                 type: 'fetchPairInfo',
                 payload: {

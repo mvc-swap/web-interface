@@ -42,7 +42,6 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     const _tickUpper = query['tickUpper'];
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const { icons, curPair, pairs } = poolV2;
-    console.log(curPair, 'curPair')
     const { pair: pairName } = useParams();
 
     const [minPrice, setMinPrice] = useState(0);
@@ -217,7 +216,6 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                 tickLower: tickLower,
                 tickUpper: tickUpper,
             };
-            console.log(liq_data, 'liq_data')
             const compressData = await gzip(JSON.stringify(liq_data))
             const addLiqRet = await api.addLiq({ data: compressData });
             if (addLiqRet.code !== 0) {
@@ -234,7 +232,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
 
     useEffect(() => {
         if (curPair && curPair.pairName !== pairName) {
-            console.log(curPair, 'curPair', pairName)
+           
             dispatch({
                 type: 'poolV2/fetchPairInfo',
                 payload: {
@@ -261,12 +259,12 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             text: 'Entry an amount',
             type: 'primary',
         }
-        if (token1 > userBalance[curPair.token1.tokenID || 'MVC']) return {
-            text: `Insufficient ${curPair.token1.symbol}  balance`,
+        if (Number(token1) > Number(userBalance[curPair.token1.tokenID || 'MVC'])) return {
+            text: `Insufficient ${curPair.token1.symbol.toUpperCase()}  balance`,
             type: 'danger',
         }
-        if (token2 > userBalance[curPair.token2.tokenID || 'MVC']) return {
-            text: `Insufficient ${curPair.token2.symbol}  balance`,
+        if (Number(token2) > Number(userBalance[curPair.token2.tokenID || 'MVC'])) return {
+            text: `Insufficient ${curPair.token2.symbol.toUpperCase()}  balance`,
             type: 'danger',
         }
         return {
@@ -366,8 +364,14 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                             <div className="tokenCard">
                                 <TokenWrap icon={icons[curPair && curPair.token1.genesisHash] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.precent} />
                                 <div className="tokenInputWrap">
-                                    <div className="bal">{curPair && userBalance[curPair && curPair.token1.tokenID || 'MVC'] || 0} {curPair && curPair.token1.symbol}</div>
-                                    <InputNumber className="inputNumber" onBlur={(e) => { handleToken1Change(e.target.value) }} value={token1} bordered={false} controls={false} precision={curPair && curPair.token1.decimal}></InputNumber>
+                                    <div className="bal">{curPair && userBalance[curPair && curPair.token1.tokenID || 'MVC'] || 0} {curPair && curPair.token1.symbol.toUpperCase()}</div>
+                                    <div className="inputNumber">
+                                    <InputNumber max={curPair && userBalance[curPair && curPair.token1.tokenID || 'MVC'] || 0} onBlur={(e) => { handleToken1Change(e.target.value) }} value={token1} bordered={false} controls={false} precision={curPair && curPair.token1.decimal}></InputNumber>
+                                        <div className="usd">
+                                            <NumberFormat value={Number(token1) * curPair.token1.price} precision={2} prefix="~$" decimal={curPair && curPair.token1.decimal} />
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </Card>
@@ -378,9 +382,9 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                             <div className="tokenCard">
                                 <TokenWrap icon={icons[curPair && curPair.token2.genesisHash] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.precent} />
                                 <div className="tokenInputWrap">
-                                    <div className="bal">{userBalance[curPair && curPair.token2.tokenID] || 0} {curPair && curPair.token2.symbol}</div>
+                                    <div className="bal">{userBalance[curPair && curPair.token2.tokenID] || 0} {curPair && curPair.token2.symbol.toUpperCase()}</div>
                                     <div className="inputNumber">
-                                        <InputNumber value={token2} bordered={false} controls={false} onChange={handleToken2Change} precision={curPair && curPair.token2.decimal}></InputNumber>
+                                        <InputNumber max={userBalance[curPair && curPair.token2.tokenID] || 0} value={token2} bordered={false} controls={false} onChange={handleToken2Change} precision={curPair && curPair.token2.decimal}></InputNumber>
                                         <div className="usd">
                                             <NumberFormat value={Number(token2) * curPair.token2.price} precision={2} prefix="~$" decimal={curPair && curPair.token2.decimal} />
                                         </div>

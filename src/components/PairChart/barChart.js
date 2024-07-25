@@ -3,7 +3,7 @@ import { Spin } from 'antd';
 import { Bar } from '@ant-design/plots';
 import api from '../../api/poolv2';
 const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
-    console.log(symbol, tickSpacing, tickLower, tickUpper, priceTick, 'symbol, tickSpacing, tickLower, tickUpper, priceTick')
+    
     const [loading, setLoading] = useState(true);
     const [distribution, setDistribution] = useState({});
     const fetchData = useCallback(async () => {
@@ -43,7 +43,6 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
         }
         let _tickLowerIndex, _tickUpperIndex, _priceTickIndex;
         const _data = data.filter((item) => Number(item.tick) % (10 * tickSpacing) === 0).sort((a, b) => a.tick - b.tick)
-        console.log(_data, '_data')
         if (priceTick !== undefined && tickLower !== undefined && tickUpper !== undefined) {
             _data.forEach((item, index) => {
                 if (_tickLowerIndex === undefined) {
@@ -75,7 +74,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
                 }
             });
         }
-        console.log(_tickLowerIndex, _tickUpperIndex, _priceTickIndex, '_tickLowerIndex, _tickUpperIndex, _priceTickIndex')
+        
 
 
         const _config = {
