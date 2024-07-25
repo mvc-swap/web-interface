@@ -390,9 +390,9 @@ export default () => {
                 invertScale: true,
             },
         });
-        chart.priceScale().applyOptions({
-            borderColor: 'red'
-        })
+        // chart.priceScale().applyOptions({
+        //     borderColor: 'red'
+        // })
         try {
 
             const items = curInfo.priceData;

@@ -70,9 +70,9 @@ const TradingView = ({ symbol1, symbol2 }) => {
                 invertScale: true,
             },
         });
-        chart.priceScale().applyOptions({
-            borderColor: 'red'
-        })
+        // chart.priceScale().applyOptions({
+        //     borderColor: 'red'
+        // })
         try {
             const colname =
                 symbol1.toLowerCase() +

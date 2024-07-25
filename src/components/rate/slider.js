@@ -37,7 +37,7 @@ export default function CustomSlider(props) {
             onClick={() => changeRate(item.value)}
             key={item.value}
           >
-            <span className={item.value === percent && styles.rate_active}>
+            <span className={item.value === percent ? styles.rate_active:''}>
               {item.label}
             </span>
           </div>

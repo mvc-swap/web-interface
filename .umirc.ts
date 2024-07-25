@@ -120,4 +120,5 @@ export default {
       },
     });
   },
+  webpack5: {},
 };
