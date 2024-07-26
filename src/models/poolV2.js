@@ -6,7 +6,7 @@ export default {
     state: {
         pairs: [],
         curPair: undefined,
-        icons: {}
+        icons: {},
     },
     subscriptions: {
         setup({ dispatch, history }) {

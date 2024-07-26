@@ -5,6 +5,7 @@ import debug from 'debug';
 import { gzip } from 'node-gzip';
 import BigNumber from 'bignumber.js';
 import { Form, Input, message, Spin } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
 import EventBus from 'common/eventBus';
 import { slippage_data, MINAMOUNT } from 'common/config';
 import { formatAmount, formatSat, jc, formatTok } from 'common/utils';
@@ -14,6 +15,8 @@ import FormatNumber from 'components/formatNumber';
 import Loading from 'components/loading';
 import { Arrow2 } from 'components/ui';
 import { TokenInput } from 'components/tokenInput';
+import TokenLogo from 'components/tokenicon';
+import TokenPair from 'components/tokenPair';
 import SelectToken from '../selectToken';
 import SwapResult from './result';
 import Btn from './btn';
@@ -575,6 +578,7 @@ export default class Swap extends Component {
       lastMod,
       origin_amount,
       aim_amount,
+      routeVersion
     } = this.state;
     const origin_token = dirForward ? token1 : token2;
     const aim_token = dirForward ? token2 : token1;
@@ -697,6 +701,39 @@ export default class Swap extends Component {
                 <div className={styles.value}>
                   <FormatNumber value={fee} suffix={symbol1} />
                 </div>
+              </div>
+              <div className={styles.key_value}>
+                <div className={styles.key}>Route token</div>
+
+              </div>
+              <div style={{ borderRadius: 8, background: '#F5F7FA', padding: '10px 15px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ position: 'absolute', zIndex: 0, borderTop: '1px dashed #F5F7FA', background: 'linear-gradient(90deg, #72F5F6 4%, #171AFF 95%)', backgroundOrigin: 'border-box', left: 47, right: 47 }}>
+                  <div style={{position: 'absolute',right:-4,top:'-13px'}}>
+                    <RightOutlined style={{fontSize:8,color:'#171AFF',lineHeight:8}} />
+                  </div>
+
+                </div>
+                <TokenLogo
+                  name={dirForward ? token1.symbol : token2.symbol}
+                  genesisID={dirForward ? token1.tokenID || 'mvc' : token2.tokenID || 'mvc'}
+                  size={24}
+                />
+                <div style={{ background: '#fff', zIndex: 2, borderRadius: 6, padding: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+                  <TokenPair
+                    symbol1={token1.symbol}
+                    genesisID1={token1.tokenID || 'mvc'}
+                    symbol2={token2.symbol}
+                    genesisID2={token2.tokenID}
+                    size={24}
+                  />
+                  <div style={{ color: '#606266', fontSize: 12, width: 20 }}>{routeVersion || 'v1'}</div>
+                </div>
+
+                <TokenLogo
+                  name={!dirForward ? token1.symbol : token2.symbol}
+                  genesisID={!dirForward ? token1.tokenID || 'mvc' : token2.tokenID}
+                  size={24}
+                />
               </div>
             </div>
 

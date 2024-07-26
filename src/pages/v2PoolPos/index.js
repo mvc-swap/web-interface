@@ -39,9 +39,12 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
                     pairPos.forEach((pos) => {
                         //TODO USDT 
-                        const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
-                        const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
-                        console.log(minPrice, maxPrice)
+                        let minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
+                        let maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
+                        if(pairName === 'space-usdt'){
+                            minPrice=(1/Number(minPrice)).toFixed(4);
+                            maxPrice=(1/Number(maxPrice)).toFixed(4);
+                        }
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
                         _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
                     })
@@ -207,7 +210,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     }, [position, curPair])
 
     const CurrentAmount = useMemo(() => {
-        if (!curPair) {
+        if (!curPair||!position) {
             return {
                 feeUsd: 0,
                 token1Fee: 0,
@@ -216,8 +219,8 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 token2Precent: 0
             }
         } else {
-            const token1FeeAmount = formatSat(curPair.token1Amount, curPair.token1.decimal)
-            const token2FeeAmount = formatSat(curPair.token2Amount, curPair.token2.decimal)
+            const token1FeeAmount = formatSat(position.token1Amount, curPair.token1.decimal)
+            const token2FeeAmount = formatSat(position.token2Amount, curPair.token2.decimal)
             const token1Fee = Number(token1FeeAmount) * curPair.token1.price;
             const token2Fee = Number(token2FeeAmount) * curPair.token2.price;
             const totalFee = token1Fee + token2Fee;
@@ -233,14 +236,14 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             const token1Precent = (token1Fee / totalFee) * 100;
             const token2Precent = (token2Fee / totalFee) * 100;
             return {
-                token1Fee: curPair.token1Amount,
-                token2Fee: curPair.token2Amount,
+                token1Fee: position.token1Amount,
+                token2Fee: position.token2Amount,
                 token1Precent,
                 token2Precent,
                 feeUsd: totalFee
             }
         }
-    }, [curPair])
+    }, [position,curPair])
 
     return <PageContainer spining={loading}>
         <div className="PositionDetailPage">
@@ -401,14 +404,14 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
                         </Card>
                     </Col>
-                    {position && position.rewardAmount && <Col span={24}>
+                    {curPair&&position && position.rewardAmount && <Col span={24}>
                         <Card style={{ borderRadius: 12 }}>
                             <div className="reward">
-                                <div>Reward MSP <Tooltip title="The trading pairs added to the liquidity pool will generate reward benefits after 7 days."><QuestionCircleFilled /></Tooltip></div>
+                                <div>Reward  <Tooltip title="The trading pairs added to the liquidity pool will generate reward benefits after 7 days."><QuestionCircleFilled /></Tooltip></div>
                                 <div className="value">
-                                    {formatSat(position.rewardAmount)} SPACE  <TokenLogo
-                                        name={'space'}
-                                        url={icons['mvc'] || ''}
+                                    {formatSat(position.rewardAmount,curPair.reward.token.decimal)} {curPair.reward.token.symbol.toUpperCase()}  <TokenLogo
+                                        name={curPair.reward.token.symbol}
+                                        url={icons[curPair.reward.token.symbol] || ''}
                                         size={32}
                                     />
                                 </div>

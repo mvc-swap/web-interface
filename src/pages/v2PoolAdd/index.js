@@ -8,7 +8,7 @@ import TokenLogo from 'components/tokenicon';
 import NumberFormat from 'components/NumberFormat';
 import './index.less'
 import PairChart from "../../components/PairChart";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState,useCallback } from "react";
 import api from '../../api/poolv2';
 import { formatAmount, formatSat, formatTok } from 'common/utils';
 import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
@@ -51,10 +51,49 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     const [token1, setToken1] = useState(0);
     const [token2, setToken2] = useState(0);
     const [liquidityAmount, setLiquidityAmount] = useState(0);
+    const [position, setPosition] = useState();
+    const [loading, setLoading] = useState(true);
+    const getUserPoolV2s = useCallback(async () => {
+        if (userAddress && _tickLower && _tickUpper) {
+            const res = await api.queryUserPositions(userAddress);
+            if (res && res.data) {
+                let _positions = [];
+                for (let pairName in res.data) {
+                    const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
+                    pairPos.forEach((pos) => {
+                        //TODO USDT 
+                        let minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
+                        let maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
+                        if(pairName === 'space-usdt'){
+                            minPrice=(1/Number(minPrice)).toFixed(4);
+                            maxPrice=(1/Number(maxPrice)).toFixed(4);
+                        }
+                        const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
+                        _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
+                    })
+                }
+                const find = _positions.find((pos) => pos.pairName === pairName && pos.tickUpper == Number(tickUpper) && pos.tickLower == Number(tickLower));
+                console.log(find, 'find')
+                if (find) {
+                    setPosition(find)
+                } else {
+                    setPosition(undefined)
+                }
+            }
+            console.log(res)
+        } else {
+            setPosition(undefined)
+        }
+        setLoading(false)
+    }, [userAddress, _tickLower, _tickUpper])
+
+    useEffect(() => {
+        getUserPoolV2s()
+    }, [getUserPoolV2s])
 
     const handleToken1Change = (value) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing)) return;
-        console.log(value,tickLower,tickUpper)
+        console.log(value, tickLower, tickUpper)
         const { sqrtPriceX96, liquidity, tick, token1: { decimal }, token2: { decimal: decimal2 } } = poolV2.curPair
         const sqrtPrice1 = getSqrtRatioAtTick(tickLower)
         const sqrtPrice2 = getSqrtRatioAtTick(tickUpper)
@@ -96,12 +135,12 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             let _lowTick = getTickAtSqrtRatio(BigInt(_lowSX96.toFixed(0)));
             _lowTick = Math.floor(_lowTick / tickSpacing) * tickSpacing;
             setTickLower(_lowTick);
-           
+
             setMinPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
-            setTimeout(()=>{
+            setTimeout(() => {
                 handleToken1Change(token1)
-            },100)
-           
+            }, 100)
+
         } catch (err) {
             message.error(err.message || 'Invalid price')
         }
@@ -117,8 +156,8 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             _highTick = Math.ceil(_highTick / tickSpacing) * tickSpacing;
             setTickUpper(_highTick);
             setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
-            setTimeout(()=>{ handleToken1Change(token1)},100)
-           
+            setTimeout(() => { handleToken1Change(token1) }, 100)
+
         } catch (err) {
             message.error(err.message || 'Invalid price')
         }
@@ -333,7 +372,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
 
                 </PairChart>
                 {
-                    _tickLower && _tickUpper && <>
+                    position && _tickLower && _tickUpper && <>
                         <div className="FormItemTitle" >Current amount</div>
                         <Row gutter={[20, 20]} >
                             <Col xs={24} md={12}>
@@ -341,7 +380,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                                     <div className="tokenCard">
                                         <TokenWrap icon={icons[curPair && curPair.token1.genesisHash] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.rate} />
                                         <div className="poolAmount">
-                                            <NumberFormat value={curPair.token1Amount} isBig decimal={curPair.token1.decimal} />
+                                            <NumberFormat value={position.token1Amount} isBig decimal={curPair.token1.decimal} />
                                         </div>
 
                                     </div>
@@ -354,7 +393,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                                     <div className="tokenCard">
                                         <TokenWrap icon={icons[curPair && curPair.token2.genesisHash] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.rate} />
                                         <div className="poolAmount">
-                                            <NumberFormat value={curPair.token2Amount} isBig decimal={curPair.token2.decimal} />
+                                            <NumberFormat value={position.token2Amount} isBig decimal={curPair.token2.decimal} />
                                         </div>
                                     </div>
 
