@@ -16,21 +16,21 @@ function reduceArray(arr) {
     const n = arr.length;
     const targetCount = 100;
     const result = [];
-    
+
     // 添加第一个元素
     result.push(arr[0]);
-    
+
     // 计算中间部分的采样间隔
     const middleStep = (n - 2) / (targetCount - 2);
-    
+
     for (let i = 1; i < targetCount - 1; i++) {
         const index = Math.floor(i * middleStep);
         result.push(arr[index]);
     }
-    
+
     // 添加最后一个元素
     result.push(arr[n - 1]);
-    
+
     return result;
 }
 const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPair }) => {
@@ -88,7 +88,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
         }
         _data = _data.filter((item) => Number(item.tick) <= start && Number(item.tick) >= end)
         // console.log(_data.length,'_data')
-        if(_data.length>100){
+        if (_data.length > 100) {
             _data = reduceArray(_data)
         }
 
@@ -179,7 +179,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                     type: 'lineX',
                     xField: _tickLowerIndex.value,
                     style: {
-                        stroke: '#FF4D4D',
+                        stroke: '#259F2F',
                         lineWidth: 1,
                     },
                 },
@@ -198,7 +198,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                                     cy: y,
                                     lineWidth: 1,
                                     r: 4,
-                                    stroke: '#FF4D4D',
+                                    stroke: '#259F2F',
                                     opacity: 0.3,
                                 },
                             });
@@ -208,7 +208,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                                     cy: y,
                                     lineWidth: 3,
                                     r: 1.5,
-                                    stroke: '#FF4D4D',
+                                    stroke: '#259F2F',
                                     opacity: 1,
                                 },
                             });
@@ -255,7 +255,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                     type: 'lineX',
                     xField: _tickUpperIndex.value,
                     style: {
-                        stroke: '#259F2F',
+                        stroke: '#FF4D4D',
                         lineWidth: 1
                     },
                 },
@@ -273,7 +273,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                                     cy: y,
                                     lineWidth: 1,
                                     r: 4,
-                                    stroke: '#259F2F',
+                                    stroke: '#FF4D4D',
                                     opacity: 0.3,
                                 },
                             });
@@ -283,7 +283,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                                     cy: y,
                                     lineWidth: 3,
                                     r: 1.5,
-                                    stroke: '#259F2F',
+                                    stroke: '#FF4D4D',
                                     opacity: 1,
                                 },
                             });
