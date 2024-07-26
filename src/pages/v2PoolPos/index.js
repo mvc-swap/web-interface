@@ -39,9 +39,12 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
                     pairPos.forEach((pos) => {
                         //TODO USDT 
-                        const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
-                        const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
-                        console.log(minPrice, maxPrice)
+                        let minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
+                        let maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
+                        if(pairName === 'space-usdt'){
+                            minPrice=(1/Number(minPrice)).toFixed(4);
+                            maxPrice=(1/Number(maxPrice)).toFixed(4);
+                        }
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
                         _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
                     })
