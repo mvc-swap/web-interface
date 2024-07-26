@@ -85,7 +85,7 @@ export default ({ children, curPair, icons = {}, pairs = [], tickLower, tickUppe
             </Col>
             <Col xs={24} md={12}>
                 <div className='barChartWrap'>
-                    <BarChart symbol={curPair.pairName} tickSpacing={curPair.tickSpacing} tickLower={tickLower} tickUpper={tickUpper} priceTick={priceTicker} />
+                    <BarChart symbol={curPair.pairName} tickSpacing={curPair.tickSpacing} tickLower={tickLower} tickUpper={tickUpper} priceTick={priceTicker} curPair={curPair} />
                     {children}
                 </div>
             </Col>

@@ -2,8 +2,39 @@ import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import { Spin } from 'antd';
 import { Bar } from '@ant-design/plots';
 import api from '../../api/poolv2';
-const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
+import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
+import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
+const calcPrice = (curPair, tick) => {
+    if (curPair) {
+        const { sqrtPriceX96, tickSpacing } = curPair;
+        const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(tick))).toFixed(4);
+        return minPrice
+    }
+    return 0
+}
+function reduceArray(arr) {
+    const n = arr.length;
+    const targetCount = 100;
+    const result = [];
     
+    // 添加第一个元素
+    result.push(arr[0]);
+    
+    // 计算中间部分的采样间隔
+    const middleStep = (n - 2) / (targetCount - 2);
+    
+    for (let i = 1; i < targetCount - 1; i++) {
+        const index = Math.floor(i * middleStep);
+        result.push(arr[index]);
+    }
+    
+    // 添加最后一个元素
+    result.push(arr[n - 1]);
+    
+    return result;
+}
+const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPair }) => {
+    console.log(symbol, tickSpacing, tickLower, tickUpper, priceTick)
     const [loading, setLoading] = useState(true);
     const [distribution, setDistribution] = useState({});
     const fetchData = useCallback(async () => {
@@ -41,12 +72,32 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
         for (const key in distribution) {
             data.push({ tick: key, value: distribution[key] })
         }
+        let _data = data.filter((item) => Number(item.tick) % (1 * tickSpacing) === 0).sort((a, b) => b.tick - a.tick);
+        // console.log(_data)
+        if (_data.length === 0) return {}
+        const upperDvalue = Number(tickUpper) - Number(priceTick);
+        const lowerDvalue = Number(priceTick) - Number(tickLower);
+        let start = _data[0].tick, end = _data[_data.length - 1].tick;
+        // console.log(start, end)
+        if (upperDvalue > lowerDvalue) {
+            start = tickUpper + upperDvalue / 5;
+            end = Number(priceTick) - upperDvalue - upperDvalue / 5
+        } else {
+            end = tickLower - lowerDvalue / 5;
+            start = Number(priceTick) + lowerDvalue + lowerDvalue / 5
+        }
+        _data = _data.filter((item) => Number(item.tick) <= start && Number(item.tick) >= end)
+        // console.log(_data.length,'_data')
+        if(_data.length>100){
+            _data = reduceArray(_data)
+        }
+
         let _tickLowerIndex, _tickUpperIndex, _priceTickIndex;
-        const _data = data.filter((item) => Number(item.tick) % (10 * tickSpacing) === 0).sort((a, b) => a.tick - b.tick)
+
         if (priceTick !== undefined && tickLower !== undefined && tickUpper !== undefined) {
             _data.forEach((item, index) => {
                 if (_tickLowerIndex === undefined) {
-                    if (Number(item.tick) >= tickLower) {
+                    if (Number(item.tick) <= tickLower) {
                         _tickLowerIndex = {
                             index,
                             value: item.tick,
@@ -55,7 +106,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
                     }
                 }
                 if (_tickUpperIndex === undefined) {
-                    if (Number(item.tick) >= tickUpper) {
+                    if (Number(item.tick) <= tickUpper) {
                         _tickUpperIndex = {
                             index,
                             value: item.tick,
@@ -64,7 +115,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
                     }
                 }
                 if (_priceTickIndex === undefined) {
-                    if (Number(item.tick) >= priceTick) {
+                    if (Number(item.tick) <= priceTick) {
                         _priceTickIndex = {
                             index,
                             value: item.tick,
@@ -100,7 +151,15 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
             style: {
                 fill: '#DDDFFF',
             },
-            interaction: { tooltip: true },
+            interaction: {
+                tooltip: {
+                    render: (event, { title, items }) => {
+                        const price = calcPrice(curPair, title)
+                        return <>Tick:{title} Price:{price}</>
+                    }
+                },
+
+            },
             slider: { y: false, x: false },
             axis: {
                 x: {
@@ -130,6 +189,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
                         x: '100%',
                         y: _tickLowerIndex.percent + '%',
                         render: ({ x, y }, context, d) => {
+                            console.log(x, y, d)
                             const { document } = context;
                             const g = document.createElement('g', {});
                             const c1 = document.createElement('circle', {
@@ -244,7 +304,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick }) => {
         return _config
     }, [distribution, tickLower, tickUpper, priceTick]);
     return <Spin spinning={loading}>
-        <div style={{ width: '150px', height: '224px' }}>
+        <div style={{ width: '190px', height: '224px' }}>
 
             <Bar {...config} />
 
