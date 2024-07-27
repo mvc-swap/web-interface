@@ -108,7 +108,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                 <div className='wrap'>
                     <div className="positionContainer">
                         <div className="leftPosition">Your Positions</div>
-                        <Button type='link' disabled={!curPair} icon={<PlusCircleFilled style={{ color: curPair ? '#1e2bff' : 'rgba(0, 0, 0, 0.25)' }} />} onClick={() => { curPair && history.push(`/v2pool/add/${curPair.pairName}`) }}> New Position</Button>
+                        <Button type='link' style={{color: curPair ? '#1e2bff' : 'rgba(0, 0, 0, 0.25)'}} disabled={!curPair} icon={<PlusCircleFilled style={{ color: curPair ? '#1e2bff' : 'rgba(0, 0, 0, 0.25)' }} />} onClick={() => { curPair && history.push(`/v2pool/add/${curPair.pairName}`) }}> New Position</Button>
                     </div>
                     <Spin spinning={loading}>
                         <div className="positions-list">
