@@ -163,7 +163,18 @@ export default class Swap extends Component {
 
   handleToken1InputChange = async (token1Amount, slip, slip1, fee, dirForward) => {
     const { token1, token2, pairData } = this.props;
+    if (isNaN(Number(token1Amount)) || token1Amount[token1Amount.length - 1] === '.' || Number(formatTok(token1Amount, token1.decimal)) === 0) {
+      this.setState({
+        lastMod: !dirForward ? 'aim' : 'origin',
+        slip,
+        slip1,
+        fee
+      })
+      return
+    }
+
     const currentRequestCount = ++this.requestCounter;
+
     try {
       const params = {
         tokenIn: dirForward ? token1.symbol : token2.symbol,
@@ -198,6 +209,15 @@ export default class Swap extends Component {
 
   handleToken2InputChange = async (token2Amount, slip, slip1, fee, dirForward) => {
     const { token1, token2, pairData } = this.props;
+    if (isNaN(Number(token2Amount)) || token2Amount[token2Amount.length - 1] === '.' || Number(formatTok(token2Amount, token2.decimal)) === 0) {
+      this.setState({
+        lastMod: dirForward ? 'aim' : 'origin',
+        slip,
+        slip1,
+        fee
+      })
+      return
+    }
     const currentRequestCount = ++this.requestCounter;
     try {
       const params = {
@@ -708,8 +728,8 @@ export default class Swap extends Component {
               </div>
               <div style={{ borderRadius: 8, background: '#F5F7FA', padding: '10px 15px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ position: 'absolute', zIndex: 0, borderTop: '1px dashed #F5F7FA', background: 'linear-gradient(90deg, #72F5F6 4%, #171AFF 95%)', backgroundOrigin: 'border-box', left: 47, right: 47 }}>
-                  <div style={{position: 'absolute',right:-4,top:'-13px'}}>
-                    <RightOutlined style={{fontSize:8,color:'#171AFF',lineHeight:8}} />
+                  <div style={{ position: 'absolute', right: -4, top: '-13px' }}>
+                    <RightOutlined style={{ fontSize: 8, color: '#171AFF', lineHeight: 8 }} />
                   </div>
 
                 </div>
