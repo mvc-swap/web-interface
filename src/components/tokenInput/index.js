@@ -28,6 +28,8 @@ export function TokenInput(props) {
           className={isLackBalance ? styles.input_error : styles.input}
           onChange={changeAmount}
           disabled={swapToken1Amount === '0' || swapToken2Amount === '0'}
+          bordered={false}
+         
         />
       </FormItem>
     </div>

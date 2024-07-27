@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import Notice from 'components/notice';
-import { Tag, Spin, Card } from "antd";
+import { Tag, Spin, Card, Button } from "antd";
 import {
     FileTextOutlined
 } from '@ant-design/icons';
@@ -64,12 +64,12 @@ const PoolV2 = ({ user, poolV2 }) => {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
                     pairPos.forEach((pos) => {
                         //TODO USDT 
-                       
+
                         let minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
                         let maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
-                        if(pairName === 'space-usdt'){
-                            minPrice=(1/Number(minPrice)).toFixed(4);
-                            maxPrice=(1/Number(maxPrice)).toFixed(4);
+                        if (pairName === 'space-usdt') {
+                            minPrice = (1 / Number(minPrice)).toFixed(4);
+                            maxPrice = (1 / Number(maxPrice)).toFixed(4);
                         }
 
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
@@ -108,7 +108,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                 <div className='wrap'>
                     <div className="positionContainer">
                         <div className="leftPosition">Your Positions</div>
-                        <div className="rightPosition" onClick={() => { history.push(`/v2pool/add/${curPair.pairName}`) }}><PlusCircleFilled style={{ color: '#1e2bff' }} /> New Position</div>
+                        <Button type='link' disabled={!curPair} icon={<PlusCircleFilled style={{ color: curPair ? '#1e2bff' : 'rgba(0, 0, 0, 0.25)' }} />} onClick={() => { curPair && history.push(`/v2pool/add/${curPair.pairName}`) }}> New Position</Button>
                     </div>
                     <Spin spinning={loading}>
                         <div className="positions-list">
