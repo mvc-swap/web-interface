@@ -16,6 +16,7 @@ import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
 import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
 import { mint } from '../../utils/swapAlgoV3';
 import { getMaxLiquidityForAmounts, getAmount0ForLiquidity, getAmount1ForLiquidity, getLiquidityForAmount0, getLiquidityForAmount1 } from '../../utils/liquidityAmounts'
+import { isUSDT } from "../../common/utils";
 
 
 
@@ -26,7 +27,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     const tickLower = query['tickLower'];
     const tickUpper = query['tickUpper'];
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
-    const { icons, curPair } = poolV2;
+    const { icons, curPair, pairs } = poolV2;
     const [position, setPosition] = useState();
     const [loading, setLoading] = useState(true);
     const [submiting, setSubmiting] = useState(false);
@@ -37,20 +38,26 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 let _positions = [];
                 for (let pairName in res.data) {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
+                    const pair = pairs.find(pair => pair.pairName === pairName);
+                    const isUSDTPair = pair && isUSDT(pair.token1.genesisTxid, pair.token2.genesisTxid)
                     pairPos.forEach((pos) => {
-                        //TODO USDT 
                         let minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
                         let maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
-                        if(pairName === 'space-usdt'){
-                            minPrice=(1/Number(minPrice)).toFixed(4);
-                            maxPrice=(1/Number(maxPrice)).toFixed(4);
+                        if (isUSDTPair) {
+                            let tmp = Number(minPrice)
+                            minPrice = (1 / Number(maxPrice)).toFixed(4);
+                            maxPrice = (1 / tmp).toFixed(4);
+                        }
+                        const parts = pairName.toUpperCase().replace('-', '/').split('/');
+                        let displayPairName = `${parts[1]}/${parts[0]}`
+                        if (isUSDTPair) {
+                            displayPairName = `${parts[0]}/${parts[1]}`
                         }
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
-                        _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
+                        _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, displayPairName, feeRate, ...pos })
                     })
                 }
                 const find = _positions.find((pos) => pos.pairName === pairName && pos.tickUpper == Number(tickUpper) && pos.tickLower == Number(tickLower));
-                console.log(find, 'find')
                 if (find) {
                     setPosition(find)
                 } else {
@@ -62,13 +69,13 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             setPosition(undefined)
         }
         setLoading(false)
-    }, [userAddress, tickLower, tickUpper])
+    }, [userAddress, tickLower, tickUpper, pairs])
 
     useEffect(() => { getUserPoolV2s() }, [getUserPoolV2s])
 
     useEffect(() => {
         if (curPair && curPair.pairName !== pairName) {
-           
+
             dispatch({
                 type: 'poolV2/fetchPairInfo',
                 payload: {
@@ -210,7 +217,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
     }, [position, curPair])
 
     const CurrentAmount = useMemo(() => {
-        if (!curPair||!position) {
+        if (!curPair || !position) {
             return {
                 feeUsd: 0,
                 token1Fee: 0,
@@ -243,7 +250,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 feeUsd: totalFee
             }
         }
-    }, [position,curPair])
+    }, [position, curPair])
 
     return <PageContainer spining={loading}>
         <div className="PositionDetailPage">
@@ -260,7 +267,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                         size={32}
                     />
 
-                    {pairName.toUpperCase().replace('-', '/')}
+                    {position && position.displayPairName}
                 </div>
                 <div className="subfix">{position ? position.feeRate + '% Spread Factor' : ''}</div>
 
@@ -268,9 +275,9 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
             </div>
             {
                 position && <div className="rangeWrap">
-                    {!position.inRange ? <Tag  color="#FFEED9" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    {!position.inRange ? <Tag color="#FFEED9" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                         <span style={{ display: 'block', width: 6, height: 6, background: '#FF8F1F', borderRadius: '50%' }}></span> OUT OF RANGE
-                    </Tag> : <Tag  color="#DEF9F0" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    </Tag> : <Tag color="#DEF9F0" style={{ color: '#303133', fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                         <span style={{ display: 'block', width: 6, height: 6, background: '#00B578', borderRadius: '50%' }}></span> IN RANGE
                     </Tag>}
                 </div>
@@ -404,12 +411,12 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
                         </Card>
                     </Col>
-                    {curPair&&position && position.rewardAmount && <Col span={24}>
+                    {curPair && position && position.rewardAmount && <Col span={24}>
                         <Card style={{ borderRadius: 12 }}>
                             <div className="reward">
                                 <div>Reward  <Tooltip title="The trading pairs added to the liquidity pool will generate reward benefits after 7 days."><QuestionCircleFilled /></Tooltip></div>
                                 <div className="value">
-                                    {formatSat(position.rewardAmount,curPair.reward.token.decimal)} {curPair.reward.token.symbol.toUpperCase()}  <TokenLogo
+                                    {formatSat(position.rewardAmount, curPair.reward.token.decimal)} {curPair.reward.token.symbol.toUpperCase()}  <TokenLogo
                                         name={curPair.reward.token.symbol}
                                         url={icons[curPair.reward.token.symbol] || ''}
                                         size={32}
@@ -435,7 +442,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                 </Row>
             </div>}
             {!loading && !position && <Empty style={{ marginTop: 20, color: 'rgb(191, 194, 204)' }} description="Nothing Here..." >
-                <Button type="primary" onClick={()=>{ history.push(`/v2pool/add/${pairName}`)}} style={{ border: 'none', borderRadius: 8, color: '#fff', background: 'linear-gradient(102deg, #72F5F6 4%, #171AFF 94%)' }}> New Position</Button>
+                <Button type="primary" onClick={() => { history.push(`/v2pool/add/${pairName}`) }} style={{ border: 'none', borderRadius: 8, color: '#fff', background: 'linear-gradient(102deg, #72F5F6 4%, #171AFF 94%)' }}> New Position</Button>
             </Empty>}
 
 

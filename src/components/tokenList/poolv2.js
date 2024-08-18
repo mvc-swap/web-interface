@@ -70,7 +70,7 @@ export default class PairList extends Component {
                 <Search
                     changeShowList={this.changeShowList}
                     allPairs={this.props.showList}
-                    type={type}
+                    type={'pair'}
                 />
                 <Spin spinning={loading}>
                     <Pair showList={showList} currentPair={this.props.currentPair} />

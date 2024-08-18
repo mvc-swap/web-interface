@@ -22,9 +22,43 @@ export default {
     darkMode: darkMode || 'sun',
   },
 
-  subscriptions: {},
+  subscriptions: {
+    setup({ dispatch, history }) {
+      setTimeout(() => {
+        dispatch({
+          type: 'init',
+        });
+      },1500)
+    }
+  },
 
   effects: {
+    *init({ payload }, { call, put, select }) {
+      const type = localStorage.getItem(MVCSWAP_LAST_WALLET_TYPE);
+      if (type === '4' && window.metaidwallet) {
+        const isConnected = yield window.metaidwallet.isConnected();
+        console.log('isConnected:', isConnected);
+        if (isConnected === true) {
+          yield put({
+            type: 'loadingUserData',
+            payload: {
+              type: parseInt(type),
+            },
+          });
+          const _wallet = Wallet({ type });
+          if (_wallet && _wallet.registerEvent) {
+            yield _wallet.registerEvent(
+              () => {
+                put({
+                  type: 'changeAccount',
+                });
+              },
+            );
+          }
+        }
+
+      }
+    },
     *loadingUserData({ payload }, { call, put, select }) {
       console.log('runing........');
       let { type } = payload;

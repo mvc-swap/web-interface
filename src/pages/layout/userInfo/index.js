@@ -92,7 +92,7 @@ export default class UserInfo extends Component {
     }
   };
 
-  initWallet = () => {};
+  initWallet = () => { };
 
   fetchPairData = async () => {
     const _self = this;

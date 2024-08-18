@@ -16,7 +16,8 @@ import { sqrtX96ToPrice } from '../../utils/helper';
 import { getSqrtRatioAtTick } from '../../utils/tickMath';
 import { formatSat } from 'common/utils';
 import arrow from '../../assets/arrow.svg'
-const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, tickLower, tickUpper, icons }) => (
+import { isUSDT } from '../../common/utils';
+const PositionCard = ({ pairName, displayPairName, feeRate, inRange, minPrice, maxPrice, tickLower, tickUpper, icons }) => (
     <div className="position-card" onClick={() => { history.push(`/v2pool/pos/${pairName}?tickLower=${tickLower}&tickUpper=${tickUpper}`) }}>
         <div className='cardLeft'>
             <TokenPair
@@ -30,7 +31,7 @@ const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, tickLowe
             />
             <div className='info'>
                 <div className='titleWrap'>
-                    <div className='pairName'>{pairName.replace('-', '/').toUpperCase()}</div>
+                    <div className='pairName'>{displayPairName}</div>
                     <div className='feeRate'>{feeRate}% Spread Factor</div>
                 </div>
                 <div>
@@ -50,30 +51,36 @@ const PositionCard = ({ pairName, feeRate, inRange, minPrice, maxPrice, tickLowe
         </div>
     </div>
 );
-const PoolV2 = ({ user, poolV2 }) => {
+const PoolV2 = ({ user, poolV2, dispatch }) => {
     const { pairs, icons, curPair } = poolV2
     const [positions, setPositions] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const { isLogin, accountInfo: { userAddress, userBalance } } = user;
     const getUserPoolV2s = useCallback(async () => {
-        if (userAddress) {
+        if (userAddress && pairs.length > 0) {
             const res = await api.queryUserPositions(userAddress);
             if (res && res.data) {
                 let _positions = [];
                 for (let pairName in res.data) {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
+                    const pair = pairs.find(pair => pair.pairName === pairName);
+                    const isUSDTPair = pair && isUSDT(pair.token1.genesisTxid, pair.token2.genesisTxid)
                     pairPos.forEach((pos) => {
-                        //TODO USDT 
 
                         let minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
                         let maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
-                        if (pairName === 'space-usdt') {
-                            minPrice = (1 / Number(minPrice)).toFixed(4);
-                            maxPrice = (1 / Number(maxPrice)).toFixed(4);
+                        if (isUSDTPair) {
+                            let tmp = Number(minPrice)
+                            minPrice = (1 / Number(maxPrice)).toFixed(4);
+                            maxPrice = (1 / Number(tmp)).toFixed(4);
                         }
-
+                        const parts = pairName.toUpperCase().replace('-', '/').split('/');
+                        let displayPairName = `${parts[1]}/${parts[0]}`
+                        if (isUSDTPair) {
+                            displayPairName = `${parts[0]}/${parts[1]}`
+                        }
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
-                        _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
+                        _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, displayPairName, feeRate, ...pos })
                     })
 
                 }
@@ -83,7 +90,7 @@ const PoolV2 = ({ user, poolV2 }) => {
             setPositions([])
         }
         setLoading(false)
-    }, [userAddress])
+    }, [userAddress, pairs])
 
     const [rewardingPool, setRewardingPool] = React.useState([]);
 
@@ -96,9 +103,25 @@ const PoolV2 = ({ user, poolV2 }) => {
             const _rewardingPool = pairs.filter(pair => {
                 return pair.reward.rewardStartTime < now && now < pair.reward.rewardEndTime && pair.reward.rewardAmountPerSecond > 0
             })
-            setRewardingPool(_rewardingPool)
+
+            setRewardingPool(_rewardingPool.map(item => {
+                const parts = item.pairName.toUpperCase().replace('-', '/').split('/');
+                let displayPairName = `${parts[1]}/${parts[0]}`
+                if (isUSDT(item.token1.genesisTxid, item.token2.genesisTxid)) {
+                    displayPairName = `${parts[0]}/${parts[1]}`
+                }
+                return { ...item, displayPairName }
+            }))
         }
     }, [pairs])
+    useEffect(() => {
+        dispatch({
+            type: 'getAllPairs',
+            payload: {
+                type: 'init'
+            }
+        });
+    }, [isLogin])
 
     return (
         <Layout>
@@ -108,7 +131,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                 <div className='wrap'>
                     <div className="positionContainer">
                         <div className="leftPosition">Your Positions</div>
-                        <Button type='link' disabled={!curPair} icon={<PlusCircleFilled style={{ color: curPair ? '#1e2bff' : 'rgba(0, 0, 0, 0.25)' }} />} onClick={() => { curPair && history.push(`/v2pool/add/${curPair.pairName}`) }}> New Position</Button>
+                        <Button type='link' style={{ color: curPair ? '#1e2bff' : 'rgba(0, 0, 0, 0.25)' }} disabled={!curPair} icon={<PlusCircleFilled style={{ color: curPair ? '#1e2bff' : 'rgba(0, 0, 0, 0.25)' }} />} onClick={() => { curPair && history.push(`/v2pool/add/${curPair.pairName}`) }}> New Position</Button>
                     </div>
                     <Spin spinning={loading}>
                         <div className="positions-list">
@@ -149,7 +172,7 @@ const PoolV2 = ({ user, poolV2 }) => {
                                                 size={48}
                                             />
                                             <div className='titleWrap'>
-                                                <div className='pairName'>{pool.pairName.toUpperCase().replace('-', '/')}</div>
+                                                <div className='pairName'>{pool.displayPairName}</div>
                                                 <div className='feeRate'>{pool.feeRate}% Spread Factor</div>
                                             </div>
 
