@@ -69,7 +69,7 @@ const PoolV2 = ({ user, poolV2, dispatch }) => {
 
                         let minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
                         let maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
-                        if (isUSDTPair) {
+                        if (!isUSDTPair) {
                             let tmp = Number(minPrice)
                             minPrice = (1 / Number(maxPrice)).toFixed(4);
                             maxPrice = (1 / Number(tmp)).toFixed(4);
