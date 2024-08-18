@@ -9,10 +9,13 @@ const calcPrice = (curPair, tick) => {
     if (curPair) {
         const isUSDTPair = isUSDT(curPair.token1.genesisTxid, curPair.token2.genesisTxid)
         const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(tick))).toFixed(4);
-        return isUSDTPair ? (1 / minPrice).toFixed(4) : minPrice
+        return !isUSDTPair ? (1 / minPrice).toFixed(4) : minPrice
     }
     return 0
 }
+
+const lowerColor = '#259F2F';
+const upperColor = '#FF4D4D';
 function reduceArray(arr) {
     const n = arr.length;
     const targetCount = 100;
@@ -72,8 +75,13 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
         for (const key in distribution) {
             data.push({ tick: key, value: distribution[key] })
         }
-        let _data = data.filter((item) => Number(item.tick) % (1 * tickSpacing) === 0).sort((a, b) => b.tick - a.tick);
-
+        const isUSDTPair = isUSDT(curPair.token1.genesisTxid, curPair.token2.genesisTxid)
+        let _data = data.filter((item) => Number(item.tick) % (1 * tickSpacing) === 0);
+        if (!isUSDTPair) {
+            _data = _data.sort((a, b) => a.tick - b.tick)
+        } else {
+            _data = _data.sort((a, b) => b.tick - a.tick)
+        }
         if (_data.length === 0) return {}
         const upperDvalue = Number(tickUpper) - Number(priceTick);
         const lowerDvalue = Number(priceTick) - Number(tickLower);
@@ -96,7 +104,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
 
         if (priceTick !== undefined && tickLower !== undefined && tickUpper !== undefined) {
             _data.forEach((item, index) => {
-                if (_tickLowerIndex === undefined) {
+                if (_tickLowerIndex === undefined && isUSDTPair) {
                     if (Number(item.tick) <= tickLower) {
                         _tickLowerIndex = {
                             index,
@@ -105,7 +113,16 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                         }
                     }
                 }
-                if (_tickUpperIndex === undefined) {
+                if (_tickLowerIndex === undefined && !isUSDTPair) {
+                    if (Number(item.tick) >= tickLower) {
+                        _tickLowerIndex = {
+                            index,
+                            value: item.tick,
+                            percent: (index / _data.length) * 100
+                        }
+                    }
+                }
+                if (_tickUpperIndex === undefined && isUSDTPair) {
                     if (Number(item.tick) <= tickUpper) {
                         _tickUpperIndex = {
                             index,
@@ -114,8 +131,26 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                         }
                     }
                 }
-                if (_priceTickIndex === undefined) {
+                if (_tickUpperIndex === undefined && !isUSDTPair) {
+                    if (Number(item.tick) >= tickUpper) {
+                        _tickUpperIndex = {
+                            index,
+                            value: item.tick,
+                            percent: (index / _data.length) * 100
+                        }
+                    }
+                }
+                if (_priceTickIndex === undefined && isUSDTPair) {
                     if (Number(item.tick) <= priceTick) {
+                        _priceTickIndex = {
+                            index,
+                            value: item.tick,
+                            percent: (index / _data.length) * 100
+                        }
+                    }
+                }
+                if (_priceTickIndex === undefined && !isUSDTPair) {
+                    if (Number(item.tick) >= priceTick) {
                         _priceTickIndex = {
                             index,
                             value: item.tick,
@@ -179,7 +214,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                     type: 'lineX',
                     xField: _tickLowerIndex.value,
                     style: {
-                        stroke: '#259F2F',
+                        stroke: isUSDTPair ? lowerColor : upperColor,
                         lineWidth: 1,
                     },
                 },
@@ -197,7 +232,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                                     cy: y,
                                     lineWidth: 1,
                                     r: 4,
-                                    stroke: '#259F2F',
+                                    stroke: isUSDTPair ? lowerColor : upperColor,
                                     opacity: 0.3,
                                 },
                             });
@@ -207,7 +242,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                                     cy: y,
                                     lineWidth: 3,
                                     r: 1.5,
-                                    stroke: '#259F2F',
+                                    stroke: isUSDTPair ? lowerColor : upperColor,
                                     opacity: 1,
                                 },
                             });
@@ -254,7 +289,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                     type: 'lineX',
                     xField: _tickUpperIndex.value,
                     style: {
-                        stroke: '#FF4D4D',
+                        stroke: !isUSDTPair ? lowerColor : upperColor,
                         lineWidth: 1
                     },
                 },
@@ -272,7 +307,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                                     cy: y,
                                     lineWidth: 1,
                                     r: 4,
-                                    stroke: '#FF4D4D',
+                                    stroke: !isUSDTPair ? lowerColor : upperColor,
                                     opacity: 0.3,
                                 },
                             });
@@ -282,7 +317,7 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                                     cy: y,
                                     lineWidth: 3,
                                     r: 1.5,
-                                    stroke: '#FF4D4D',
+                                    stroke: !isUSDTPair ? lowerColor : upperColor,
                                     opacity: 1,
                                 },
                             });

@@ -118,7 +118,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     const calcMinPrice = (_price) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) >= Number(maxPrice)) return;
         try {
-            if (isUSDTPair) {
+            if (!isUSDTPair) {
                 _price = 1 / Number(_price)
                 const { tickSpacing } = poolV2.curPair;
                 const _highSX96 = priceToSqrtX96(_price);
@@ -149,7 +149,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     const calcMaxPrice = (_price) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) <= Number(minPrice)) return;
         try {
-            if (isUSDTPair) {
+            if (!isUSDTPair) {
                 _price = 1 / Number(_price)
                 const { tickSpacing } = poolV2.curPair;
                 const _lowSX96 = priceToSqrtX96(_price);
@@ -182,7 +182,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(_tickUpper));
             setTickUpper(_tickUpper);
             setTickLower(_tickLower);
-            if (isUSDTPair) {
+            if (!isUSDTPair) {
                 setMinPrice((1 / maxPrice).toFixed(4));
                 setMaxPrice((1 / minPrice).toFixed(4));
             } else {
@@ -206,7 +206,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         _highTick = Math.ceil(_highTick / tickSpacing) * tickSpacing;
         setTickUpper(_highTick);
         setTickLower(_lowTick);
-        if (isUSDTPair) {
+        if (!isUSDTPair) {
             setMinPrice((1 / sqrtX96ToPrice(getSqrtRatioAtTick(_highTick))));
             setMaxPrice((1 / sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick))));
         } else {
