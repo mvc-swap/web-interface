@@ -8,12 +8,13 @@ import _ from 'i18n';
 import TokenList from 'components/tokenList/poolv2';
 import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
 import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
+import { isUSDT } from 'common/utils';
 import './index.less'
 export default ({ children, curPair, icons = {}, pairs = [], tickLower, tickUpper }) => {
     const [open, setOpen] = useState(false)
     const [chartWidth, setChartWidth] = useState(973);
-    const tvRef = useRef(null);
     const chartWrapRef = useRef(null);
+
     useEffect(() => {
         const resizeChart = () => {
             setTimeout(() => {
@@ -36,8 +37,20 @@ export default ({ children, curPair, icons = {}, pairs = [], tickLower, tickUppe
             return _priceTick
         }
     }, [curPair])
+    const isUSDTPair = useMemo(() => {
+        if (!curPair) return false;
+        return isUSDT(curPair.token1.genesisTxid, curPair.token2.genesisTxid)
+    }, [curPair])
+    const displayPairName = useMemo(() => {
+        if (!curPair) return '';
+        const pairName = curPair.pairName.toUpperCase().replace('-', '/')
+        const parts = pairName.split('/');
+        if (isUSDTPair) {
+            return `${parts[0]}/${parts[1]}`
+        }
+        return `${parts[1]}/${parts[0]}`
+    }, [curPair, isUSDTPair])
     if (!curPair) return <></>
-
     return <Card style={{ borderRadius: 12 }} className='chartCard'>
         {
             pairs.length > 0 && <Popover content={<div className='chartContainer'>
@@ -65,7 +78,7 @@ export default ({ children, curPair, icons = {}, pairs = [], tickLower, tickUppe
                         size={32}
                     />
 
-                    {curPair.pairName.toUpperCase().replace('-', '/')}
+                    {displayPairName}
                     <DownOutlined style={{ fontSize: 15, fontWeight: 'bold' }} />
                 </div>
             </Popover>
@@ -74,7 +87,10 @@ export default ({ children, curPair, icons = {}, pairs = [], tickLower, tickUppe
         <div style={{ display: 'flex', fontSize: 11, color: '#303133', marginBottom: 15 }}>
             <span style={{ display: 'flex', alignItems: 'center' }}>
                 <span style={{ background: "#259F2F", width: 7, height: 7, borderRadius: '50%', display: 'inline-block', marginRight: 6 }}></span>
-                SATOSHI(0.00000001 SPACE)
+                {
+                    isUSDTPair ? 'USDT' : ' SATOSHI(0.00000001 SPACE)'
+                }
+
             </span>
 
         </div>

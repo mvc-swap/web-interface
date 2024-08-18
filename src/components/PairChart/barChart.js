@@ -4,11 +4,12 @@ import { Bar } from '@ant-design/plots';
 import api from '../../api/poolv2';
 import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
 import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
+import { isUSDT } from '../../common/utils';
 const calcPrice = (curPair, tick) => {
     if (curPair) {
-        const { sqrtPriceX96, tickSpacing } = curPair;
+        const isUSDTPair = isUSDT(curPair.token1.genesisTxid, curPair.token2.genesisTxid)
         const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(tick))).toFixed(4);
-        return minPrice
+        return isUSDTPair ? (1 / minPrice).toFixed(4) : minPrice
     }
     return 0
 }
@@ -34,7 +35,6 @@ function reduceArray(arr) {
     return result;
 }
 const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPair }) => {
-    console.log(symbol, tickSpacing, tickLower, tickUpper, priceTick)
     const [loading, setLoading] = useState(true);
     const [distribution, setDistribution] = useState({});
     const fetchData = useCallback(async () => {
@@ -73,21 +73,21 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
             data.push({ tick: key, value: distribution[key] })
         }
         let _data = data.filter((item) => Number(item.tick) % (1 * tickSpacing) === 0).sort((a, b) => b.tick - a.tick);
-        // console.log(_data)
+
         if (_data.length === 0) return {}
         const upperDvalue = Number(tickUpper) - Number(priceTick);
         const lowerDvalue = Number(priceTick) - Number(tickLower);
+
         let start = _data[0].tick, end = _data[_data.length - 1].tick;
         // console.log(start, end)
         if (upperDvalue > lowerDvalue) {
-            start = tickUpper + upperDvalue / 5;
+            start = Number(tickUpper) + upperDvalue / 5;
             end = Number(priceTick) - upperDvalue - upperDvalue / 5
         } else {
-            end = tickLower - lowerDvalue / 5;
+            end = Number(tickLower) - lowerDvalue / 5;
             start = Number(priceTick) + lowerDvalue + lowerDvalue / 5
         }
         _data = _data.filter((item) => Number(item.tick) <= start && Number(item.tick) >= end)
-        // console.log(_data.length,'_data')
         if (_data.length > 100) {
             _data = reduceArray(_data)
         }
@@ -189,7 +189,6 @@ const BarChart = ({ symbol, tickSpacing, tickLower, tickUpper, priceTick, curPai
                         x: '100%',
                         y: _tickLowerIndex.percent + '%',
                         render: ({ x, y }, context, d) => {
-                            console.log(x, y, d)
                             const { document } = context;
                             const g = document.createElement('g', {});
                             const c1 = document.createElement('circle', {

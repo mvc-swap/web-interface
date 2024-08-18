@@ -8,7 +8,7 @@ import TokenLogo from 'components/tokenicon';
 import NumberFormat from 'components/NumberFormat';
 import './index.less'
 import PairChart from "../../components/PairChart";
-import { useEffect, useMemo, useState,useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import api from '../../api/poolv2';
 import { formatAmount, formatSat, formatTok } from 'common/utils';
 import { priceToSqrtX96, sqrtX96ToPrice } from '../../utils/helper';
@@ -16,7 +16,8 @@ import { getTickAtSqrtRatio, getSqrtRatioAtTick } from '../../utils/tickMath';
 import { mint } from '../../utils/swapAlgoV3';
 import EventBus from 'common/eventBus';
 import { getMaxLiquidityForAmounts, getAmount0ForLiquidity, getAmount1ForLiquidity, getLiquidityForAmount0, getLiquidityForAmount1 } from '../../utils/liquidityAmounts'
-import { type } from "ramda";
+import { is, type } from "ramda";
+import { isUSDT } from "../../common/utils";
 
 const TokenWrap = ({ icon, symbol, rate }) => {
     return <div className="tokenWrap">
@@ -44,6 +45,11 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     const { icons, curPair, pairs } = poolV2;
     const { pair: pairName } = useParams();
 
+    const isUSDTPair = useMemo(() => {
+        if (!curPair) return false;
+        return isUSDT(curPair.token1.genesisTxid, curPair.token2.genesisTxid)
+    }, [curPair])
+
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
     const [tickLower, setTickLower] = useState(Number(_tickLower) || 0);
@@ -61,19 +67,12 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                 for (let pairName in res.data) {
                     const { positions: pairPos, currentPrice, currentTick, feeRate } = res.data[pairName];
                     pairPos.forEach((pos) => {
-                        //TODO USDT 
-                        let minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickLower))).toFixed(4);
-                        let maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(pos.tickUpper)).toFixed(4);
-                        if(pairName === 'space-usdt'){
-                            minPrice=(1/Number(minPrice)).toFixed(4);
-                            maxPrice=(1/Number(maxPrice)).toFixed(4);
-                        }
+                        
                         const inRange = pos.tickLower < Number(currentTick) && pos.tickUpper > Number(currentTick);
                         _positions.push({ pairName, currentPrice, currentTick, minPrice, maxPrice, inRange, feeRate, ...pos })
                     })
                 }
                 const find = _positions.find((pos) => pos.pairName === pairName && pos.tickUpper == Number(tickUpper) && pos.tickLower == Number(tickLower));
-                console.log(find, 'find')
                 if (find) {
                     setPosition(find)
                 } else {
@@ -93,14 +92,12 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
 
     const handleToken1Change = (value) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing)) return;
-        console.log(value, tickLower, tickUpper)
         const { sqrtPriceX96, liquidity, tick, token1: { decimal }, token2: { decimal: decimal2 } } = poolV2.curPair
         const sqrtPrice1 = getSqrtRatioAtTick(tickLower)
         const sqrtPrice2 = getSqrtRatioAtTick(tickUpper)
         const liquidityAmount = getMaxLiquidityForAmounts(BigInt(sqrtPriceX96), sqrtPrice1, sqrtPrice2, BigInt(formatTok(value, decimal)), TwoPower64)
         const swapRes = mint(Number(tick), BigInt(sqrtPriceX96), BigInt(liquidity), tickLower, tickUpper, liquidityAmount);
         setLiquidityAmount(liquidityAmount)
-        console.log(liquidityAmount, swapRes)
         setToken1(formatSat(swapRes.amount0, decimal))
         setToken2(formatSat(swapRes.amount1, decimal2))
     }
@@ -117,19 +114,21 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         setToken2(formatSat(swapRes.amount1, decimal2))
     }
 
-    // useEffect(() => {
-    //     const init = async () => {
-    //         await dispatch({
-    //             type: 'poolV2/getAllPairs',
-    //             payload: {}
-    //         })
-    //     }
-    //     init()
-    // }, [])
 
     const calcMinPrice = (_price) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) >= Number(maxPrice)) return;
         try {
+            if (isUSDTPair) {
+                _price = 1 / Number(_price)
+                const { tickSpacing } = poolV2.curPair;
+                const _highSX96 = priceToSqrtX96(_price);
+                let _highTick = getTickAtSqrtRatio(BigInt(_highSX96.toFixed(0)));
+                _highTick = Math.ceil(_highTick / tickSpacing) * tickSpacing;
+                setTickUpper(_highTick);
+                setMinPrice(1/sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
+                setTimeout(() => { handleToken1Change(token1) }, 100)
+                return
+            }
             const { tickSpacing } = poolV2.curPair;
             const _lowSX96 = priceToSqrtX96(_price);
             let _lowTick = getTickAtSqrtRatio(BigInt(_lowSX96.toFixed(0)));
@@ -150,6 +149,19 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
     const calcMaxPrice = (_price) => {
         if (!(poolV2.curPair && poolV2.curPair.tickSpacing) || !Number(_price) || Number(_price) <= Number(minPrice)) return;
         try {
+            if (isUSDTPair) {
+                _price = 1 / Number(_price)
+                const { tickSpacing } = poolV2.curPair;
+                const _lowSX96 = priceToSqrtX96(_price);
+                let _lowTick = getTickAtSqrtRatio(BigInt(_lowSX96.toFixed(0)));
+                _lowTick = Math.floor(_lowTick / tickSpacing) * tickSpacing;
+                setTickLower(_lowTick);
+                setMaxPrice(1 / sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
+                setTimeout(() => {
+                    handleToken1Change(token1)
+                }, 100)
+                return
+            }
             const { tickSpacing } = poolV2.curPair;
             const _highSX96 = priceToSqrtX96(_price);
             let _highTick = getTickAtSqrtRatio(BigInt(_highSX96.toFixed(0)));
@@ -166,16 +178,22 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         if (!poolV2.curPair) return;
         if (!poolV2.curPair.sqrtPriceX96) return;
         if (_tickLower && _tickUpper) {
-            const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(_tickLower))).toFixed(4);
-            const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(_tickUpper)).toFixed(4);
+            const minPrice = (sqrtX96ToPrice(getSqrtRatioAtTick(_tickLower)));
+            const maxPrice = sqrtX96ToPrice(getSqrtRatioAtTick(_tickUpper));
             setTickUpper(_tickUpper);
             setTickLower(_tickLower);
-            setMinPrice(minPrice);
-            setMaxPrice(maxPrice);
+            if (isUSDTPair) {
+                setMinPrice((1 / maxPrice).toFixed(4));
+                setMaxPrice((1 / minPrice).toFixed(4));
+            } else {
+                setMinPrice(minPrice.toFixed(4));
+                setMaxPrice(maxPrice.toFixed(4));
+            }
+
             return
         }
         const { sqrtPriceX96, tickSpacing } = poolV2.curPair;
-        const price = sqrtX96ToPrice(
+        let price = sqrtX96ToPrice(
             BigInt(sqrtPriceX96)
         );
         const _lowPrice = Number(price) * 0.9;
@@ -188,9 +206,15 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
         _highTick = Math.ceil(_highTick / tickSpacing) * tickSpacing;
         setTickUpper(_highTick);
         setTickLower(_lowTick);
-        setMinPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
-        setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
-    }, [poolV2.curPair, _tickLower, _tickUpper])
+        if (isUSDTPair) {
+            setMinPrice((1 / sqrtX96ToPrice(getSqrtRatioAtTick(_highTick))));
+            setMaxPrice((1 / sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick))));
+        } else {
+            setMinPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_lowTick)));
+            setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
+        }
+
+    }, [poolV2.curPair, _tickLower, _tickUpper, isUSDTPair])
 
 
     const handleCreatePosition = async () => {

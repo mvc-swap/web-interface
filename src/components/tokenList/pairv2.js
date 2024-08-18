@@ -5,6 +5,7 @@ import { CheckCircleOutlined } from '@ant-design/icons';
 import TokenPair from 'components/tokenPair';
 import { isLocalEnv, strAbbreviation } from 'common/utils';
 import styles from './index.less';
+import { isUSDT } from '../../common/utils';
 
 const { location } = window;
 
@@ -28,6 +29,8 @@ export default class TokenPairList extends React.Component {
   renderItem = (item, props) => {
     const { currentPair, type } = props;
     const { token1, token2, id, pairName, tokenIDs, abandoned } = item;
+    const isUSDTPair = isUSDT(token1.genesisTxid, token2.genesisTxid);
+    const parts = pairName.toUpperCase().split('-');
     return (
       <div
         className={styles.item}
@@ -45,7 +48,7 @@ export default class TokenPairList extends React.Component {
             />
           </div>
           <div className={styles.name}>
-            {pairName.toUpperCase()}
+            {isUSDTPair ? `${parts[0]}/${parts[1]}` : `${parts[1]}/${parts[0]}`}
             {abandoned && '(old)'}
           </div>
         </div>

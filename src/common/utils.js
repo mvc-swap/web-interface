@@ -367,7 +367,7 @@ export function parseUrl(hash) {
   if (currentPair) {
     window.localStorage.setItem(type === 'farm' ? MVCSWAP_CURRENT_FARM_PAIR : MVCSWAP_CURRENT_PAIR, currentPair);
   }
-  
+
   return currentPair;
 }
 
@@ -489,4 +489,12 @@ export function formatNumberToKMBT(num, digits = 2) {
     }
   }
   return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+}
+
+export function isUSDT(token1GenesisTxid,token2GenesisTxid) {
+  if (isTestNet()) {
+    return token1GenesisTxid === '3cc2e847f979b9deccd7bf65c944f6172c61b6f31c713e18f42012f905b7113a00000000' || token2GenesisTxid === '3cc2e847f979b9deccd7bf65c944f6172c61b6f31c713e18f42012f905b7113a00000000';
+  } else {
+    return token1GenesisTxid === '1f8389c6f2f2d0cf3c1959848c59e49a1a37959a034e2ac88e621232a869d8e100000000' || token2GenesisTxid === '1f8389c6f2f2d0cf3c1959848c59e49a1a37959a034e2ac88e621232a869d8e100000000';
+  }
 }
