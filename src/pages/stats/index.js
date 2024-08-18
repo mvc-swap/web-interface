@@ -364,7 +364,6 @@ export default () => {
             leftPriceScale: {
                 borderColor: 'rgba(197, 203, 206, 0.5)', // 设置价格刻度的边框颜色为红色
             },
-
         });
 
         const upColor = '#0ECB81'; // green
@@ -376,7 +375,12 @@ export default () => {
             borderUpColor: upColor,
             wickDownColor: downColor,
             wickUpColor: upColor,
-            wickColor: '#f0f0f0'
+            wickColor: '#f0f0f0',
+            priceFormat: {
+                type: 'price',
+                precision: 4,
+                minMove: 0.0001
+            }
         });
         chart.timeScale().applyOptions({
             borderColor: "rgba(197, 203, 206, 0.5)",

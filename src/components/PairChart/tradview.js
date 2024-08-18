@@ -47,6 +47,15 @@ const TradingView = ({ symbol1, symbol2 }) => {
 
         });
 
+        const isSpaceQuote = (symbol1.toLowerCase() === 'space' || symbol1 === 'wbtc')  && symbol2.toLowerCase() !== 'usdt';
+
+        let precision = 4
+        let minMove = 0.0001
+        if (isSpaceQuote) {
+          precision = 6
+          minMove = 0.000001
+        }
+
         const upColor = '#0ECB81'; // green
         const downColor = '#F6465D'; // red
         const candlestickSeries = chart.addCandlestickSeries({
@@ -56,7 +65,12 @@ const TradingView = ({ symbol1, symbol2 }) => {
             borderUpColor: upColor,
             wickDownColor: downColor,
             wickUpColor: upColor,
-            wickColor: '#f0f0f0'
+            wickColor: '#f0f0f0',
+            priceFormat: {
+              type: 'price',
+              precision,
+              minMove,
+            }
         });
         chart.timeScale().applyOptions({
             borderColor: "rgba(197, 203, 206, 0.5)",
@@ -87,6 +101,14 @@ const TradingView = ({ symbol1, symbol2 }) => {
                     items.sort((a, b) => {
                         return a.time - b.time;
                     });
+                    if (isSpaceQuote) {
+                        items.forEach((item) => {
+                            item.open = item.open / 1e8
+                            item.high = item.high / 1e8
+                            item.low = item.low / 1e8
+                            item.close = item.close / 1e8
+                        })
+                    }
                     // const dataTest = [{ open: 10, high: 10.63, low: 9.49, close: 9.55, time: 1642427876 }, { open: 9.55, high: 10.30, low: 9.42, close: 9.94, time: 1642514276 }, { open: 9.94, high: 10.17, low: 9.92, close: 9.78, time: 1642600676 }, { open: 9.78, high: 10.59, low: 9.18, close: 9.51, time: 1642687076 }, { open: 9.51, high: 10.46, low: 9.10, close: 10.17, time: 1642773476 }, { open: 10.17, high: 10.96, low: 10.16, close: 10.47, time: 1642859876 }, { open: 10.47, high: 11.39, low: 10.40, close: 10.81, time: 1642946276 }, { open: 10.81, high: 11.60, low: 10.30, close: 10.75, time: 1643032676 }, { open: 10.75, high: 11.60, low: 10.49, close: 10.93, time: 1643119076 }, { open: 10.93, high: 11.53, low: 10.76, close: 10.96, time: 1643205476 }]
                     candlestickSeries.setData(items);
                 })

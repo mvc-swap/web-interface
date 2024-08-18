@@ -1,6 +1,7 @@
 // src/components/TradingViewChart.js
 import React, { useEffect, useRef } from 'react';
 import { createChart, CrosshairMode } from 'lightweight-charts';
+import { is } from 'ramda';
 
 const chartUrl = 'https://api.mvcswap.com/stats/chartdata/';
 
@@ -44,6 +45,17 @@ const TradingViewChart = (props) => {
     const upColor = '#0ECB81'; // green
     const downColor = '#F6465D'; // red
 
+    const { symbol1, symbol2 } = props;
+
+    const isSpaceQuote = (symbol1.toLowerCase() === 'space' || symbol1 === 'wbtc')  && symbol2.toLowerCase() !== 'usdt';
+
+    let precision = 4
+    let minMove = 0.0001
+    if (isSpaceQuote) {
+      precision = 6
+      minMove = 0.000001
+    }
+
     const candlestickSeries = chart.addCandlestickSeries({
       upColor: upColor,
       downColor: downColor,
@@ -51,9 +63,13 @@ const TradingViewChart = (props) => {
       borderUpColor: upColor,
       wickDownColor: downColor,
       wickUpColor: upColor,
+      priceFormat: {
+        type: 'price',
+        precision,
+        minMove,
+      }
     });
 
-    const { symbol1, symbol2 } = props;
 
     //TODO: You can fetch the data from an API or use a static dataset
     try {
@@ -75,6 +91,14 @@ const TradingViewChart = (props) => {
                       close: item.close,
                   }));*/
           const items = data.data;
+          if (isSpaceQuote) {
+              items.forEach((item) => {
+                  item.open = item.open / 1e8
+                  item.high = item.high / 1e8
+                  item.low = item.low / 1e8
+                  item.close = item.close / 1e8
+              })
+          }
           items.sort((a, b) => {
             return a.time - b.time;
           });
