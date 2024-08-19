@@ -98,12 +98,12 @@ export default {
                     })
                     return
                 }
-        
+
                 const token1MarketCap = find.token1.price * Number(find.token1Amount) / Math.pow(10, find.token1.decimal);
                 const token2MarketCap = find.token2.price * Number(find.token2Amount) / Math.pow(10, find.token2.decimal);
                 const pairMarketCap = token1MarketCap + token2MarketCap;
-                const token1Precent = token1MarketCap / pairMarketCap*100;
-                const token2Precent = token2MarketCap / pairMarketCap*100;
+                const token1Precent = token1MarketCap / pairMarketCap * 100;
+                const token2Precent = token2MarketCap / pairMarketCap * 100;
                 yield put({
                     type: 'save',
                     payload: {

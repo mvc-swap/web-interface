@@ -402,7 +402,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                             <Col xs={24} md={12}>
                                 <Card style={{ borderRadius: 12 }} >
                                     <div className="tokenCard">
-                                        <TokenWrap icon={icons[curPair && curPair.token1.genesisHash] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.rate} />
+                                        <TokenWrap icon={icons[curPair && curPair.token1.tokenID] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.rate} />
                                         <div className="poolAmount">
                                             <NumberFormat value={position.token1Amount} isBig decimal={curPair.token1.decimal} />
                                         </div>
@@ -415,7 +415,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                                 <Card style={{ borderRadius: 12 }}>
 
                                     <div className="tokenCard">
-                                        <TokenWrap icon={icons[curPair && curPair.token2.genesisHash] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.rate} />
+                                        <TokenWrap icon={icons[curPair && curPair.token2.tokenID] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.rate} />
                                         <div className="poolAmount">
                                             <NumberFormat value={position.token2Amount} isBig decimal={curPair.token2.decimal} />
                                         </div>
@@ -431,7 +431,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                     <Col xs={24} md={12}>
                         <Card style={{ borderRadius: 12 }} >
                             <div className="tokenCard">
-                                <TokenWrap icon={icons[curPair && curPair.token1.genesisHash] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.precent} />
+                                <TokenWrap icon={icons[curPair && curPair.token1.tokenID] || icons[curPair && curPair.token1.symbol]} symbol={curPair && curPair.token1.symbol} rate={poolV2.curPair && poolV2.curPair.token1.precent} />
                                 <div className="tokenInputWrap">
                                     <div className="bal">{curPair && userBalance[curPair && curPair.token1.tokenID || 'MVC'] || 0} {curPair && curPair.token1.symbol.toUpperCase()}</div>
                                     <div className="inputNumber">
@@ -449,7 +449,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
                         <Card style={{ borderRadius: 12 }}>
 
                             <div className="tokenCard">
-                                <TokenWrap icon={icons[curPair && curPair.token2.genesisHash] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.precent} />
+                                <TokenWrap icon={icons[curPair && curPair.token2.tokenID] || icons[curPair && curPair.token2.symbol]} symbol={curPair && curPair.token2.symbol} rate={poolV2.curPair && poolV2.curPair.token2.precent} />
                                 <div className="tokenInputWrap">
                                     <div className="bal">{userBalance[curPair && curPair.token2.tokenID] || 0} {curPair && curPair.token2.symbol.toUpperCase()}</div>
                                     <div className="inputNumber">
