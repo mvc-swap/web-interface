@@ -1,5 +1,6 @@
 
 import v2API from '../api/poolv2.js';
+import { sleep } from '../common/utils.js';
 const iconBaseUrl = 'https://icons.mvcswap.com/resources';
 export default {
     namespace: 'poolV2',
@@ -9,7 +10,7 @@ export default {
         icons: {},
     },
     subscriptions: {
-        setup({ dispatch, history }) {
+       async setup({ dispatch, history }) {
             history.listen((location) => {
                 if (location.pathname.indexOf('/v2pool') > -1) {
                     dispatch({
@@ -26,6 +27,15 @@ export default {
                     });
                 }
             });
+            while (true) {
+                await dispatch({
+                    type: 'getAllPairs',
+                    payload: {
+                        type: 'update'
+                    }
+                });
+                await sleep(10000);
+            }
         }
     },
     effects: {
