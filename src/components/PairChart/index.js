@@ -88,7 +88,7 @@ export default ({ children, curPair, icons = {}, pairs = [], tickLower, tickUppe
             <span style={{ display: 'flex', alignItems: 'center' }}>
                 <span style={{ background: "#259F2F", width: 7, height: 7, borderRadius: '50%', display: 'inline-block', marginRight: 6 }}></span>
                 {
-                    isUSDTPair ? 'USDT' : ' SATOSHI(0.00000001 SPACE)'
+                    isUSDTPair ? 'USDT' : 'SPACE'
                 }
 
             </span>

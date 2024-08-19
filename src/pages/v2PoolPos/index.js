@@ -252,6 +252,8 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
         }
     }, [position, curPair])
 
+    let rewardTips = 'The rewards come from the reward pool.'
+
     return <PageContainer spining={loading}>
         <div className="PositionDetailPage">
             <div className="titleWraper">
@@ -414,11 +416,12 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
                     {curPair && position && position.rewardAmount && <Col span={24}>
                         <Card style={{ borderRadius: 12 }}>
                             <div className="reward">
-                                <div>Reward  <Tooltip title="The trading pairs added to the liquidity pool will generate reward benefits after 7 days."><QuestionCircleFilled /></Tooltip></div>
+                                <div>Reward  <Tooltip title={rewardTips}><QuestionCircleFilled /></Tooltip></div>
                                 <div className="value">
                                     {formatSat(position.rewardAmount, curPair.reward.token.decimal)} {curPair.reward.token.symbol.toUpperCase()}  <TokenLogo
                                         name={curPair.reward.token.symbol}
                                         url={icons[curPair.reward.token.symbol] || ''}
+                                        genesisID={curPair.reward.token.tokenID}
                                         size={32}
                                     />
                                 </div>
