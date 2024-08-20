@@ -252,7 +252,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
         }
     }, [position, curPair])
 
-    let rewardTips = 'The rewards come from the reward pool.'
+    let rewardTips = 'The rewards come from the rewarding pool.'
 
     return <PageContainer spining={loading}>
         <div className="PositionDetailPage">
@@ -413,7 +413,7 @@ const PositionDetail = ({ user, poolV2, dispatch }) => {
 
                         </Card>
                     </Col>
-                    {curPair && position && position.rewardAmount && <Col span={24}>
+                    {curPair && position && BigInt(position.rewardAmount) > 0n && <Col span={24}>
                         <Card style={{ borderRadius: 12 }}>
                             <div className="reward">
                                 <div>Reward  <Tooltip title={rewardTips}><QuestionCircleFilled /></Tooltip></div>
