@@ -214,7 +214,7 @@ const NewPosition = ({ user, poolV2, dispatch }) => {
             setMaxPrice(sqrtX96ToPrice(getSqrtRatioAtTick(_highTick)));
         }
 
-    }, [poolV2.curPair, _tickLower, _tickUpper, isUSDTPair])
+    }, [poolV2.curPair&&poolV2.curPair.pairName,_tickLower, _tickUpper, isUSDTPair])
 
 
     const handleCreatePosition = async () => {
