@@ -101,7 +101,7 @@ const PoolV2 = ({ user, poolV2, dispatch }) => {
         const now = new Date().getTime() / 1000;
         if (pairs) {
             const _rewardingPool = pairs.filter(pair => {
-                return pair.reward.rewardStartTime < now && now < pair.reward.rewardEndTime && pair.reward.rewardAmountPerSecond > 0
+                return now < pair.reward.rewardEndTime && pair.reward.rewardAmountPerSecond > 0
             })
 
             setRewardingPool(_rewardingPool.map(item => {
@@ -183,11 +183,11 @@ const PoolV2 = ({ user, poolV2, dispatch }) => {
 
                                             <div className='rewardInfoItem'>
                                                 <div className='label'>Start Time</div>
-                                                <div className='value'>{new Date(pool.reward.rewardStartTime * 1000).toLocaleString()}</div>
+                                                <div className='value'>{new Date(pool.reward.rewardStartTime * 1000).toLocaleString('en-GB')}</div>
                                             </div>
                                             <div className='rewardInfoItem'>
                                                 <div className='label'>End Time</div>
-                                                <div className='value'>{new Date(pool.reward.rewardEndTime * 1000).toLocaleString()}</div>
+                                                <div className='value'>{new Date(pool.reward.rewardEndTime * 1000).toLocaleString('en-GB')}</div>
                                             </div>
                                             <div className='rewardInfoItem'>
                                                 <div className='label'>Rewad Per Day</div>
