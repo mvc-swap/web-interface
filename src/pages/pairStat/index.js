@@ -1,17 +1,36 @@
 'use strict';
-import React from 'react';
+import React, { useMemo } from 'react';
 import FormatNumber from 'components/formatNumber';
 import PairIcon from 'components/pairIcon';
 import { formatSat } from 'common/utils';
 import styles from './index.less';
 import _ from 'i18n';
+import { connect } from 'umi';
 
-export default function PairStat(props) {
+
+function PairStat(props) {
   const { swapToken1Amount, swapToken2Amount, token1, token2 } =
     props.pairData || {};
+  const { pairs = [] } = props.poolV2 || { pairs: [] };
+  const v2Pair = useMemo(() => {
+    return pairs.find((item) => item.token1.tokenID === token1.tokenID && item.token2.tokenID === token2.tokenID);
+  }, [pairs,token1,token2])
 
-  const amount1 = formatSat(swapToken1Amount, token1.decimal);
-  const amount2 = formatSat(swapToken2Amount, token2.decimal);
+  const amount1 = useMemo(() => {
+    if (v2Pair) {
+      return formatSat(Number(v2Pair.token1Amount) + Number(swapToken1Amount), token1.decimal);
+    }
+    return formatSat(swapToken1Amount, token1.decimal);
+
+  }, [swapToken1Amount, v2Pair, token1])
+
+  const amount2 = useMemo(()=>{
+    if(v2Pair){
+      return formatSat(Number(v2Pair.token2Amount) + Number(swapToken2Amount), token2.decimal);
+    }
+    return formatSat(swapToken2Amount, token2.decimal);
+  },[swapToken1Amount, v2Pair, token2])
+
   return (
     <div className={styles.container}>
       <div className={styles.item}>
@@ -31,3 +50,11 @@ export default function PairStat(props) {
     </div>
   );
 }
+
+const mapStateToProps = ({ poolV2 }) => {
+  return {
+    poolV2
+  };
+};
+
+export default connect(mapStateToProps)(PairStat);
