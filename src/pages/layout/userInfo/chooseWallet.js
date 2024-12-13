@@ -1,6 +1,6 @@
 import { Modal } from 'antd';
 import querystring from 'querystringify';
-import metaletIcon from '../../../../public/assets/metalet.png';
+import metaletIcon from '../../../../public/assets/metalet-logo-v3.svg';
 import mswalletIcon from '../../../../public/assets/ms-black2.png';
 import styles from './index.less';
 import _ from 'i18n';
