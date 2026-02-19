@@ -32,15 +32,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 16
-          cache: npm
+
+      - name: Enable Corepack (Yarn)
+        run: corepack enable
 
       - name: Install
-        run: npm ci
+        run: yarn install
 
       - name: Build
         env:
           CI: false
-        run: npm run build
+        run: yarn build
 
       # TODO: enable tests after stabilizing current test suite
       # - name: Test
