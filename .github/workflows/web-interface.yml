@@ -1,62 +1,59 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Mvcswap CI
 
 on:
   push:
-    branches: [ "master", "dev" ]
-    
+    branches: ["master", "dev"]
+  workflow_dispatch:
+
 permissions:
   contents: write
-  
+
 jobs:
   build:
-
-    runs-on: ubuntu-20.04
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    runs-on: ubuntu-latest
 
     steps:
-    
-    - name: Set deployment directory
-      id: set_deployment_directory
-      run: |
-        if [ "${{ github.ref }}" == "refs/heads/master" ]; then
-          echo "::set-output name=deployment_directory::mvc-swap/mvc-swap.github.io"
-          echo "::set-output name=deployment_key::${{ secrets.MVCSWAP_DEPLOY_KEY }}"
-        elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
-          echo "::set-output name=deployment_directory::mvc-swap/dev.mvcswap.com"
-        else
-          echo "Unknown branch. Skipping deployment."
-          exit 1
-        fi
-        
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: Install
-      run: yarn
-      
-    - name: Build
-      run: yarn build
-      env: 
+      - name: Set deployment repository by branch
+        id: deployment
+        shell: bash
+        run: |
+          if [ "${GITHUB_REF}" = "refs/heads/master" ]; then
+            echo "repository=mvc-swap/mvc-swap.github.io" >> "$GITHUB_OUTPUT"
+          elif [ "${GITHUB_REF}" = "refs/heads/dev" ]; then
+            echo "repository=mvc-swap/dev.mvcswap.com" >> "$GITHUB_OUTPUT"
+          else
+            echo "Unsupported branch: ${GITHUB_REF}" >&2
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Enable Corepack (Yarn)
+        run: corepack enable
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        env:
           CI: false
-    
-    #TODO: Test yarn test
-        
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-          folder: build # The folder the action should deploy.
-          token: ${{ secrets.MVCSWAP_DEPLOY_KEY }}
-          branch: gh-page # git branch deployed
-          repository-name: ${{ steps.set_deployment_directory.outputs.deployment_directory }}
-      env:
-        DEPLOYMENT_DIRECTORY: ${{ steps.set_deployment_directory.outputs.deployment_directory }}
+        run: yarn build
+
+      # TODO: enable tests after stabilizing current test suite
+      # - name: Test
+      #   run: yarn test --watchAll=false
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
+          ssh-key: ${{ secrets.MVCSWAP_DEPLOY_KEY }}
+          branch: gh-page
+          repository-name: ${{ steps.deployment.outputs.repository }}
