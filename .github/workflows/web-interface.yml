@@ -42,6 +42,7 @@ jobs:
       - name: Build
         env:
           CI: false
+          NODE_OPTIONS: --openssl-legacy-provider
         run: yarn build
 
       # TODO: enable tests after stabilizing current test suite
