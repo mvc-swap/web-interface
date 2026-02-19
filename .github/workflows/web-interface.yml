@@ -32,19 +32,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 16
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
-      - name: Enable Corepack (Yarn)
-        run: corepack enable
+          cache: npm
 
       - name: Install
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build
         env:
           CI: false
-        run: yarn build
+        run: npm run build
 
       # TODO: enable tests after stabilizing current test suite
       # - name: Test
